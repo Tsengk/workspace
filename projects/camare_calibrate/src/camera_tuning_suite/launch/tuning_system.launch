@@ -1,0 +1,20 @@
+<launch>
+    <arg name="mode" default="sim" doc="运行模式: sim (使用模拟器) | real (使用真实摄像头)" />
+    
+    <arg name="yaml_path" default="$(find camera_tuning_suite)/config/front_h60_intrinsics.yaml" />
+
+    <group if="$(eval mode == 'sim')">
+        <node pkg="camera_tuning_suite" type="gmsl_simulator" name="gmsl_sim" output="screen" />
+        <param name="/distortion_tuner/width" value="1280"/>
+        <param name="/distortion_tuner/height" value="720"/>
+    </group>
+
+    <group if="$(eval mode == 'real')">
+        </group>
+
+    <node pkg="camera_tuning_suite" type="tuner_h60" name="distortion_tuner" output="screen">
+        <rosparam command="load" file="$(arg yaml_path)" />
+        
+        <remap from="/gmsl_image0" to="/gmsl_image0" /> 
+    </node>
+</launch>

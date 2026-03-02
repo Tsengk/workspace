@@ -1,0 +1,6 @@
+1、class中的public、private
+2、const
+3、vector中的类容器存储的数据,及相关的函数使用
+4、使用 STL 算法 std::remove_if 结合 lambda 表达式进行匹配
+5、std::cerr
+6、students.clear()
