@@ -4,3 +4,4 @@ install/
 *.log
 *.bag
 .vscode/
+ros/rs-driver_ws/src/rsLiDAR_sdk/
