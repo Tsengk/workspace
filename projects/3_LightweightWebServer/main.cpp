@@ -11,7 +11,7 @@ const int THREAD_POOL_SIZE = 8;
 
 int main(){
     //初始化线程池
-    ThradPool pool(THREAD_POOL_SIZE);
+    ThreadPool pool(THREAD_POOL_SIZE);
     std::cout << "Web 服务器启动，使用"<< THREAD_POOL_SIZE <<"个线程"<<std::endl;
 
     //创建socket
@@ -28,8 +28,8 @@ int main(){
     //绑定端口
     sockaddr_in serverAddress{};
     serverAddress.sin_family = AF_INET;
-    serverAddress.sin_addr = INADDR_ANY;
-    serverAddress.sin_port = htons(Port);
+    serverAddress.sin_addr.s_addr = INADDR_ANY;
+    serverAddress.sin_port = htons(PORT);
 
     if(bind(serverSocket,(struct sockaddr*)&serverAddress,sizeof(serverAddress)) < 0) {
         std::cerr << "绑定端口"<<PORT << "失败！"<< std::endl;
@@ -48,15 +48,15 @@ int main(){
     while (true) {
         sockaddr_in clientAddress{};
         socklen_t clineLen = sizeof(clientAddress);
-        int clientSocket = accept(serverSocket, (struct sockaddr*)&clientAddress,&clientLen);
+        int clientSocket = accept(serverSocket, (struct sockaddr*)&clientAddress,&clineLen);
         
-        if (clintSocket < 0) {
+        if (clientSocket < 0) {
             std::cerr << "接收连接失败！" << std::endl;
-            contiue;
+            continue;
         }
         
         pool.enqueue([clientSocket]() {
-            HttpHandler::handleConnection(clientSocket);
+            HttpHandler::handlerConnection(clientSocket);
         });
     }
 

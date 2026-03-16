@@ -11,7 +11,7 @@
 
 
 class ThreadPool {
-pubilc:
+public:
     //线程启动，招募numthreads个服务员
     ThreadPool(size_t numThreads) : stop(false) {
         for (size_t i = 0; i <numThreads; ++i) {
@@ -25,11 +25,11 @@ pubilc:
 
                         //服务员（worker）在这里等待，直到有新任务或者stop
                         this->condition.wait(lock,[this] {
-                            return this->stop || !this->empty();
-                        })
+                            return this->stop || !this->tasks.empty();
+                        });
 
                         //如果餐厅倒闭且活干完了，退出线程（return）
-                        if (this->stop && this->empty()) return;
+                        if (this->stop && this->tasks.empty()) return;
 
                         //从队列中拿走最前面的任务
                         task = std::move(this->tasks.front());
@@ -74,3 +74,4 @@ private:
     std::atomic<bool> stop;//餐厅关闭的标志
 
 };
+#endif
