@@ -3,5 +3,6 @@
 
 class HttpHandler {
 public:
-    static void handleConnection(int clientSocket)
+    static void handlerConnection(int clientSocket);
 };
+#endif

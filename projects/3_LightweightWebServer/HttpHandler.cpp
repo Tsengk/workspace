@@ -4,7 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <unistd.h>
-#include <sys/socket.h
+#include <sys/socket.h>
 
 void HttpHandler::handlerConnection(int clientSocket) {
     char buffer[4096] = {0};
@@ -31,7 +31,7 @@ void HttpHandler::handlerConnection(int clientSocket) {
         buffer  << file.rdbuf();
         responseBody = buffer.str();
     }else {
-        responseBody = "<h1>404 Not Found</h1>"
+        responseBody = "<h1>404 Not Found</h1>";
     }
 
     //构建HTTP响应报文
