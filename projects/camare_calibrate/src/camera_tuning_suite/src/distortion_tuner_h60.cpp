@@ -7,6 +7,7 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/calib3d.hpp>
 #include <mutex>
+#include <fstream> //用于写入yaml
 
 // 滑动条精度设置
 #define S_MAX 2000
@@ -113,9 +114,77 @@ private:
         cv::line(undistsorted, cv::Point(0,h_/2), cv::Point(w_,h_/2), cv::Scalar(0,255,0), 1);
 
         cv::imshow("Tuner H60", undistsorted);
-        if(cv::waitKey(1) == 's') save(fx,fy,cx,cy, k1,k2,p1,p2,k3, new_K);
+        if(cv::waitKey(1) == 's') {
+		    double fx = sl_fx, fy = sl_fy, cx = sl_cx, cy = sl_cy;
+            double k1 = (sl_k1 - S_CEN)*SCALE, k2 = (sl_k2 - S_CEN)*SCALE;
+            double p1 = (sl_p1 - S_CEN)*SCALE, p2 = (sl_p2 - S_CEN)*SCALE;
+            double k3 = (sl_k3 - S_CEN)*SCALE;
+            saveToFile(fx, fy, cx, cy, k1, k2, p1, p2, k3, new_K);
+		    save(fx,fy,cx,cy, k1,k2,p1,p2,k3, new_K);
+	    }
     }
 
+    void saveToFile(double fx, double fy, double cx, double cy, double k1, double k2, double p1, double p2, double k3, cv::Mat P_mat) {
+        // 你可以通过 launch 文件传入你想保存的绝对路径，默认保存在当前终端运行的目录下
+        std::string save_path;
+        //私有节点句柄 pnh_("~") 来读取参数
+        pnh_.param<std::string>("save_path", save_path, "front_h60_intrinsics.yaml");
+
+        std::ofstream out(save_path);
+        if (!out.is_open()) {
+            ROS_ERROR("Failed to open file for writing: %s", save_path.c_str());
+            return;
+        }
+
+        char buf[512]; // 用于格式化浮点数和对齐
+
+        // 写入头部和基础信息
+        out << "header: \n"
+            << "  seq: 0\n"
+            << "  stamp: \n"
+            << "    secs: 0\n"
+            << "    nsecs:         0\n"
+            << "  frame_id: short_camera\n"
+            << "height: " << h_ << "\n"
+            << "width: " << w_ << "\n"
+            << "distortion_model: plumb_bob\n";
+
+        // 写入 D 矩阵
+        snprintf(buf, sizeof(buf), "D: [%.5f, %.5f, %.5f, %.5f, %.5f]\n", k1, k2, p1, p2, k3);
+        out << buf;
+
+        // 写入 K 矩阵 (严格匹配你要求的空格对齐)
+        snprintf(buf, sizeof(buf), "K: [ %.5f,     0.     ,   %.5f,\n"
+                                   "             0.     ,  %.5f,   %.5f,\n"
+                                   "             0.     ,     0.     ,     1.     ]\n", 
+                                   fx, cx, fy, cy);
+        out << buf;
+
+        // 写入 R 矩阵
+        out << "R: [ 1.,  0.,  0.,\n"
+            << "          0.,  1.,  0.,\n"
+            << "          0.,  0.,  1.]\n";
+
+        // 写入 P 矩阵
+        snprintf(buf, sizeof(buf), "P: [ %.5f ,     0.     ,   %.5f,     0.     ,\n"
+                                   "             0.     ,  %.5f,   %.5f,     0.     ,\n"
+                                   "             0.     ,     0.     ,     1.     ,     0.     ]\n",
+                 P_mat.at<double>(0,0), P_mat.at<double>(0,2), P_mat.at<double>(1,1), P_mat.at<double>(1,2));
+        out << buf;
+
+        // 写入结尾
+        out << "binning_x: 0\n"
+            << "binning_y: 0\n"
+            << "roi: \n"
+            << "  x_offset: 0\n"
+            << "  y_offset: 0\n"
+            << "  height: 0\n"
+            << "  width: 0\n"
+            << "  do_rectify: False\n";
+
+        out.close();
+        ROS_INFO("\033[1;32m[SUCCESS] Parameters saved to: %s\033[0m", save_path.c_str());
+    }
     void save(double fx, double fy, double cx, double cy, double k1, double k2, double p1, double p2, double k3, cv::Mat P_mat) {
         printf("\n====== COPY TO front_h60_intrinsics.yaml ======\n");
         printf("height: %d\nwidth: %d\ndistortion_model: plumb_bob\n", h_, w_);
