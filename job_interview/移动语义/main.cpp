@@ -42,10 +42,6 @@ void demostrate_move_semantics() {
     StringProcessor sp3 = std::move(sp1);
 }
 
-void demostrate_lambda_closure() {
-
-}
-
 
 int main() {
     demostrate_move_semantics();

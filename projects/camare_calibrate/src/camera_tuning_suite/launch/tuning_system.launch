@@ -14,7 +14,7 @@
 
     <node pkg="camera_tuning_suite" type="tuner_h60" name="distortion_tuner" output="screen">
         <rosparam command="load" file="$(arg yaml_path)" />
-        
+        <param name="save_path" value="$(find camera_tuning_suite)/config/front_h60_intrinsics.yaml" />
         <remap from="/gmsl_image0" to="/gmsl_image0" /> 
     </node>
 </launch>
