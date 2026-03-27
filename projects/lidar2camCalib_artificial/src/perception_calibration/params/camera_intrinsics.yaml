@@ -1,0 +1,27 @@
+image_width: 1280
+image_height: 720
+camera_name: front_h60
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [1182.885707,     0.     ,   680.679605,
+             0.     ,  1183.769025,   306.848632,
+             0.     ,     0.     ,     1.     ]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [-0.391091, 0.153628, -0.000566, 0.000124, 0.000000]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [ 1.,  0.,  0.,
+          0.,  1.,  0.,
+          0.,  0.,  1.]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [ 1028.947632,     0.     ,   693.672825,     0.     ,
+             0.     ,  1135.193237,   302.421883,     0.     ,
+             0.     ,     0.     ,     1.     ,     0.     ]
+
