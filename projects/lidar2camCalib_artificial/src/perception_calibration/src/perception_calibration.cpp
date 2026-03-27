@@ -2,6 +2,9 @@
 
 namespace calibration {
 
+  //用于控制终端循环输出的标志位
+  static bool g_disable_debug_print = false;
+
 namespace {
 int getch() {
   static struct termios oldt, newt;
@@ -132,14 +135,14 @@ void PerceptionCalibration::initCameraParams() {
 
   //初始化滑块的值
   //映射关系：真实值=（滑块值-offset)/scale）
-  //平移 (m)：精度 1mm，范围 -5m 到 +5m -> offset = 5000, scale = 1000.0
-  slider_x_ = static_cast<int>(camera_6DoF_[0] * 1000) + 5000;
-  slider_y_ = static_cast<int>(camera_6DoF_[1] * 1000) + 5000;
-  slider_z_ = static_cast<int>(camera_6DoF_[2] * 1000) + 5000;
-  //旋转 (deg)：精度 0.01度，范围 -180 到 +180 -> offset = 18000, scale = 100.0
-  slider_roll_ = static_cast<int>(camera_6DoF_[3]*100) + 18000;
-  slider_pitch_ = static_cast<int>(camera_6DoF_[4]*100) + 18000;
-  slider_yaw_ = static_cast<int>(camera_6DoF_[5]*100) + 18000;
+  //平移 (m)：精度 1mm，范围 -5m 到 +5m
+  slider_x_ = static_cast<int>(camera_6DoF_[0] * 1000)+ 5000;
+  slider_y_ = static_cast<int>(camera_6DoF_[1] * 1000)+ 5000;
+  slider_z_ = static_cast<int>(camera_6DoF_[2] * 1000)+ 5000;
+  //旋转 (deg)：精度 0.01度，范围 -180 到 +180
+  slider_roll_ = static_cast<int>(camera_6DoF_[3]*100)+ 18000;
+  slider_pitch_ = static_cast<int>(camera_6DoF_[4]*100)+ 18000;
+  slider_yaw_ = static_cast<int>(camera_6DoF_[5]*100)+ 18000;
 
 }
 
@@ -256,16 +259,18 @@ void PerceptionCalibration::VisualizeCloudImage() {
   }
 
   //创建OpenCV控制窗口和滑块
-  cv::namedWindow("Calibration View",cv::WINDOW_NORMAL);
-  cv::resizeWindow("Calibration View", 1280,720);
+  cv::namedWindow("Calibration View", cv::WINDOW_NORMAL);
+  cv::resizeWindow("Calibration View", 1280, 720);
 
-  //最大值：平移10000（对应5m），旋转36000（对应180）
-  cv::createTrackbar("X(mm)", "Calibration View", &slider_x_, 10000);
-  cv::createTrackbar("Y(mm)", "Calibration View", &slider_y_, 10000);
-  cv::createTrackbar("Z(mm)", "Calibration View", &slider_z_, 10000);
-  cv::createTrackbar("Roll(0.01deg)", "Calibration View", &slider_roll_, 36000);
-  cv::createTrackbar("Pitch(0.01deg)", "Calibration View", &slider_pitch_, 36000);
-  cv::createTrackbar("Yew(0.01deg)", "Calibration View", &slider_yaw_, 36000);
+  // 滑块范围 0~10000，5000是零点
+  cv::createTrackbar("X (mm) [5000=0]", "Calibration View", &slider_x_, 10000);
+  cv::createTrackbar("Y (mm) [5000=0]", "Calibration View", &slider_y_, 10000);
+  cv::createTrackbar("Z (mm) [5000=0]", "Calibration View", &slider_z_, 10000);
+  
+  // 滑块范围 0~36000，18000是零点
+  cv::createTrackbar("Roll (0.01deg) [18000=0]", "Calibration View", &slider_roll_, 36000);
+  cv::createTrackbar("Pitch (0.01deg) [18000=0]", "Calibration View", &slider_pitch_, 36000);
+  cv::createTrackbar("Yaw (0.01deg) [18000=0]", "Calibration View", &slider_yaw_, 36000);
 
   ros::Rate rate(10);
   while (ros::ok()) {
@@ -276,9 +281,9 @@ void PerceptionCalibration::VisualizeCloudImage() {
     T_L2Cam(1) = (slider_y_ - 5000) / 1000.0;
     T_L2Cam(2) = (slider_z_ - 5000) / 1000.0;
 
-    double dynamic_roll = (slider_roll_ - 18000) / 100.0;
+    double dynamic_roll  = (slider_roll_ - 18000) / 100.0;
     double dynamic_pitch = (slider_pitch_ - 18000) / 100.0;
-    double dynamic_yaw = (slider_yaw_ - 18000) / 100.0;
+    double dynamic_yaw   = (slider_yaw_ - 18000) / 100.0;
 
     tf::Matrix3x3 R_m3;
     R_m3.setRPY(angles::from_degrees(dynamic_roll),angles::from_degrees(dynamic_pitch),angles::from_degrees(dynamic_yaw));
@@ -293,6 +298,19 @@ void PerceptionCalibration::VisualizeCloudImage() {
     if(SynchronizeMultiSensor(cvimage, cloud)) {
 
       cv::Mat merge_image = MergeCloud2Image(cloud, cvimage->image);
+
+      // ================= 新增：在画面上打印真实的数值（带负号和小数点）=================
+        char text_buf[256];
+        snprintf(text_buf, sizeof(text_buf), "Real Extrinsics: X:%.3f m, Y:%.3f m, Z:%.3f m", 
+                 T_L2Cam(0), T_L2Cam(1), T_L2Cam(2));
+        cv::putText(merge_image, text_buf, cv::Point(20, 40), 
+                    cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(0, 255, 0), 2);
+
+        snprintf(text_buf, sizeof(text_buf), "Real Rotation: R:%.2f deg, P:%.2f deg, Y:%.2f deg", 
+                 dynamic_roll, dynamic_pitch, dynamic_yaw);
+        cv::putText(merge_image, text_buf, cv::Point(20, 80), 
+                    cv::FONT_HERSHEY_SIMPLEX, 1.0, cv::Scalar(0, 255, 0), 2);
+        // ==============================================================================
 
       cv_bridge::CvImagePtr msgImg = boost::make_shared<cv_bridge::CvImage>();
       msgImg->header.frame_id = "base_link";
@@ -310,13 +328,120 @@ void PerceptionCalibration::VisualizeCloudImage() {
       cv::imshow("Calibration View",merge_image);
 
       char key = (char)cv::waitKey(10);
-      if(key == 'p' || key == 'P') {
-        std::cout << "\n--- Current Extrinsics ---" << std::endl;
-        std::cout << "6DoF: [" 
-                      << T_L2Cam(0) << ", " << T_L2Cam(1) << ", " << T_L2Cam(2) << ", "
-                      << dynamic_roll << ", " << dynamic_pitch << ", " << dynamic_yaw << "]" 
-                      << std::endl;
-      }
+      // 当在 OpenCV 窗口按下 's' 或 'S' 时触发保存
+       if (key == 's' || key == 'S') {
+
+            //关闭时间戳循环打印
+            g_disable_debug_print = true;
+           // 1. 使用 tf 库将 Roll, Pitch, Yaw 转换为四元数 (Quaternion)
+           tf::Quaternion q;
+           q.setRPY(angles::from_degrees(dynamic_roll),
+                    angles::from_degrees(dynamic_pitch),
+                    angles::from_degrees(dynamic_yaw));
+           
+           // 2. 终端打印输出结果
+           std::cout << "\n================ Extrinsics/Intrinsics Saved ================" << std::endl;
+           std::cout << "6DoF (x,y,z,r,p,y): [" 
+                     << T_L2Cam(0) << ", " << T_L2Cam(1) << ", " << T_L2Cam(2) << ", "
+                     << dynamic_roll << ", " << dynamic_pitch << ", " << dynamic_yaw << "]" 
+                     << std::endl;
+           std::cout << "Quaternion (x,y,z,w): [" 
+                     << q.x() << ", " << q.y() << ", " << q.z() << ", " << q.w() << "]" 
+                     << std::endl;
+           std::cout << "==================================================" << std::endl;
+
+          // 文件读写参数配置
+          std::ifstream file_ex_in(config_.extrinsics_path);
+          std::ifstream file_in_in(config_.intrinsics_path);
+          std::vector<std::string> lines_ex;
+          std::vector<std::string> lines_in;
+          std::string line_ex;
+          std::string line_in;
+          bool in_quaternion = false;
+          bool has_quaternion = false;
+          // 3. 6DoF自动填写到 camera_extrinsics.yaml 文件
+          if (file_ex_in.is_open()) {
+            while (std::getline(file_ex_in, line_ex)) {
+                // 1. 修改 6DoF 字段，并尝试保留原有的 # 注释
+                if (line_ex.find("6DoF:") != std::string::npos) {
+                    std::stringstream ss;
+                    // 保留原有的行首缩进
+                    size_t indent = line_ex.find_first_not_of(" \t");
+                    if (indent != std::string::npos) ss << line_ex.substr(0, indent);
+                    
+                    ss << "6DoF: [" << T_L2Cam(0) << ", " << T_L2Cam(1) << ", " << T_L2Cam(2) << ", "
+                       << dynamic_roll << ", " << dynamic_pitch << ", " << dynamic_yaw << "]";
+                    
+                    // 寻找并保留该行的注释
+                    size_t comment_pos = line_ex.find("#");
+                    if (comment_pos != std::string::npos) {
+                        ss << "  " << line_ex.substr(comment_pos);
+                    }
+                    lines_ex.push_back(ss.str());
+                } 
+                // 2. 其他行原样保留
+                else {
+                    lines_ex.push_back(line_ex);
+                }
+            }
+            file_ex_in.close();
+            // 3. 覆盖写回原文件
+            std::ofstream file_ex_out(config_.extrinsics_path);
+            for (const auto& l : lines_ex) {
+                file_ex_out << l << "\n";
+            }
+            file_ex_out.close();
+               std::cout << "-> Successfully updated 6DoF_YAML file at:\n   " << config_.extrinsics_path << std::endl;
+           } else {
+               std::cerr << "-> ERROR: Failed to open file for writing at:\n   " << config_.extrinsics_path << std::endl;
+           }
+           // 4. Quaternion自动填写到 camera_intrinsics.yaml 文件
+           if (file_in_in.is_open()) {
+            while (std::getline(file_in_in, line_in)) {
+                // 1. 检测是否已经有 Quaternion 字段
+              if (line_in.find("Quaternion:") != std::string::npos) {
+                    has_quaternion = true;
+                    in_quaternion = true;
+                    lines_in.push_back(line_in);
+                } 
+                // 2. 修改 Quaternion 下的 data 字段
+                else if (in_quaternion && line_in.find("data:") != std::string::npos) {
+                    std::stringstream ss;
+                    size_t indent = line_in.find_first_not_of(" \t");
+                    if (indent != std::string::npos) ss << line_in.substr(0, indent);
+                    
+                    ss << "data: [" << q.x() << ", " << q.y() << ", " << q.z() << ", " << q.w() << "]";
+                    lines_in.push_back(ss.str());
+                    in_quaternion = false; // 修改完 data 后重置标记
+                } 
+                // 3. 其他行原样保留
+                else {
+                    lines_in.push_back(line_in);
+                }
+            }
+            file_in_in.close();
+
+            // 4. 如果原文件中根本没有 Quaternion 字段，则追加到最后
+            if (!has_quaternion) {
+                lines_in.push_back("  Quaternion:");
+                lines_in.push_back("    rows: 1");
+                lines_in.push_back("    cols: 4");
+                std::stringstream ss;
+                ss << "    data: [" << q.x() << ", " << q.y() << ", " << q.z() << ", " << q.w() << "]";
+                lines_in.push_back(ss.str());
+            }
+
+            // 5. 覆盖写回原文件
+            std::ofstream file_in_out(config_.intrinsics_path);
+            for (const auto& l : lines_in) {
+                file_in_out << l << "\n";
+            }
+            file_in_out.close();
+               std::cout << "-> Successfully updated Quaternion_YAML file at:\n   " << config_.intrinsics_path << std::endl;
+           } else {
+               std::cerr << "-> ERROR: Failed to open file for writing at:\n   " << config_.intrinsics_path << std::endl;
+           }
+        }
     }
     rate.sleep();
   }
@@ -347,9 +472,14 @@ bool PerceptionCalibration::SynchronizeMultiSensor(cv_bridge::CvImagePtr& cvimag
       // if (fabs(cloud_time - image_time) < 0.009 && cloud_buffer_[i].is_valid) {
       // if (fabs(cloud_time - image_time) < 0.5 && cloud_buffer_[i].is_valid) {
      // if (fabs(cloud_time - image_time) < 0.06 && cloud_buffer_[i].is_valid) {
-        std::cout << std::setprecision(15) << "cloud_time" << cloud_time << std::endl;
-        std::cout << "image_time" << image_time << std::endl;
-        std::cout << std::endl;
+        
+
+        //受标志位控制输出
+        if(!g_disable_debug_print) {
+          std::cout << std::setprecision(15) << "cloud_time" << cloud_time << std::endl;
+          std::cout << "image_time" << image_time << std::endl;
+          std::cout << std::endl;
+        }
 
         if (!cloud_is_capturable(i)) {
           return false;

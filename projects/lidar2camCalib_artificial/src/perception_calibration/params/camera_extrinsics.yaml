@@ -1,5 +1,5 @@
 but_calibration_camera_velodyne:
-  6DoF: [0.025,-0.19,-1.27, 1.7, -10.3 ,1]  #前三个参数以相机的坐标系为原点相对映射原点的坐标值，后三个参数是相机坐标系的三个旋转角roll，pitch，yew（右x，下y，前z）
+  6DoF: [0.025, -0.19, -1.27, 1.75, -0.74, 1]  #前三个参数以相机的坐标系为原点相对映射原点的坐标值，后三个参数是相机坐标系的三个旋转角roll，pitch，yew（右x，下y，前z）
   #first transformation ; then rotation,
   #camera_cooridinate_system:right_x,down_y,front_z
   velodyne_color_topic: /velodyne_colored_points
