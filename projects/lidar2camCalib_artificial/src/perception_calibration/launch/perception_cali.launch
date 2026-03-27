@@ -1,0 +1,17 @@
+<launch>
+
+<node name="perception_calibration_node" pkg="perception_calibration" type="perception_calibration_node" output="screen">
+  <param type="string" value="camera_intrinsics.yaml" name="intrinsics_file"/>
+  <param type="string" value="camera_extrinsics.yaml" name="extrinsics_file"/>
+  <param type="bool" value="false" name="enable_snapshot"/>
+  <param type="bool" value="true" name="enable_visualize"/>
+  <param type="bool" value="false" name="enable_recorder"/>
+  <!-- need change topic name -->
+  <remap from="/lidar_points" to="/driver/lidar/cloud/top_center"/>
+  <remap from="/camera_image_raw" to="/miivii_gmsl_ros_node_A/camera2"/>
+
+  <!-- capture data  switch-->  
+  <param type="bool" value="true" name="static_model"/>
+</node>
+  <param type="bool" value="true" name="enable_capture"/>
+</launch>

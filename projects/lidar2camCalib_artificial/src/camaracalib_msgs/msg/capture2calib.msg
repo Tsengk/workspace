@@ -1,0 +1,4 @@
+uint8 lidar_camera_status
+uint8 capture_progress
+uint8 calib_status
+bool result_judge
