@@ -1,0 +1,25 @@
+<launch>
+    <arg name="sim" default="false" />
+    
+    <arg name="spi_dev" default="/dev/spidev0.0" />
+    <arg name="mock_file" default="$(find ars408_radar)/test_data/mock_radar_spi.bin" />
+
+    <node pkg="ars408_radar" type="ars408_node" name="ars408_node" output="screen">
+        
+        <param name="is_mock" value="$(arg sim)" />
+        <param name="spi_speed_hz" value="10000000" />
+
+        <param name="device_path" value="$(arg mock_file)" if="$(arg sim)" />
+        
+        <param name="device_path" value="$(arg spi_dev)" unless="$(arg sim)" />
+        
+    </node>
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="tf_front_radar" 
+          args="2.5 0 0.5 0 0 0 base_link radar_front_link" />
+
+    <node pkg="tf2_ros" type="static_transform_publisher" name="tf_rear_radar" 
+          args="-1.0 0 0.5 3.14159 0 0 base_link radar_rear_link" />
+
+    <node pkg="rviz" type="rviz" name="rviz" />
+</launch>
