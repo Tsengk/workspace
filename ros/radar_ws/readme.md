@@ -32,43 +32,32 @@ ROS 版本：Melodic 或 Noetic
 
 🚀 编译与安装
 将本功能包放置于 ROS 工作空间的 src 目录下
-
 在工作空间根目录执行编译：
-
-Bash
-
 cd ~/radar_ws
 catkin_make
 source devel/setup.bash
+
 💻 运行指南
 模式 A：离线仿真模式（推荐首次验证使用）
 无需连接真实硬件，读取本地生成的模拟二进制流进行算法和可视化验证。
 
 生成模拟数据（仅需执行一次）：
-
-Bash
-
 cd src/ars408_radar/test_data
 python3 generate_mock_spi.py
+
 启动节点（传入 sim:=true 参数）：
-
-Bash
-
 roslaunch ars408_radar run_radar.launch sim:=true
+
 模式 B：实车硬件模式
 连接真实底盘与 SPI 线束，读取 /dev/spidev0.0 硬件节点。
 
 ⚠️ 权限预处理：
 默认普通用户无权读取 SPI 设备。运行前需临时赋权，或将用户永久加入 spi 组：
-
-Bash
-
 sudo chmod 777 /dev/spidev0.0
+
 启动节点：
-
-Bash
-
 roslaunch ars408_radar run_radar.launch
+
 👁️ RViz 可视化说明
 Launch 文件会自动打开 RViz。如果首次打开没有画面，请按以下步骤配置：
 
