@@ -1,0 +1,21 @@
+<launch>
+    <!-- 启动 gmsl_camera_node 节点 -->
+    <node pkg="gmsl_camera_driver" type="gmsl_camera_node" name="gmsl_camera_node" output="screen">
+        
+        <!-- 摄像头设备路径 -->
+        <param name="device_port" value="/dev/video0" />
+        
+        <!-- 发布的 ROS 话题名称 -->
+        <param name="topic_name" value="/gmsl_image0" />
+        
+        <!-- 目标帧率 -->
+        <param name="fps" value="30" />
+        
+        <!-- 图像宽度 -->
+        <param name="width" value="1920" />
+        
+        <!-- 图像高度 -->
+        <param name="height" value="1080" />
+        
+    </node>
+</launch>
