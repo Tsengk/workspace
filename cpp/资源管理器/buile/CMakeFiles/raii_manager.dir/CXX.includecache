@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/FileHandler.h
+cstdio
+-
+string
+-
+
+../include/ScopeGuard.h
+functional
+-
+utility
+-
+
+/home/idriver/workspace/cpp/资源管理器/src/main.cpp
+iostream
+-
+stdexcept
+-
+FileHandler.h
+/home/idriver/workspace/cpp/资源管理器/src/FileHandler.h
+ScopeGuard.h
+/home/idriver/workspace/cpp/资源管理器/src/ScopeGuard.h
+
