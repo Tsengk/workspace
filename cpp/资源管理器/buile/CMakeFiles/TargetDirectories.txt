@@ -1,0 +1,3 @@
+/home/idriver/workspace/cpp/资源管理器/buile/CMakeFiles/edit_cache.dir
+/home/idriver/workspace/cpp/资源管理器/buile/CMakeFiles/rebuild_cache.dir
+/home/idriver/workspace/cpp/资源管理器/buile/CMakeFiles/raii_manager.dir
