@@ -120,7 +120,7 @@ private:
             double p1 = (sl_p1 - S_CEN)*SCALE, p2 = (sl_p2 - S_CEN)*SCALE;
             double k3 = (sl_k3 - S_CEN)*SCALE;
             saveToFile(fx, fy, cx, cy, k1, k2, p1, p2, k3, new_K);
-		    save(fx,fy,cx,cy, k1,k2,p1,p2,k3, new_K);
+		    printToTerminal(fx,fy,cx,cy, k1,k2,p1,p2,k3, new_K);
 	    }
     }
 
@@ -185,7 +185,7 @@ private:
         out.close();
         ROS_INFO("\033[1;32m[SUCCESS] Parameters saved to: %s\033[0m", save_path.c_str());
     }
-    void save(double fx, double fy, double cx, double cy, double k1, double k2, double p1, double p2, double k3, cv::Mat P_mat) {
+    void printToTerminal(double fx, double fy, double cx, double cy, double k1, double k2, double p1, double p2, double k3, cv::Mat P_mat) {
         printf("\n====== COPY TO front_h60_intrinsics.yaml ======\n");
         printf("height: %d\nwidth: %d\ndistortion_model: plumb_bob\n", h_, w_);
         printf("D: [%.5f, %.5f, %.5f, %.5f, %.5f]\n", k1,k2,p1,p2,k3);
