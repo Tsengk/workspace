@@ -22,42 +22,15 @@
     └── build/                 # 编译输出目录 
 
 
-3. Nginx-RTMP 服务端搭建 (含低延迟优化)在编译运行 C++ 推流程序前，我们需要先搭建好接收视频流的 RTMP 服务器。服务端的配置同样影响最终延迟。推荐使用以下针对实时纯视频流优化的 Nginx 配置。
-    3.1 安装
-        sudo apt update
-        sudo apt install nginx libnginx-mod-rtmp
+3. 部署mediamtx服务器
 
+3.1下载：
+wget https://github.com/bluenviron/mediamtx/releases/download/v1.6.0/mediamtx_v1.6.0_linux_amd64.tar.gz
+tar -zxvf mediamtx_v1.6.0_linux_amd64.tar.gz
+3.2启动mediamtx服务器：./mediamtx
 
-3.2 Nginx 低延迟配置文件sudo nano /etc/nginx/nginx.conf，在文件末尾添加：
-rtmp {
-    server {
-        listen 1935;
-        chunk_size 4096;
-        
-        # 优化 TCP 传输机制，禁用 Nagle 算法避免小包等待
-        tcp_nodelay on;
-
-        application live {
-            live on;
-            record off;
-            
-            # --- 服务端低延迟进阶配置 ---
-            meta off;           # 关闭冗余元数据发送，加快首帧秒开
-            wait_video on;      # 对于纯视频流，不等待音频数据直接下发
-            wait_key on;        # 强制客户端从 I 帧开始播放，避免黑屏花屏
-            sync 10ms;          # 加快音视频同步校准时钟
-        }
-    }
-}
-
-
-3.3 启动服务与准备拉流重启 Nginx 使配置生效：sudo systemctl restart nginx
-
-    在拉流端（播放器），同样需要关闭播放缓冲！后续当 C++ 程序开始推流后，可以使用 ffplay 命令行工具拉流验证（此命令可榨干最后一丝播放器缓存延迟）：
-        ffplay -fflags nobuffer -flags low_delay -strict experimental rtmp://localhost:1935/live/stream
-
-
-4. C++ 核心代码实现4.1 图像处理接口层 (include/IImageProcessor.h)#pragma once
+4. C++ 核心代码实现
+4.1 图像处理接口层 (include/IImageProcessor.h)#pragma once
 #include <opencv2/opencv.hpp>
 #include <chrono>
 #include <ctime>
