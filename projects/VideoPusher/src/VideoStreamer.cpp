@@ -57,6 +57,7 @@ std::string VideoStreamer::shellQuote(const std::string& value) {
 }
 
 std::string VideoStreamer::buildFfmpegCommand() const {
+    //公共参数：仅包含输入设置和 H.264 视频编码器设置
     const std::string commonArgs =
         "ffmpeg -loglevel warning -y "
         "-f rawvideo -vcodec rawvideo -pix_fmt bgr24 "
@@ -66,17 +67,23 @@ std::string VideoStreamer::buildFfmpegCommand() const {
         "-preset ultrafast -tune zerolatency "
         "-bf 0 -g " + std::to_string(fps_) + " "
         "-keyint_min " + std::to_string(fps_) + " "
-        "-sc_threshold 0 "
-        "-fflags nobuffer -flags low_delay -flush_packets 1 ";
+        "-sc_threshold 0 "; 
 
     switch (detectProtocol()) {
         case StreamProtocol::Rtmp:
-            return commonArgs + "-f flv " + shellQuote(streamUrl_);
+            //RTMP 专属参数：添加直播流专属标记，依赖默认 chunk 机制
+            return commonArgs + 
+                   "-flvflags no_duration_filesize " // 关键修复：告诉FFmpeg这是直播流，不要尝试回写文件头
+                   "-f flv " + shellQuote(streamUrl_);
+                   
         case StreamProtocol::Rtsp:
+            //RTSP 专属参数：将激进的低延迟参数移到这里
             return commonArgs +
-                "-rtsp_transport tcp "
-                "-muxdelay 0 -muxpreload 0 "
-                "-f rtsp " + shellQuote(streamUrl_);
+                   "-fflags nobuffer -flags low_delay -flush_packets 1 " // 完美适配 RTSP 的低延迟策略
+                   "-rtsp_transport tcp "
+                   "-muxdelay 0 -muxpreload 0 "
+                   "-f rtsp " + shellQuote(streamUrl_);
+                   
         default:
             return "";
     }
