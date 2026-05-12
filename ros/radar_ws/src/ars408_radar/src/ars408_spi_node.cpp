@@ -22,6 +22,7 @@ struct RadarObject {
     float dist_lat;
     float vrel_long;
     float vrel_lat;
+    ros::Time stamp;
 };
 
 class ARS408Node {
@@ -44,19 +45,22 @@ private:
     std::string device_path_;
     int spi_speed_hz_;
     bool is_mock_;
+    bool spi_ok_;
+    double radar_object_timeout_;  // seconds, 0=disabled
     
     uint32_t mode_ = SPI_CPHA;
     uint8_t bits_ = 8;
 
 public:
-    ARS408Node() : private_nh_("~") {
+    ARS408Node() : private_nh_("~"), spi_ok_(false), radar_object_timeout_(0.3) {
         // 分别注册前/后雷达的 Topic
         pub_front_ = nh_.advertise<visualization_msgs::MarkerArray>("/radar_front/objects", 10);
         pub_rear_  = nh_.advertise<visualization_msgs::MarkerArray>("/radar_rear/objects", 10);
-        
+
         private_nh_.param<std::string>("device_path", device_path_, "/dev/spidev0.0");
         private_nh_.param<int>("spi_speed_hz", spi_speed_hz_, 10000000);
         private_nh_.param<bool>("is_mock", is_mock_, false);
+        private_nh_.param<double>("object_timeout", radar_object_timeout_, 0.3);
 
         initSPI();
     }
@@ -69,7 +73,7 @@ public:
         spi_fd_ = open(device_path_.c_str(), is_mock_ ? O_RDONLY : O_RDWR);
         if (spi_fd_ < 0) {
             ROS_ERROR("Can't open device/file: %s", device_path_.c_str());
-            ros::shutdown();
+            spi_ok_ = false;
             return;
         }
 
@@ -82,6 +86,7 @@ public:
         } else {
             ROS_INFO("Mock mode enabled. Reading from local file: %s", device_path_.c_str());
         }
+        spi_ok_ = true;
     }
 
     uint32_t swapEndian(uint32_t data) {
@@ -90,9 +95,15 @@ public:
     }
 
     // 独立解包函数：解包后存入指定的 map 中
-    void parseObjectGeneral(uint8_t* data, std::map<int, RadarObject>& target_map) {
+    bool parseObjectGeneral(uint8_t* data, std::map<int, RadarObject>& target_map) {
         RadarObject obj;
         obj.id = data[0];
+        obj.stamp = ros::Time::now();
+
+        // 数据有效性检测：id 不允许为 0
+        if (obj.id == 0) {
+            return false;
+        }
 
         uint16_t raw_dist_long = (data[1] << 5) | (data[2] >> 3);
         obj.dist_long = raw_dist_long * 0.2f - 500.0f;
@@ -107,6 +118,7 @@ public:
         obj.vrel_lat = raw_vrel_lat * 0.25f - 64.0f;
 
         target_map[obj.id] = obj;
+        return true;
     }
 
     // 独立发布函数：从指定的 map 中读取目标，并打上指定的 frame_id
@@ -119,22 +131,29 @@ public:
         clear_marker.action = 3; // DELETEALL
         marker_array.markers.push_back(clear_marker);
 
+        ros::Time now = ros::Time::now();
+
         for (const auto& pair : target_map) {
             const auto& obj = pair.second;
 
+            // 丢弃超时目标
+            if (radar_object_timeout_ > 0.0 && (now - obj.stamp).toSec() > radar_object_timeout_) {
+                continue;
+            }
+
             visualization_msgs::Marker box;
             box.header.frame_id = frame_id;
-            box.header.stamp = ros::Time::now();
+            box.header.stamp = now;
             box.ns = "radar_boxes";
             box.id = obj.id;
             box.type = visualization_msgs::Marker::CUBE;
             box.action = visualization_msgs::Marker::ADD;
             box.pose.position.x = obj.dist_long;
             box.pose.position.y = obj.dist_lat;
-            box.pose.position.z = 0.5; 
+            box.pose.position.z = 0.5;
             box.pose.orientation.w = 1.0;
             box.scale.x = 1.0; box.scale.y = 1.0; box.scale.z = 1.0;
-            
+
             // 为了区分，前雷达用绿色，后雷达用红色
             if (frame_id == "radar_front_link") {
                 box.color.r = 0.0f; box.color.g = 1.0f; box.color.b = 0.0f; box.color.a = 0.8f;
@@ -160,38 +179,43 @@ public:
     }
 
     // 核心处理模块：传入起始位置和绑定的变量，解耦 CAN2/CAN3 的逻辑
-    void processCanSegment(int start_pos, int length, std::map<int, RadarObject>& target_map, 
+    void processCanSegment(int start_pos, int length, std::map<int, RadarObject>& target_map,
                            ros::Publisher& pub, const std::string& frame_id) {
         for (int i = 0; i < length - 2; i++) {
             uint32_t can_id = spi_rx_buf_[start_pos + i];
-            
+
             if (can_id == 0x60A) {
                 // 收到新帧，发布旧帧并清空 Map
                 publishMarkers(pub, target_map, frame_id);
                 target_map.clear();
-                i += 2; 
-            } 
-            else if (can_id == 0x60B) {
+            } else if (can_id == 0x60B) {
                 uint8_t data[8];
                 uint32_t data_high = spi_rx_buf_[start_pos + i + 1];
                 uint32_t data_low  = spi_rx_buf_[start_pos + i + 2];
-                
+
                 data[0] = data_high >> 24; data[1] = data_high >> 16;
                 data[2] = data_high >> 8;  data[3] = data_high;
                 data[4] = data_low >> 24;  data[5] = data_low >> 16;
                 data[6] = data_low >> 8;   data[7] = data_low;
 
                 parseObjectGeneral(data, target_map);
-                i += 2; 
+            } else {
+                // 未知或无消息：跳过 2 字保持同步，避免失步
             }
-            // 过滤掉 0x60C, 0x60D，避免误读后续数据
-            else if (can_id == 0x60C || can_id == 0x60D) {
-                i += 2;
-            }
+
+            // 每条 CAN 消息固定占 3 字 [ID, DataHigh, DataLow]
+            // for 循环自身 i++，这里跳剩余 2 字
+            if (i >= length - 3) break;
+            i += 2;
         }
     }
 
     void spin() {
+        if (!spi_ok_) {
+            ROS_ERROR("SPI not initialized, node will not run.");
+            return;
+        }
+
         ros::Rate rate(50); 
         
         while (ros::ok()) {
