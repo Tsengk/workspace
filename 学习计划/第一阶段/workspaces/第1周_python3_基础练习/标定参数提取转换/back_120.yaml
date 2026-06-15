@@ -1,0 +1,18 @@
+%YAML:1.0
+---
+model_type: MEI
+camera_name: back_120
+image_width: 3840
+image_height: 2160
+mirror_parameters:
+   xi: 7.010333117139229
+distortion_parameters:
+   k1: 3.7907476281711796
+   k2: 213.37843534086457
+   p1: -0.006445866771003875
+   p2: 0.016259488597053357
+projection_parameters:
+   gamma1: 15120.487741739447
+   gamma2: 15089.000943125846
+   u0: 1916.0668485140952
+   v0: 1100.3588325202468
