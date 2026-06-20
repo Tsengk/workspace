@@ -1,4 +1,4 @@
-<script>
+<script setup>
 import { ref, watch } from 'vue'
 import { store } from '../data/tasks.js'
 
