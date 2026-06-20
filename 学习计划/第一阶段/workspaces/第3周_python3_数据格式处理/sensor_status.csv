@@ -1,0 +1,6 @@
+id,type,status,fps
+CAM_FRONT_120,camera,ok,30
+CAM_LEFT_100,camera,ok,25
+LIDAR_MAIN,lidar,warning,10
+IMU_PRIMARY,imu,ok,100
+GPS_RTK,gnss,error,0
