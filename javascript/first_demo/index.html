@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>我的全栈水果店</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; }
+        h1 { color: #333; }
+        .fruit-list { list-style: none; padding: 0; font-size: 20px; font-weight: bold; color: #e67e22; }
+        .fruit-list li { margin: 10px 0; }
+        .add-form { margin-top: 40px; padding: 20px; background: white; border-radius: 8px; display: inline-block; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        input { padding: 8px; margin: 5px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 8px 15px; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #2ecc71; }
+    </style>
+</head>
+<body>
+    <h1>今天特供水果</h1>
+    <ul id="fruit-list" class="fruit-list">拼命呼叫后厨中</ul>
+    <div class="add-from">
+        <h3>+添加新水果</h3>
+        <input type="text" id="new-name" placeholder="水果名称(如：葡萄)">
+        <input type="number" id="new-price" placeholder="价格（如：10）">
+        <button onclick="addFruit()">提交给后厨</button>
+    </div>
+
+    <script>
+        function fetchFruits() {
+            fetch('http:localhost:3000/api/fruits')
+                .then(response => response.json())
+                .then(data => {
+                    const list = document.getElementById('fruit-list');
+                    list.innerHTML = '';
+
+                    data.forEach(fruit => {
+                        const li = document.createElement('li');
+                        li.innerText = `${fruit.name} (#${fruit.price})`;
+                        list.appendChild(li);
+                    });
+                })
+                .catch(error => {
+                    document.getElementById('fruit-list').innerText = "后厨失去联系！请确保server.js正在运行。";
+                });
+        }
+
+        function addFruit() {
+            const nameInput = document.getElementById('new-name').value;
+            const priceInput = document.getElementById('new-price').value;
+
+            if(!nameInput || !priceInput) {
+                return alert("名字和价格都要填");
+            }
+            const newFruitData = {
+                name: nameInput,
+                price: number(priceInput)
+            };
+
+            fetch('http://localhost:3000/api/fruits',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newFruitData)
+            })
+            .then(response => response.json())
+            .then(result => {
+                alert(result.message);
+                fetchFruits();
+
+                document.getElementById('new-name').value = ' ';
+                document.getElementById('new-price').value = ' ';
+            });
+
+            fetchFruits();
+        }
+    </script>
+</body>
+</html>
