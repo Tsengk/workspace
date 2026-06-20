@@ -6,3 +6,5 @@ install/
 .vscode/
 projects/lidar2camCalib_artificial/src/perception_calibration/params/camera_extrinsics.yaml
 projects/lidar2camCalib_artificial/src/perception_calibration/params/camera_intrinsics.yaml
+datasets/
+.venv/
