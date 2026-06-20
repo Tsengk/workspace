@@ -8,3 +8,4 @@ projects/lidar2camCalib_artificial/src/perception_calibration/params/camera_extr
 projects/lidar2camCalib_artificial/src/perception_calibration/params/camera_intrinsics.yaml
 datasets/
 .venv/
+node_modules/

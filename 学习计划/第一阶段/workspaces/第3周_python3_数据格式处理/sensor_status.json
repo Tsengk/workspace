@@ -1,0 +1,35 @@
+{
+  "timestamp": "2026-06-20T10:30:00",
+  "sensors": [
+    {
+      "id": "CAM_FRONT_120",
+      "type": "camera",
+      "status": "ok",
+      "fps": 30
+    },
+    {
+      "id": "CAM_LEFT_100",
+      "type": "camera",
+      "status": "ok",
+      "fps": 25
+    },
+    {
+      "id": "LIDAR_MAIN",
+      "type": "lidar",
+      "status": "warning",
+      "fps": 10
+    },
+    {
+      "id": "IMU_PRIMARY",
+      "type": "imu",
+      "status": "ok",
+      "fps": 100
+    },
+    {
+      "id": "GPS_RTK",
+      "type": "gnss",
+      "status": "error",
+      "fps": 0
+    }
+  ]
+}
