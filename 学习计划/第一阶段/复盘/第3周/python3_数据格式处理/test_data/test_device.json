@@ -1,0 +1,37 @@
+{
+  "project": "GSDS 编译平台设备配置",
+  "version": "1.2.0",
+  "cpu_chip_vec": [
+    {
+      "chip_name": "j5",
+      "cpu_cores": ["J5-A55", "J5-A55", "J5-A55", "J5-A55", "J5-A55", "J5-A55", "J5-A55", "J5-A55"]
+    },
+    {
+      "chip_name": "X9",
+      "cpu_cores": ["X9-A55", "X9-A55", "X9-A55", "X9-A55", "X9-A55", "X9-A55", "X9-A55", "X9-A55"]
+    },
+    {
+      "chip_name": "X86",
+      "cpu_cores": ["I7", "I7", "I7", "I7", "I7", "I7", "I7", "I7", "I7", "I7", "I7", "I7"]
+    },
+    {
+      "chip_name": "TX2",
+      "cpu_cores": ["TX-A57", "TX-A57", "TX-A57", "TX-A57"]
+    },
+    {
+      "chip_name": "xavier",
+      "cpu_cores": ["TX-A72", "TX-A72", "TX-A72", "TX-A72", "TX-A72", "TX-A72", "TX-A72", "TX-A72"]
+    },
+    {
+      "chip_name": "Orin",
+      "cpu_cores": ["Orin-A75", "Orin-A75", "Orin-A75", "Orin-A75", "Orin-A75", "Orin-A75", "Orin-A75", "Orin-A75"]
+    }
+  ],
+  "compile_device_vec": [
+    {"compile_name": "j5_devkit_01", "compile_aarch": "aarch64-j5", "ip": "192.168.1.101"},
+    {"compile_name": "j5_devkit_02", "compile_aarch": "aarch64-j5", "ip": "192.168.1.102"},
+    {"compile_name": "x9_devkit_01",  "compile_aarch": "aarch64-x9", "ip": "192.168.1.201"},
+    {"compile_name": "x86_server_01", "compile_aarch": "x86_64",      "ip": "192.168.1.10"},
+    {"compile_name": "orin_devkit_01","compile_aarch": "aarch64-orin","ip": "192.168.1.301"}
+  ]
+}

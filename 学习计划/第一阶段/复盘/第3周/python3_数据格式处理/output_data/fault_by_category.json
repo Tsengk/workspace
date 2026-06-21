@@ -1,0 +1,181 @@
+{
+  "数据源": "/home/idriver/workspace/学习计划/第一阶段/复盘/第3周/python3_数据格式处理/test_data/test_fault.csv",
+  "总条数": 31,
+  "按大类分组": {
+    "1": {
+      "条数": 19,
+      "故障列表": [
+        {
+          "code": "1052001",
+          "desc": "配置参数读取失败",
+          "visible": true
+        },
+        {
+          "code": "1052002",
+          "desc": "设备连接失败",
+          "visible": true
+        },
+        {
+          "code": "1052003",
+          "desc": "设备数据读取失败",
+          "visible": true
+        },
+        {
+          "code": "1052004",
+          "desc": "缺少关键数据",
+          "visible": true
+        },
+        {
+          "code": "1052005",
+          "desc": "数据内容错误",
+          "visible": true
+        },
+        {
+          "code": "1052006",
+          "desc": "数据频率异常",
+          "visible": true
+        },
+        {
+          "code": "1052007",
+          "desc": "底盘故障",
+          "visible": true
+        },
+        {
+          "code": "1011001",
+          "desc": "惯导CAN通信连接失败",
+          "visible": true
+        },
+        {
+          "code": "1011002",
+          "desc": "惯导CAN口数据读取失败",
+          "visible": true
+        },
+        {
+          "code": "1011003",
+          "desc": "连续3s无法读取惯导CAN msg",
+          "visible": true
+        },
+        {
+          "code": "1011013",
+          "desc": "惯导为非正常工作状态",
+          "visible": true
+        },
+        {
+          "code": "1011021",
+          "desc": "未收到卫星定位定向数据",
+          "visible": true
+        },
+        {
+          "code": "1022030",
+          "desc": "BlockState遮挡状态，建议清洗雷达",
+          "visible": true
+        },
+        {
+          "code": "1042001",
+          "desc": "前远视相机配置参数读取失败",
+          "visible": true
+        },
+        {
+          "code": "1042004",
+          "desc": "前远视相机出图失败，连续20次无图",
+          "visible": true
+        },
+        {
+          "code": "1062002",
+          "desc": "无数据输入",
+          "visible": true
+        },
+        {
+          "code": "1062005",
+          "desc": "设备连接失败",
+          "visible": true
+        },
+        {
+          "code": "1062007",
+          "desc": "车辆控制受阻",
+          "visible": true
+        },
+        {
+          "code": "1072018",
+          "desc": "blockAlarmSt检测受遮挡",
+          "visible": true
+        }
+      ]
+    },
+    "2": {
+      "条数": 2,
+      "故障列表": [
+        {
+          "code": "2021001",
+          "desc": "前毫米波雷达CAN通信失败",
+          "visible": true
+        },
+        {
+          "code": "2021002",
+          "desc": "前毫米波雷达数据超时",
+          "visible": true
+        }
+      ]
+    },
+    "3": {
+      "条数": 8,
+      "故障列表": [
+        {
+          "code": "3052001",
+          "desc": "配置参数读取失败(激光模型)",
+          "visible": true
+        },
+        {
+          "code": "3052002",
+          "desc": "激光点云数据重复(数据没刷新)",
+          "visible": true
+        },
+        {
+          "code": "3053004",
+          "desc": "定位获取超时(静态栅格节点)",
+          "visible": true
+        },
+        {
+          "code": "3082001",
+          "desc": "车辆状态消息超时200ms",
+          "visible": true
+        },
+        {
+          "code": "3082003",
+          "desc": "定位消息超时400ms",
+          "visible": true
+        },
+        {
+          "code": "3092004",
+          "desc": "无规划路径",
+          "visible": true
+        },
+        {
+          "code": "3112001",
+          "desc": "远程控制通信超时",
+          "visible": true
+        },
+        {
+          "code": "3112002",
+          "desc": "远程控制链路中断",
+          "visible": true
+        }
+      ]
+    },
+    "4": {
+      "条数": 2,
+      "故障列表": [
+        {
+          "code": "4002001",
+          "desc": "系统资源不足",
+          "visible": true
+        },
+        {
+          "code": "4002002",
+          "desc": "磁盘空间不足",
+          "visible": true
+        }
+      ]
+    }
+  }
+}
