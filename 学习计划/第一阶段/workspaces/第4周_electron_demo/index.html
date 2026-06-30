@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ICAOS_TOOL — 日志查看器</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="main-layout">
+    <!-- ── 顶部栏 ── -->
+    <header class="app-header">
+      <div class="app-brand">
+        <span class="brand-icon">◈</span>
+        <span class="brand-name">ICAOS_TOOL</span>
+      </div>
+      <div class="status-bar">
+        <span class="status-dot-wrap">
+          <span id="statusPython" class="status-dot off"></span>
+          <span class="status-dot-label">Python</span>
+        </span>
+        <span class="status-dot-wrap">
+          <span id="statusDB" class="status-dot off"></span>
+          <span class="status-dot-label">DB</span>
+        </span>
+        <span class="status-dot-wrap">
+          <span id="statusDS" class="status-dot ok"></span>
+          <span class="status-dot-label">数据源</span>
+        </span>
+      </div>
+    </header>
+
+    <!-- ── 主体 ── -->
+    <div class="main-body">
+      <!-- 左侧导航 -->
+      <nav class="sidebar">
+        <button class="nav-btn active" title="日志查看">
+          <span class="nav-icon">▤</span>
+          <span class="nav-label">日志</span>
+        </button>
+      </nav>
+
+      <!-- 内容区 -->
+      <main class="content-area">
+        <div class="log-panel">
+          <div class="log-shell">
+            <!-- 标题栏 -->
+            <div class="log-header">
+              <div class="log-title">
+                <span id="logStatusDot" class="log-status-dot stopped"></span>
+                <h2>日志查看器</h2>
+              </div>
+              <div class="log-header-actions">
+                <button id="btnOpen" class="log-btn log-btn-open" onclick="openFile()">
+                  📂 打开文件
+                </button>
+                <button id="btnClear" class="log-btn-clear" onclick="clearLog()" disabled>
+                  清空
+                </button>
+              </div>
+            </div>
+
+            <!-- 文件信息 & 搜索栏 -->
+            <div class="log-controls">
+              <div class="log-file-info">
+                <span id="fileName" class="log-file-name">未打开文件</span>
+                <span class="log-file-sep">|</span>
+                <span id="lineCount" class="log-line-count">0 行</span>
+                <span class="log-file-sep">|</span>
+                <span id="fileSize" class="log-file-size"></span>
+              </div>
+              <div class="log-search">
+                <span class="log-search-icon">🔍</span>
+                <input
+                  id="searchInput"
+                  class="log-search-input"
+                  type="text"
+                  placeholder="关键字过滤..."
+                  oninput="applyFilter()"
+                  disabled
+                />
+                <span id="matchCount" class="log-match-count"></span>
+              </div>
+            </div>
+
+            <!-- 错误横幅 -->
+            <div id="errorBanner" class="log-error-banner" style="display:none">
+              <span id="errorMsg"></span>
+              <button onclick="dismissError()">✕</button>
+            </div>
+
+            <!-- 日志表格 -->
+            <div class="log-table-wrap">
+              <div id="logEmpty" class="log-empty">
+                点击「📂 打开文件」选择日志文件开始查看
+              </div>
+              <table id="logTable" class="log-table" style="display:none">
+                <thead>
+                  <tr>
+                    <th class="col-line">#</th>
+                    <th class="col-time">时间戳</th>
+                    <th class="col-level">级别</th>
+                    <th class="col-content">内容</th>
+                  </tr>
+                </thead>
+                <tbody id="logBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
