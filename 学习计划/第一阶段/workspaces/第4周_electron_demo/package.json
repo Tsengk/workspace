@@ -1,0 +1,14 @@
+{
+  "name": "electron-log-viewer",
+  "version": "1.0.0",
+  "description": "ICAOS_TOOL 风格日志查看器 — Electron 最小 Demo",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "农式曾",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^27.1.3"
+  }
+}
