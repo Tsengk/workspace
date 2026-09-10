@@ -1,0 +1,23 @@
+<launch>
+    <!-- 1. 定义可从外部传入的命令行参数 (Arguments) -->
+    <arg name="device_id"   default="0"           doc="摄像头设备编号 (/dev/videoX)" />
+    <arg name="width"       default="640"         doc="图像宽度" />
+    <arg name="height"      default="480"         doc="图像高度" />
+    <arg name="fps"         default="30"          doc="采集帧率" />
+    <arg name="frame_id"    default="camera_link" doc="TF 参考系 ID" />
+    <arg name="view_image"  default="false"       doc="是否同步启动 rqt_image_view" />
+
+    <!-- 2. 启动摄像头节点并注入参数 -->
+    <node pkg="laptop_cam" type="laptop_cam_node" name="laptop_cam_publisher" output="screen">
+        <param name="device_id" type="int"    value="$(arg device_id)" />
+        <param name="width"     type="int"    value="$(arg width)" />
+        <param name="height"    type="int"    value="$(arg height)" />
+        <param name="fps"       type="int"    value="$(arg fps)" />
+        <param name="frame_id"  type="string" value="$(arg frame_id)" />
+    </node>
+
+    <!-- 3. 条件启动：若 view_image:=true 则自动拉起 rqt 画面预览 -->
+    <group if="$(arg view_image)">
+        <node pkg="rqt_image_view" type="rqt_image_view" name="image_viewer" args="/camera/image_raw" />
+    </group>
+</launch>
