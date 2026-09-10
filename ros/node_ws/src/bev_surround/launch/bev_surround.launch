@@ -1,0 +1,19 @@
+<launch>
+  <node name="bev_surround_node" pkg="bev_surround" type="bev_surround_node" output="screen">
+    <param name="input_topic" value="/camera/image_raw" />
+    <param name="output_topic" value="/bev/image" />
+    
+    <param name="bev_width" value="640" />
+    <param name="bev_height" value="480" />
+
+    <!-- 梯形控制顶点坐标 -->
+    <param name="src_tl_x" value="220.0" />
+    <param name="src_tl_y" value="280.0" />
+    <param name="src_tr_x" value="420.0" />
+    <param name="src_tr_y" value="280.0" />
+    <param name="src_br_x" value="580.0" />
+    <param name="src_br_y" value="460.0" />
+    <param name="src_bl_x" value="60.0" />
+    <param name="src_bl_y" value="460.0" />
+  </node>
+</launch>
