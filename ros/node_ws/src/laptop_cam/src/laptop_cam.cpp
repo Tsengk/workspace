@@ -17,7 +17,7 @@ bool LaptopCam::init() {
     pnh_.param<int>("width", width_, 640);
     pnh_.param<int>("height", height_, 480);
     pnh_.param<int>("fps", fps_, 30);
-    pnh_.param<std:string>("frame_id", frame_id_, "camera_link");
+    pnh_.param<std::string>("frame_id", frame_id_, "camera_link");
 
     //初始化发布者
     raw_pub_ = nh_.advertise<sensor_msgs::Image>("camera/image_raw", 10);

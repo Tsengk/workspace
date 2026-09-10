@@ -13,7 +13,7 @@
 namespace laptop_cam {
 class LaptopCam {
 public:
-    explicit LaptopCam(ros::NodeHandle& nh, const ros::NodeHandle& pnh);
+    explicit LaptopCam(const ros::NodeHandle& nh, const ros::NodeHandle& pnh);
     ~LaptopCam();
 
     bool init();
@@ -39,3 +39,5 @@ private:
     std::string frame_id_;
 };
 }
+
+#endif  // LAPTOP_CAM_H

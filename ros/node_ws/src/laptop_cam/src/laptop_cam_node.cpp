@@ -5,7 +5,7 @@ int main(int argc, char** argv) {
     ros::NodeHandle nh;
     ros::NodeHandle pnh("~");
 
-    LaptopCam::LaptopCam cam(nh, pnh);
+    laptop_cam::LaptopCam cam(nh, pnh);
     if (!cam.init()) {
         ROS_ERROR("摄像头初始化失败，程序退出...");
         return -1;
