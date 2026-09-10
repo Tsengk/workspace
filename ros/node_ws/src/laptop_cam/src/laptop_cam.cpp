@@ -21,7 +21,7 @@ bool LaptopCam::init() {
 
     //初始化发布者
     raw_pub_ = nh_.advertise<sensor_msgs::Image>("camera/image_raw", 10);
-    compressed_pub_ = nh_.advertise<sensor_msgs::CompressedImage>("camera/image_compressed", 10);
+    compressed_pub_ = nh_.advertise<sensor_msgs::CompressedImage>("camera/image_raw/compressed", 10);
 
     //打开摄像头硬件
     cap_.open(device_id_, cv::CAP_V4L2);  // 使用V4L2后端打开摄像头
