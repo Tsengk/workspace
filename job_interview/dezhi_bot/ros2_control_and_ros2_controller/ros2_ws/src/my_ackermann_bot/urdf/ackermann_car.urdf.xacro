@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ackermann_car">
+
+  <!-- 车辆几何尺寸（必须与 ackermann_controllers.yaml 严格一致） -->
+  <xacro:property name="chassis_length" value="0.44"/>
+  <xacro:property name="chassis_width"  value="0.20"/>
+  <xacro:property name="chassis_height" value="0.08"/>
+  <xacro:property name="chassis_mass"   value="4.0"/>
+
+  <!-- 轴距 L = 2 * 0.16 = 0.32m，轮距 w = 2 * 0.13 = 0.26m -->
+  <xacro:property name="axle_offset_x"  value="0.16"/>
+  <xacro:property name="track_offset_y" value="0.13"/>
+
+  <xacro:property name="wheel_radius"   value="0.05"/>
+  <xacro:property name="wheel_width"    value="0.03"/>
+  <xacro:property name="wheel_mass"     value="0.3"/>
+
+  <!-- 惯性张量宏 -->
+  <xacro:macro name="box_inertia" params="m x y z">
+    <inertial>
+      <mass value="${m}"/>
+      <inertia ixx="${(1/12)*m*(y*y+z*z)}" ixy="0" ixz="0"
+               iyy="${(1/12)*m*(x*x+z*z)}" iyz="0"
+               izz="${(1/12)*m*(x*x+y*y)}"/>
+    </inertial>
+  </xacro:macro>
+
+  <xacro:macro name="cylinder_inertia" params="m r h">
+    <inertial>
+      <mass value="${m}"/>
+      <inertia ixx="${(1/12)*m*(3*r*r+h*h)}" ixy="0" ixz="0"
+               iyy="${(1/12)*m*(3*r*r+h*h)}" iyz="0"
+               izz="${(1/2)*m*r*r}"/>
+    </inertial>
+  </xacro:macro>
+
+  <!-- 1. 地面投影与车身底盘 -->
+  <link name="base_footprint"/>
+
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 ${wheel_radius}" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0.02" rpy="0 0 0"/>
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0.1 0.45 0.85 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.02" rpy="0 0 0"/>
+      <geometry>
+        <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
+      </geometry>
+    </collision>
+    <xacro:box_inertia m="${chassis_mass}" x="${chassis_length}" y="${chassis_width}" z="${chassis_height}"/>
+  </link>
+
+  <gazebo reference="base_link">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <!-- 2. 前转向轮宏（转向节 revolute + 车轮滚转 continuous） -->
+  <xacro:macro name="front_steerable_wheel" params="prefix y_reflect">
+    <link name="${prefix}_steer_link">
+      <visual>
+        <geometry>
+          <cylinder radius="0.015" length="0.03"/>
+        </geometry>
+      </visual>
+      <xacro:cylinder_inertia m="0.1" r="0.015" h="0.03"/>
+    </link>
+
+    <joint name="${prefix}_steer_joint" type="revolute">
+      <parent link="base_link"/>
+      <child link="${prefix}_steer_link"/>
+      <origin xyz="${axle_offset_x} ${y_reflect * track_offset_y} 0" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-0.7" upper="0.7" effort="10.0" velocity="3.0"/>
+      <dynamics damping="0.1" friction="0.0"/>
+    </joint>
+
+    <link name="${prefix}_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </collision>
+      <xacro:cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_width}"/>
+    </link>
+
+    <joint name="${prefix}_wheel_joint" type="continuous">
+      <parent link="${prefix}_steer_link"/>
+      <child link="${prefix}_wheel_link"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+    <gazebo reference="${prefix}_wheel_link">
+      <material>Gazebo/DarkGrey</material>
+      <mu1>1.0</mu1>
+      <mu2>1.0</mu2>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:front_steerable_wheel prefix="front_left"  y_reflect="1"/>
+  <xacro:front_steerable_wheel prefix="front_right" y_reflect="-1"/>
+
+  <!-- 3. 后驱动轮宏（continuous） -->
+  <xacro:macro name="rear_drive_wheel" params="prefix y_reflect">
+    <link name="${prefix}_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${wheel_radius}" length="${wheel_width}"/>
+        </geometry>
+      </collision>
+      <xacro:cylinder_inertia m="${wheel_mass}" r="${wheel_radius}" h="${wheel_width}"/>
+    </link>
+
+    <joint name="${prefix}_wheel_joint" type="continuous">
+      <parent link="base_link"/>
+      <child link="${prefix}_wheel_link"/>
+      <origin xyz="${-axle_offset_x} ${y_reflect * track_offset_y} 0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+    <gazebo reference="${prefix}_wheel_link">
+      <material>Gazebo/Black</material>
+      <mu1>1.2</mu1>
+      <mu2>1.2</mu2>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:rear_drive_wheel prefix="rear_left"  y_reflect="1"/>
+  <xacro:rear_drive_wheel prefix="rear_right" y_reflect="-1"/>
+
+  <!-- 引入 Foxy ros2_control 配置 -->
+  <xacro:include filename="$(find my_ackermann_bot)/urdf/ros2_control.xacro"/>
+
+</robot>

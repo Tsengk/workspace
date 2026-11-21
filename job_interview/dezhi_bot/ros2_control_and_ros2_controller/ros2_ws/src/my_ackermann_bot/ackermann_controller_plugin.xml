@@ -1,0 +1,7 @@
+<library path="my_ackermann_bot">
+  <class name="my_ackermann_bot/AckermannController"
+         type="my_ackermann_bot::AckermannController"
+         base_class_type="controller_interface::ControllerInterface">
+    <description>Custom Ackermann steering controller for ROS 2 Foxy</description>
+  </class>
+</library>
