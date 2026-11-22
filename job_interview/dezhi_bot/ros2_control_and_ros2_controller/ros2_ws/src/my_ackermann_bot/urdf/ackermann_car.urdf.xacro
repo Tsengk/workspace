@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ackermann_car">
 
+  <xacro:arg name="hardware_mode" default="gazebo"/>
+  <xacro:arg name="motor_config" default="$(find my_ackermann_bot)/config/canopen_motors.yaml"/>
+  <xacro:arg name="enable_motion" default="false"/>
+
   <!-- 车辆几何尺寸（必须与 ackermann_controllers.yaml 严格一致） -->
   <xacro:property name="chassis_length" value="0.44"/>
   <xacro:property name="chassis_width"  value="0.20"/>
@@ -155,6 +159,11 @@
   <xacro:rear_drive_wheel prefix="rear_right" y_reflect="-1"/>
 
   <!-- 引入 Foxy ros2_control 配置 -->
-  <xacro:include filename="$(find my_ackermann_bot)/urdf/ros2_control.xacro"/>
+  <xacro:if value="${'$(arg hardware_mode)' == 'gazebo'}">
+    <xacro:include filename="$(find my_ackermann_bot)/urdf/ros2_control.xacro"/>
+  </xacro:if>
+  <xacro:if value="${'$(arg hardware_mode)' == 'canopen'}">
+    <xacro:include filename="$(find my_ackermann_bot)/urdf/ros2_control_canopen.xacro"/>
+  </xacro:if>
 
 </robot>

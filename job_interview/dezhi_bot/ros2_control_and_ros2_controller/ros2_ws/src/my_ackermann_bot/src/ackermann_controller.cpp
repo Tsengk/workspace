@@ -27,6 +27,9 @@ controller_interface::return_type AckermannController::init(const std::string & 
   auto_declare<double>("wheel_radius", 0.05);
   auto_declare<double>("max_steer_angle", 0.6);
   auto_declare<double>("cmd_vel_timeout", 0.5);
+  auto_declare<double>("max_linear_velocity", 1.5);
+  auto_declare<double>("max_angular_velocity", 3.0);
+  auto_declare<bool>("allow_stationary_steering", true);
 
   return controller_interface::return_type::OK;
 }
@@ -72,15 +75,40 @@ CallbackReturn AckermannController::on_configure(const rclcpp_lifecycle::State &
   wheel_radius_ = get_node()->get_parameter("wheel_radius").as_double();
   max_steer_angle_ = get_node()->get_parameter("max_steer_angle").as_double();
   cmd_vel_timeout_ = get_node()->get_parameter("cmd_vel_timeout").as_double();
+  max_linear_velocity_ = get_node()->get_parameter("max_linear_velocity").as_double();
+  max_angular_velocity_ = get_node()->get_parameter("max_angular_velocity").as_double();
+  allow_stationary_steering_ = get_node()->get_parameter("allow_stationary_steering").as_bool();
 
-  rt_cmd_buffer_.writeFromNonRT(geometry_msgs::msg::Twist());
+  for (const auto value : {wheelbase_, track_width_, wheel_radius_, max_steer_angle_,
+      cmd_vel_timeout_, max_linear_velocity_, max_angular_velocity_})
+  {
+    if (!std::isfinite(value) || value <= 0.0) {
+      RCLCPP_ERROR(get_node()->get_logger(), "Geometry, timeout and speed limits must be finite and positive");
+      return CallbackReturn::FAILURE;
+    }
+  }
+  if (max_steer_angle_ >= 1.5707963267948966) {
+    RCLCPP_ERROR(get_node()->get_logger(), "max_steer_angle must be smaller than pi/2");
+    return CallbackReturn::FAILURE;
+  }
+
+  rt_cmd_buffer_.writeFromNonRT(Command{});
 
   // 订阅 /ackermann_controller/cmd_vel 话题
   cmd_vel_sub_ = get_node()->create_subscription<geometry_msgs::msg::Twist>(
     "~/cmd_vel", rclcpp::SystemDefaultsQoS(),
     [this](const geometry_msgs::msg::Twist::SharedPtr msg) {
-      rt_cmd_buffer_.writeFromNonRT(*msg);
-      last_cmd_ns_.store(get_node()->now().nanoseconds());
+      const auto epoch = activation_epoch_.load();
+      if (accepting_commands_.load() && std::isfinite(msg->linear.x) &&
+        std::isfinite(msg->angular.z))
+      {
+        Command command;
+        command.twist = *msg;
+        command.stamp = std::chrono::steady_clock::now();
+        command.valid = true;
+        command.epoch = epoch;
+        rt_cmd_buffer_.writeFromNonRT(command);
+      }
     });
 
   RCLCPP_INFO(
@@ -93,17 +121,28 @@ CallbackReturn AckermannController::on_configure(const rclcpp_lifecycle::State &
 
 CallbackReturn AckermannController::on_activate(const rclcpp_lifecycle::State &)
 {
-  for (auto & cmd_if : command_interfaces_) {
-    cmd_if.set_value(0.0);
+  if (command_interfaces_.size() != 4 || state_interfaces_.size() != 4 ||
+    !std::isfinite(state_interfaces_[0].get_value()) ||
+    !std::isfinite(state_interfaces_[1].get_value()))
+  {
+    return CallbackReturn::FAILURE;
   }
-  last_cmd_ns_.store(get_node()->now().nanoseconds());
+  command_interfaces_[0].set_value(state_interfaces_[0].get_value());
+  command_interfaces_[1].set_value(state_interfaces_[1].get_value());
+  command_interfaces_[2].set_value(0.0);
+  command_interfaces_[3].set_value(0.0);
+  activation_epoch_.fetch_add(1);
+  rt_cmd_buffer_.writeFromNonRT(Command{});
+  accepting_commands_.store(true);
   return CallbackReturn::SUCCESS;
 }
 
 CallbackReturn AckermannController::on_deactivate(const rclcpp_lifecycle::State &)
 {
-  for (auto & cmd_if : command_interfaces_) {
-    cmd_if.set_value(0.0);
+  accepting_commands_.store(false);
+  if (command_interfaces_.size() == 4) {
+    command_interfaces_[2].set_value(0.0);
+    command_interfaces_[3].set_value(0.0);
   }
   return CallbackReturn::SUCCESS;
 }
@@ -111,22 +150,26 @@ CallbackReturn AckermannController::on_deactivate(const rclcpp_lifecycle::State 
 controller_interface::return_type AckermannController::update()
 {
   const auto cmd = *rt_cmd_buffer_.readFromRT();
-  double v = cmd.linear.x;
-  double w = cmd.angular.z;
+  double v = std::max(-max_linear_velocity_, std::min(max_linear_velocity_, cmd.twist.linear.x));
+  double w = std::max(-max_angular_velocity_, std::min(max_angular_velocity_, cmd.twist.angular.z));
 
   // 超时安全保护：超过 cmd_vel_timeout 未收到新指令则归零
-  const int64_t elapsed_ns = get_node()->now().nanoseconds() - last_cmd_ns_.load();
-  if (elapsed_ns > static_cast<int64_t>(cmd_vel_timeout_ * 1e9)) {
+  const double elapsed = std::chrono::duration<double>(
+    std::chrono::steady_clock::now() - cmd.stamp).count();
+  if (!cmd.valid || cmd.epoch != activation_epoch_.load() || elapsed > cmd_vel_timeout_) {
     v = 0.0;
     w = 0.0;
   }
 
-  double left_steer = 0.0;
-  double right_steer = 0.0;
+  double left_steer = command_interfaces_[0].get_value();
+  double right_steer = command_interfaces_[1].get_value();
   double left_wheel_vel = 0.0;
   double right_wheel_vel = 0.0;
 
-  if (std::abs(w) < 1e-5) {
+  if (std::abs(v) < 1e-4 && (std::abs(w) < 1e-5 || !allow_stationary_steering_)) {
+    left_wheel_vel = 0.0;
+    right_wheel_vel = 0.0;
+  } else if (std::abs(w) < 1e-5) {
     // 直线行驶
     left_steer = 0.0;
     right_steer = 0.0;
@@ -140,12 +183,10 @@ controller_interface::return_type AckermannController::update()
     right_wheel_vel = 0.0;
   } else {
     // 阿克曼转向几何解算
-    double R_r = v / w;
-    double center_steer = std::atan(wheelbase_ / R_r);
-    center_steer = std::max(-max_steer_angle_, std::min(max_steer_angle_, center_steer));
+    const double min_radius = wheelbase_ / std::tan(max_steer_angle_) + track_width_ / 2.0;
+    const double curvature = std::max(-1.0 / min_radius, std::min(1.0 / min_radius, w / v));
 
-    // 根据限幅后的等价转角反推实际后轴转弯半径 R_r
-    R_r = wheelbase_ / std::tan(center_steer);
+    const double R_r = 1.0 / curvature;
     const double effective_w = v / R_r;
 
     left_steer = std::atan(wheelbase_ / (R_r - track_width_ / 2.0));
@@ -155,7 +196,6 @@ controller_interface::return_type AckermannController::update()
     right_wheel_vel = (effective_w * (R_r + track_width_ / 2.0)) / wheel_radius_;
   }
 
-  // 将计算结果写入 Command Interface，传递给 GazeboSimSystem
   command_interfaces_[0].set_value(left_steer);
   command_interfaces_[1].set_value(right_steer);
   command_interfaces_[2].set_value(left_wheel_vel);

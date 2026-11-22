@@ -1,0 +1,59 @@
+master:
+  node_id: 1
+  driver: ros2_canopen::MasterNode
+  package: canopen_core
+  sync_period: 20000
+
+front_left_steer_motor: &motor
+  node_id: 2
+  dcf: REPLACE_WITH_STEERING_DRIVER.eds
+  dcf_path: REGENERATE_WITH_PREPARE_CANOPEN_CONFIG
+  driver: ros2_canopen::MotionControllerDriver
+  package: canopen_402_driver
+  period: 20
+  enable_lazy_load: false
+  revision_number: 0
+  tpdo:
+    1:
+      enabled: true
+      cob_id: auto
+      transmission: 1
+      mapping:
+        - {index: 0x6041, sub_index: 0}
+        - {index: 0x6061, sub_index: 0}
+    2:
+      enabled: true
+      cob_id: auto
+      transmission: 1
+      mapping:
+        - {index: 0x6064, sub_index: 0}
+        - {index: 0x606C, sub_index: 0}
+    3: {enabled: false}
+    4: {enabled: false}
+  rpdo:
+    1:
+      enabled: true
+      cob_id: auto
+      mapping:
+        - {index: 0x6040, sub_index: 0}
+        - {index: 0x6060, sub_index: 0}
+    2:
+      enabled: true
+      cob_id: auto
+      mapping:
+        - {index: 0x607A, sub_index: 0}
+        - {index: 0x60FF, sub_index: 0}
+
+front_right_steer_motor:
+  <<: *motor
+  node_id: 3
+
+rear_left_drive_motor:
+  <<: *motor
+  node_id: 4
+  dcf: REPLACE_WITH_DRIVE_DRIVER.eds
+
+rear_right_drive_motor:
+  <<: *motor
+  node_id: 5
+  dcf: REPLACE_WITH_DRIVE_DRIVER.eds

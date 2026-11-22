@@ -1,0 +1,40 @@
+hardware:
+  calibration_confirmed: true
+  command_period_ms: 20
+  status_poll_ms: 100
+  feedback_timeout_ms: 1000
+  service_timeout_ms: 500
+  command_timeout_ms: 250
+  startup_timeout_ms: 15000
+
+joints:
+  front_left_steer_joint: &steering
+    driver_node: /front_left_steer_motor
+    position_scale: 10000.0
+    velocity_scale: 10000.0
+    position_offset: 0.0
+    direction: 1.0
+    min_position: -0.6
+    max_position: 0.6
+    max_velocity: 0.3
+    max_acceleration: 0.5
+    operation_mode: 1
+  front_right_steer_joint:
+    <<: *steering
+    driver_node: /front_right_steer_motor
+    direction: -1.0
+  rear_left_wheel_joint: &drive
+    driver_node: /rear_left_drive_motor
+    position_scale: 10000.0
+    velocity_scale: 1000.0
+    position_offset: 0.0
+    direction: 1.0
+    min_position: -1000000000.0
+    max_position: 1000000000.0
+    max_velocity: 8.0
+    max_acceleration: 2.0
+    operation_mode: 3
+  rear_right_wheel_joint:
+    <<: *drive
+    driver_node: /rear_right_drive_motor
+    direction: -1.0

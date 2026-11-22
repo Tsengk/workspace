@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:property name="motor_mapping" value="${load_yaml('$(arg motor_config)')}"/>
+  <ros2_control name="AckermannCanopenSystem" type="system">
+    <hardware>
+      <plugin>ackermann_canopen_hardware/AckermannCanopenSystem</plugin>
+      <param name="enable_motion">$(arg enable_motion)</param>
+      <param name="calibration_confirmed">${motor_mapping['hardware']['calibration_confirmed']}</param>
+      <param name="command_period_ms">${motor_mapping['hardware']['command_period_ms']}</param>
+      <param name="status_poll_ms">${motor_mapping['hardware']['status_poll_ms']}</param>
+      <param name="feedback_timeout_ms">${motor_mapping['hardware']['feedback_timeout_ms']}</param>
+      <param name="service_timeout_ms">${motor_mapping['hardware']['service_timeout_ms']}</param>
+      <param name="command_timeout_ms">${motor_mapping['hardware']['command_timeout_ms']}</param>
+      <param name="startup_timeout_ms">${motor_mapping['hardware']['startup_timeout_ms']}</param>
+    </hardware>
+    <xacro:macro name="canopen_joint" params="joint_name command_type">
+      <xacro:property name="mapping" value="${motor_mapping['joints'][joint_name]}"/>
+      <joint name="${joint_name}">
+        <command_interface name="${command_type}"/>
+        <state_interface name="position"/>
+        <state_interface name="velocity"/>
+        <param name="driver_node">${mapping['driver_node']}</param>
+        <param name="position_scale">${mapping['position_scale']}</param>
+        <param name="velocity_scale">${mapping['velocity_scale']}</param>
+        <param name="position_offset">${mapping['position_offset']}</param>
+        <param name="direction">${mapping['direction']}</param>
+        <param name="min_position">${mapping['min_position']}</param>
+        <param name="max_position">${mapping['max_position']}</param>
+        <param name="max_velocity">${mapping['max_velocity']}</param>
+        <param name="max_acceleration">${mapping['max_acceleration']}</param>
+        <param name="operation_mode">${mapping['operation_mode']}</param>
+      </joint>
+    </xacro:macro>
+    <xacro:canopen_joint joint_name="front_left_steer_joint" command_type="position"/>
+    <xacro:canopen_joint joint_name="front_right_steer_joint" command_type="position"/>
+    <xacro:canopen_joint joint_name="rear_left_wheel_joint" command_type="velocity"/>
+    <xacro:canopen_joint joint_name="rear_right_wheel_joint" command_type="velocity"/>
+  </ros2_control>
+</robot>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>ackermann_canopen_hardware</name>
+  <version>0.1.0</version>
+  <description>Foxy ros2_control hardware bridge to ros2_canopen CiA402 services.</description>
+  <maintainer email="nongshizeng@qq.com">nsz</maintainer>
+  <license>Apache-2.0</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>hardware_interface</depend>
+  <depend>pluginlib</depend>
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>canopen_interfaces</depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>python3-yaml</exec_depend>
+  <exec_depend>canopen_402_driver</exec_depend>
+  <exec_depend>canopen_core</exec_depend>
+  <exec_depend>lely_core_libraries</exec_depend>
+  <test_depend>ament_cmake_gtest</test_depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

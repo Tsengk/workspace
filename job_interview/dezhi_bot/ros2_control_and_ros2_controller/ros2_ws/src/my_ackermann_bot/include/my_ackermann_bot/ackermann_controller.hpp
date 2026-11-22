@@ -2,6 +2,8 @@
 #define MY_ACKERMANN_BOT__ACKERMANN_CONTROLLER_HPP_
 
 #include <atomic>
+#include <chrono>
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -49,10 +51,22 @@ private:
   double wheel_radius_{0.05};     // 驱动轮半径 r (m)
   double max_steer_angle_{0.6};   // 最大前轮转向角 (rad)
   double cmd_vel_timeout_{0.5};   // 速度指令超时自动停车时间 (s)
+  double max_linear_velocity_{1.5};
+  double max_angular_velocity_{3.0};
+  bool allow_stationary_steering_{true};
 
   // 实时安全速度缓冲区与时间戳
-  realtime_tools::RealtimeBuffer<geometry_msgs::msg::Twist> rt_cmd_buffer_;
-  std::atomic<int64_t> last_cmd_ns_{0};
+  struct Command
+  {
+    Command() : twist() {}
+    geometry_msgs::msg::Twist twist;
+    std::chrono::steady_clock::time_point stamp;
+    bool valid{false};
+    uint64_t epoch{0};
+  };
+  realtime_tools::RealtimeBuffer<Command> rt_cmd_buffer_;
+  std::atomic<bool> accepting_commands_{false};
+  std::atomic<uint64_t> activation_epoch_{0};
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_sub_;
 };
 

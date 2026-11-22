@@ -1,0 +1,7 @@
+<library path="ackermann_canopen_hardware">
+  <class name="ackermann_canopen_hardware/AckermannCanopenSystem"
+         type="ackermann_canopen_hardware::AckermannCanopenSystem"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>Non-realtime CiA402 service bridge with explicit motion arming.</description>
+  </class>
+</library>
