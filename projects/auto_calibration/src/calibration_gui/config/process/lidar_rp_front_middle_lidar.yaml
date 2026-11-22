@@ -1,0 +1,36 @@
+schema_version: 1
+calib_type: lidar_rp
+sensor_name: front_middle_lidar
+generated_at: 2026-05-19 15:25:20
+method: rviz_clicked_ground_plane
+coordinate_system: FLU
+installation:
+  x: 3.990000
+  y: 0.000000
+  z: 0.665334
+  roll_deg: 0.725898
+  pitch_deg: -2.309470
+  yaw_deg: 0.000000
+  z_offset: 0.340000
+  lidar_to_ground_height: 1.005334
+calibrated:
+  x: 3.990000
+  y: 0.000000
+  z: 0.832358
+  roll_deg: 0.933030
+  pitch_deg: -2.404398
+  yaw_deg: -0.008347
+delta:
+  delta_z: 0.167024
+  delta_roll_deg: 0.206950
+  delta_pitch_deg: -0.094943
+quality:
+  quality_grade: GOOD
+  confidence: 0.988621
+  plane_rms_m: 0.002269
+  n_clicked_points: 6
+  std_roll_deg: 0.029384
+  std_pitch_deg: 0.047059
+  std_z_m: 0.010885
+  z_ground_measured: -0.507024
+  z_ground_expected: -0.340000

@@ -1,0 +1,232 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- ===== Camera image topics ===== -->
+  <arg name="front_image_topic"  default="/compressed_image_list/4/compressed"/>
+  <arg name="rear_image_topic"   default="/compressed_image_list/6/compressed"/>
+  <arg name="left_image_topic"   default="/compressed_image_list/7/compressed"/>
+  <arg name="right_image_topic"  default="/compressed_image_list/5/compressed"/>
+
+  <!-- ===== Publish topics ===== -->
+  <arg name="status_topic"         default="/bev_surround_view/status"/>
+  <arg name="bev_fused_topic"      default="/bev_surround_view/bev/fused"/>
+  <arg name="bev_front_topic"      default="/bev_surround_view/bev/front"/>
+  <arg name="bev_back_topic"       default="/bev_surround_view/bev/back"/>
+  <arg name="bev_left_topic"       default="/bev_surround_view/bev/left"/>
+  <arg name="bev_right_topic"      default="/bev_surround_view/bev/right"/>
+  <arg name="corners_front_topic"  default="/bev_surround_view/debug/corners/front"/>
+  <arg name="corners_back_topic"   default="/bev_surround_view/debug/corners/back"/>
+  <arg name="corners_left_topic"   default="/bev_surround_view/debug/corners/left"/>
+  <arg name="corners_right_topic"  default="/bev_surround_view/debug/corners/right"/>
+
+  <!-- ===== Publish runtime ===== -->
+  <arg name="publish_status_queue_size" default="10"/>
+  <arg name="publish_image_queue_size"  default="1"/>
+  <arg name="subscribe_image_queue_size" default="1"/>
+  <arg name="publish_latch"             default="true"/>
+  <arg name="param_monitor_period_sec"  default="0.1"/>
+  <arg name="worker_idle_sleep_sec"     default="0.01"/>
+
+  <!-- ===== Rotation order for camera::Mei ===== -->
+  <arg name="rotation_order_0" default="2"/>
+  <arg name="rotation_order_1" default="1"/>
+  <arg name="rotation_order_2" default="0"/>
+
+  <!-- ===== Camera intrinsics files ===== -->
+  <arg name="front_intrinsics_file" default="$(find bev_surround_view)/config/aion/front.yaml"/>
+  <arg name="rear_intrinsics_file"  default="$(find bev_surround_view)/config/aion/back.yaml"/>
+  <arg name="left_intrinsics_file"  default="$(find bev_surround_view)/config/aion/left.yaml"/>
+  <arg name="right_intrinsics_file" default="$(find bev_surround_view)/config/aion/right.yaml"/>
+
+
+  <!-- ===== Installation: front ===== -->
+  <arg name="inst_front_x"     default="3.60"/>
+  <arg name="inst_front_y"     default="0.00"/>
+  <arg name="inst_front_z"     default="1.20"/>
+  <arg name="inst_front_roll"  default="0.0"/>
+  <arg name="inst_front_pitch" default="-15.0"/>
+  <arg name="inst_front_yaw"   default="0.0"/>
+
+  <!-- ===== Installation: rear ===== -->
+  <arg name="inst_rear_x"     default="-0.50"/>
+  <arg name="inst_rear_y"     default="0.00"/>
+  <arg name="inst_rear_z"     default="1.20"/>
+  <arg name="inst_rear_roll"  default="0.0"/>
+  <arg name="inst_rear_pitch" default="-15.0"/>
+  <arg name="inst_rear_yaw"   default="180.0"/>
+
+  <!-- ===== Installation: left ===== -->
+  <arg name="inst_left_x"     default="1.35"/>
+  <arg name="inst_left_y"     default="0.90"/>
+  <arg name="inst_left_z"     default="1.00"/>
+  <arg name="inst_left_roll"  default="0.0"/>
+  <arg name="inst_left_pitch" default="-15.0"/>
+  <arg name="inst_left_yaw"   default="90.0"/>
+
+  <!-- ===== Installation: right ===== -->
+  <arg name="inst_right_x"     default="1.35"/>
+  <arg name="inst_right_y"     default="-0.90"/>
+  <arg name="inst_right_z"     default="1.00"/>
+  <arg name="inst_right_roll"  default="0.0"/>
+  <arg name="inst_right_pitch" default="-15.0"/>
+  <arg name="inst_right_yaw"   default="-90.0"/>
+
+  <!-- ===== BEV canvas size ===== -->
+  <arg name="bev_width"          default="1280"/>
+  <arg name="bev_height"         default="1920"/>
+  <arg name="output_width"       default="$(arg bev_width)"/>
+  <arg name="output_height"      default="$(arg bev_height)"/>
+
+  <!-- ===== BEV ROI crop parameters ===== -->
+  <arg name="enable_roi_crop"     default="true"/>
+  <arg name="bev_resolution"      default="0.01"/>
+  <arg name="bev_range_front"     default="0"/>
+  <arg name="bev_range_rear"      default="0"/>
+  <arg name="bev_range_left"      default="0"/>
+  <arg name="bev_range_right"     default="0"/>
+  <arg name="bev_origin_offset_x" default="0"/>
+  <arg name="bev_origin_offset_y" default="0"/>
+
+  <!-- ===== VCS z offset ===== -->
+  <arg name="vcs_z_offset" default="0.37"/>
+
+  <!-- ===== Calibration parameters ===== -->
+  <arg name="detector_score" default="0.6"/>
+  <arg name="debug_boundary_scale" default="4"/>
+  <arg name="chessboard_yaml_path" default="$(find bev_surround_view)/config/chasiss_board_V2.yaml"/>
+  <arg name="solve_ground_z" default="0.0"/>
+  <arg name="back_sort_threshold" default="0.15"/>
+  <arg name="enable_joint_optimization" default="true"/>
+  <arg name="sync_tolerance_sec" default="0.08"/>
+
+  <!-- ===== Output parameters ===== -->
+  <arg name="output_front_yaml_path" default="/tmp/bev/front_fish_eye.yaml"/>
+  <arg name="output_rear_yaml_path"  default="/tmp/bev/back_fish_eye.yaml"/>
+  <arg name="output_left_yaml_path"  default="/tmp/bev/left_fish_eye.yaml"/>
+  <arg name="output_right_yaml_path" default="/tmp/bev/right_fish_eye.yaml"/>
+  <arg name="output_front_bin_path" default="/tmp/bev/front_ipm.bin"/>
+  <arg name="output_rear_bin_path"  default="/tmp/bev/back_ipm.bin"/>
+  <arg name="output_left_bin_path"  default="/tmp/bev/left_ipm.bin"/>
+  <arg name="output_right_bin_path" default="/tmp/bev/right_ipm.bin"/>
+  <arg name="debug_dir" default="/tmp/bev_surround_view"/>
+  <arg name="save_debug_images" default="true"/>
+  <arg name="save_bev_images" default="true"/>
+
+  <!-- ===== Publish parameters ===== -->
+  <arg name="publish_max_hz" default="10.0"/>
+
+  <!-- ===== Debug ===== -->
+  <arg name="debug" default="false"/>
+  <arg name="launch_prefix" default="$(eval 'gdb -ex run --args' if arg('debug') else '')"/>
+
+  <!-- ===== Launch node ===== -->
+  <node name="bev_surround_view_node" pkg="bev_surround_view"
+        type="bev_surround_view_node" output="screen"
+        launch-prefix="$(arg launch_prefix)">
+
+    <!-- Topics -->
+    <param name="front_image_topic" value="$(arg front_image_topic)"/>
+    <param name="rear_image_topic"  value="$(arg rear_image_topic)"/>
+    <param name="left_image_topic"  value="$(arg left_image_topic)"/>
+    <param name="right_image_topic" value="$(arg right_image_topic)"/>
+    <param name="status_topic"        value="$(arg status_topic)"/>
+    <param name="bev_fused_topic"     value="$(arg bev_fused_topic)"/>
+    <param name="bev_front_topic"     value="$(arg bev_front_topic)"/>
+    <param name="bev_back_topic"      value="$(arg bev_back_topic)"/>
+    <param name="bev_left_topic"      value="$(arg bev_left_topic)"/>
+    <param name="bev_right_topic"     value="$(arg bev_right_topic)"/>
+    <param name="corners_front_topic" value="$(arg corners_front_topic)"/>
+    <param name="corners_back_topic"  value="$(arg corners_back_topic)"/>
+    <param name="corners_left_topic"  value="$(arg corners_left_topic)"/>
+    <param name="corners_right_topic" value="$(arg corners_right_topic)"/>
+
+    <!-- Publish runtime -->
+    <param name="publish/status_queue_size" value="$(arg publish_status_queue_size)" type="int"/>
+    <param name="publish/image_queue_size"  value="$(arg publish_image_queue_size)"  type="int"/>
+    <param name="subscribe/image_queue_size" value="$(arg subscribe_image_queue_size)" type="int"/>
+    <param name="publish/latch"             value="$(arg publish_latch)"             type="bool"/>
+    <param name="runtime/param_monitor_period_sec" value="$(arg param_monitor_period_sec)" type="double"/>
+    <param name="runtime/worker_idle_sleep_sec"    value="$(arg worker_idle_sleep_sec)"    type="double"/>
+
+    <!-- Intrinsics files -->
+    <param name="front_intrinsics_file" value="$(arg front_intrinsics_file)"/>
+    <param name="rear_intrinsics_file"  value="$(arg rear_intrinsics_file)"/>
+    <param name="left_intrinsics_file"  value="$(arg left_intrinsics_file)"/>
+    <param name="right_intrinsics_file" value="$(arg right_intrinsics_file)"/>
+
+
+    <!-- Installation: front -->
+    <param name="installation/front/x"     value="$(arg inst_front_x)"     type="double"/>
+    <param name="installation/front/y"     value="$(arg inst_front_y)"     type="double"/>
+    <param name="installation/front/z"     value="$(arg inst_front_z)"     type="double"/>
+    <param name="installation/front/roll"  value="$(arg inst_front_roll)"  type="double"/>
+    <param name="installation/front/pitch" value="$(arg inst_front_pitch)" type="double"/>
+    <param name="installation/front/yaw"   value="$(arg inst_front_yaw)"   type="double"/>
+
+    <!-- Installation: rear -->
+    <param name="installation/rear/x"     value="$(arg inst_rear_x)"     type="double"/>
+    <param name="installation/rear/y"     value="$(arg inst_rear_y)"     type="double"/>
+    <param name="installation/rear/z"     value="$(arg inst_rear_z)"     type="double"/>
+    <param name="installation/rear/roll"  value="$(arg inst_rear_roll)"  type="double"/>
+    <param name="installation/rear/pitch" value="$(arg inst_rear_pitch)" type="double"/>
+    <param name="installation/rear/yaw"   value="$(arg inst_rear_yaw)"   type="double"/>
+
+    <!-- Installation: left -->
+    <param name="installation/left/x"     value="$(arg inst_left_x)"     type="double"/>
+    <param name="installation/left/y"     value="$(arg inst_left_y)"     type="double"/>
+    <param name="installation/left/z"     value="$(arg inst_left_z)"     type="double"/>
+    <param name="installation/left/roll"  value="$(arg inst_left_roll)"  type="double"/>
+    <param name="installation/left/pitch" value="$(arg inst_left_pitch)" type="double"/>
+    <param name="installation/left/yaw"   value="$(arg inst_left_yaw)"   type="double"/>
+
+    <!-- Installation: right -->
+    <param name="installation/right/x"     value="$(arg inst_right_x)"     type="double"/>
+    <param name="installation/right/y"     value="$(arg inst_right_y)"     type="double"/>
+    <param name="installation/right/z"     value="$(arg inst_right_z)"     type="double"/>
+    <param name="installation/right/roll"  value="$(arg inst_right_roll)"  type="double"/>
+    <param name="installation/right/pitch" value="$(arg inst_right_pitch)" type="double"/>
+    <param name="installation/right/yaw"   value="$(arg inst_right_yaw)"   type="double"/>
+    <param name="bev/width"           value="$(arg output_width)"       type="int"/>
+    <param name="bev/height"          value="$(arg output_height)"      type="int"/>
+    <param name="bev/enable_roi_crop" value="$(arg enable_roi_crop)"     type="bool"/>
+    <param name="bev/resolution"      value="$(arg bev_resolution)"      type="double"/>
+    <param name="bev/range_front"     value="$(arg bev_range_front)"     type="double"/>
+    <param name="bev/range_rear"      value="$(arg bev_range_rear)"      type="double"/>
+    <param name="bev/range_left"      value="$(arg bev_range_left)"      type="double"/>
+    <param name="bev/range_right"     value="$(arg bev_range_right)"     type="double"/>
+    <param name="bev/origin_offset_x" value="$(arg bev_origin_offset_x)" type="double"/>
+    <param name="bev/origin_offset_y" value="$(arg bev_origin_offset_y)" type="double"/>
+
+    <!-- Rotation order for camera::Mei (default ZYX) -->
+    <param name="rotation_order_0" value="$(arg rotation_order_0)" type="int"/>
+    <param name="rotation_order_1" value="$(arg rotation_order_1)" type="int"/>
+    <param name="rotation_order_2" value="$(arg rotation_order_2)" type="int"/>
+
+    <!-- VCS -->
+    <param name="vcs/z_offset" value="$(arg vcs_z_offset)" type="double"/>
+
+    <!-- Calibration -->
+    <param name="calibration/detector_score" value="$(arg detector_score)" type="double"/>
+    <param name="calibration/debug_boundary_scale" value="$(arg debug_boundary_scale)" type="int"/>
+    <param name="calibration/chessboard_yaml_path" value="$(arg chessboard_yaml_path)"/>
+    <param name="calibration/solve_ground_z" value="$(arg solve_ground_z)" type="double"/>
+    <param name="calibration/back_sort_threshold" value="$(arg back_sort_threshold)" type="double"/>
+    <param name="calibration/enable_joint_optimization" value="$(arg enable_joint_optimization)" type="bool"/>
+    <param name="calibration/sync_tolerance_sec" value="$(arg sync_tolerance_sec)" type="double"/>
+
+    <!-- Output -->
+    <param name="output/front_yaml_path" value="$(arg output_front_yaml_path)"/>
+    <param name="output/rear_yaml_path"  value="$(arg output_rear_yaml_path)"/>
+    <param name="output/left_yaml_path"  value="$(arg output_left_yaml_path)"/>
+    <param name="output/right_yaml_path" value="$(arg output_right_yaml_path)"/>
+    <param name="output/front_bin_path" value="$(arg output_front_bin_path)"/>
+    <param name="output/rear_bin_path"  value="$(arg output_rear_bin_path)"/>
+    <param name="output/left_bin_path"  value="$(arg output_left_bin_path)"/>
+    <param name="output/right_bin_path" value="$(arg output_right_bin_path)"/>
+    <param name="output/debug_dir" value="$(arg debug_dir)"/>
+    <param name="output/save_debug_images" value="$(arg save_debug_images)" type="bool"/>
+    <param name="output/save_bev_images" value="$(arg save_bev_images)" type="bool"/>
+
+    <!-- Publish -->
+    <param name="publish/max_hz" value="$(arg publish_max_hz)" type="double"/>
+  </node>
+</launch>

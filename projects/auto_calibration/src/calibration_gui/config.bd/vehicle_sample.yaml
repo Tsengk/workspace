@@ -1,0 +1,257 @@
+vehicle:
+  id: idp_vehicle_001
+  car_length: 10.4
+  car_width: 2.36
+  car_height: 2
+  front_overhang: 2.7
+  wheelbase: 5
+  rear_overhang: 2.7
+  z_offset: 0.66
+cameras:
+  - name: front_103
+    topic: /compressed_image_list/1/compressed
+    intrinsics_file: intrinsics/front_103.yaml
+    extrinsics:
+      t:
+        - 8.869999999999999
+        - 0
+        - 1.3
+      R_euler:
+        - 0
+        - 0
+        - 0
+      vcs_to_ground_height: 0.66
+      base_euler: 0
+  - name: left_front_103
+    topic: /compressed_image_list/6/compressed
+    intrinsics_file: intrinsics/left_front_103.yaml
+    extrinsics:
+      t:
+        - -1.16
+        - 1.16
+        - 0.77
+      R_euler:
+        - 0
+        - 0
+        - 45
+      vcs_to_ground_height: 0.66
+      base_euler: 0
+  - name: right_front_103
+    topic: /compressed_image_list/7/compressed
+    intrinsics_file: intrinsics/right_front_103.yaml
+    extrinsics:
+      t:
+        - -1.16
+        - -1.16
+        - 0.77
+      R_euler:
+        - 0
+        - 0
+        - -45
+      vcs_to_ground_height: 0.66
+      base_euler: 0
+  - name: left_back_103
+    topic: /compressed_image_list/4/compressed
+    intrinsics_file: intrinsics/left_back_103.yaml
+    extrinsics:
+      t:
+        - 8.75
+        - 1.16
+        - 1.25
+      R_euler:
+        - 0
+        - 0
+        - 135
+      vcs_to_ground_height: 0.66
+      base_euler: 0
+  - name: right_back_103
+    topic: /compressed_image_list/3/compressed
+    intrinsics_file: intrinsics/right_back_103.yaml
+    extrinsics:
+      t:
+        - 8.75
+        - -1.16
+        - 1.25
+      R_euler:
+        - 0
+        - 0
+        - -135
+      vcs_to_ground_height: 0.66
+      base_euler: 0
+  - name: back_103
+    topic: /compressed_image_list/5/compressed
+    intrinsics_file: intrinsics/back_103.yaml
+    extrinsics:
+      t:
+        - -1.54
+        - 0
+        - 0.62
+      R_euler:
+        - 0
+        - 0
+        - 180
+      vcs_to_ground_height: 0.66
+      base_euler: 0
+  - name: front_53
+    topic: /compressed_image_list/2/compressed
+    intrinsics_file: intrinsics/front_53.yaml
+    extrinsics:
+      t:
+        - 8.869999999999999
+        - -0.07000000000000001
+        - 1.3
+      R_euler:
+        - 0
+        - 0
+        - 0
+      vcs_to_ground_height: 0.66
+      base_euler: 0
+lidars:
+  - name: front_main_lidar
+    packets_topic: /front_main_lidar_packets
+    topic: /driver/lidar/cloud//front_main/offline
+    launch_file: sensor_driver/tanway_focus_t_offline/launch/offline_main.launch
+    t:
+      - 8.869999999999999
+      - 0
+      - 1.24
+    R:
+      - 0
+      - 0
+      - 0
+  - name: front_lidar
+    packets_topic: /front_lidar_packets
+    topic: /driver/lidar/cloud/front/offline
+    launch_file: sensor_driver/tanway_scope128_offline/launch/front_offline.launch
+    t:
+      - 8.869999999999999
+      - 0
+      - 1.17
+    R:
+      - 0
+      - 0
+      - 0
+  - name: left_front_lidar
+    packets_topic: /left_front_lidar_packets
+    topic: /driver/lidar/cloud/left_front/offline
+    launch_file: sensor_driver/tanway_scope128_offline/launch/left_front_offline.launch
+    t:
+      - -1.15
+      - 1.17
+      - 0.87
+    R:
+      - 0
+      - 0
+      - 45
+  - name: right_front_lidar
+    packets_topic: /right_front_lidar_packets
+    topic: /driver/lidar/cloud/right_front/offline
+    launch_file: sensor_driver/tanway_scope128_offline/launch/right_front_offline.launch
+    t:
+      - -1.15
+      - -1.17
+      - 0.87
+    R:
+      - 0
+      - 0
+      - -45
+  - name: left_back_lidar
+    packets_topic: /left_back_lidar_packets
+    topic: /driver/lidar/cloud/left_back/offline
+    launch_file: sensor_driver/tanway_scope128_offline/launch/left_back_offline.launch
+    t:
+      - 8.85
+      - 1.18
+      - 1.35
+    R:
+      - 0
+      - 0
+      - 135
+  - name: right_back_lidar
+    packets_topic: /right_back_lidar_packets
+    topic: /driver/lidar/cloud/right_back/offline
+    launch_file: sensor_driver/tanway_scope128_offline/launch/right_back_offline.launch
+    t:
+      - 8.85
+      - -1.18
+      - 1.35
+    R:
+      - 0
+      - 0
+      - -135
+  - name: rear_lidar
+    packets_topic: /rear_lidar_packets
+    topic: /driver/lidar/cloud/rear/offline
+    launch_file: sensor_driver/tanway_scope128_offline/launch/rear_offline.launch
+    t:
+      - -1.54
+      - 0
+      - 0.7
+    R:
+      - 0
+      - 0
+      - 180
+radars:
+  - name: radar_front
+    packets_topic: /radar_front/packets
+    topic: /radar_front/objects
+    t:
+      - 7.16
+      - 0
+      - 0
+    R:
+      - 0
+      - 0
+      - 0
+  - name: radar_left_front
+    packets_topic: /radar_left_front/packets
+    topic: /radar_left_front/objects
+    t:
+      - 8.279999999999999
+      - 1.11
+      - 0.63
+    R:
+      - 0
+      - 0
+      - 0
+  - name: radar_right_front
+    packets_topic: /radar_right_front/packets
+    topic: /radar_right_front/objects
+    t:
+      - 8.279999999999999
+      - -1.11
+      - 0.63
+    R:
+      - 0
+      - 0
+      - 0
+  - name: radar_rear
+    packets_topic: /radar_rear/packets
+    topic: /radar_rear/objects
+    t:
+      - -0.36
+      - 0
+      - 0.02
+    R:
+      - 0
+      - 0
+      - 0
+gnss:
+  name: gnss_ins
+  topic: /gnss/odom
+bev_surround_view:
+  node_ns: /bev_surround_view_node
+  bev_image_topic: /bev_surround_view_node/bev_image
+  detection_vis_front_topic: /bev_surround_view_node/detection_vis_front
+  detection_vis_rear_topic: /bev_surround_view_node/detection_vis_rear
+  detection_vis_left_topic: /bev_surround_view_node/detection_vis_left
+  detection_vis_right_topic: /bev_surround_view_node/detection_vis_right
+  output_width: 1280
+  output_height: 1280
+  resolution: 0.01
+  range_front: 420
+  range_rear: 860
+  range_left: 525
+  range_right: 760
+  origin_offset_x: 0
+  origin_offset_y: 0

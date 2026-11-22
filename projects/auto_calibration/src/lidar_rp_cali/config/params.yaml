@@ -1,0 +1,68 @@
+##############################################################
+# LiDAR Roll/Pitch/Z 标定参数配置
+# 坐标系：FLU（前左上），X=前，Y=左，Z=上
+#
+# 说明：驱动已将点云从 LiDAR 帧变换到 VCS（车辆坐标系），
+#       变换使用下方 installation 安装参数。
+#       VCS 原点位于后轴中心（z_offset 为后轴到地面高度），
+#       因此变换后地面应出现在 z ≈ -z_offset 处。
+##############################################################
+
+# --- 输入输出 ---
+input_topic: /driver/rotate_lidar/cloud/top
+lidar_frame: lidar
+base_frame:  base_link
+
+# --- 安装参数（驱动使用的标称值，需与驱动配置保持一致）---
+installation:
+  sensor_name: front_main_lidar # 传感器名称（写入标定文件的键名）
+  x:         0.0           # 纵向（m）
+  y:         0.0           # 横向（m）
+  z:         1.613           # 垂直（m），相对后轴中心
+  roll_deg:  -1.039           # 横滚（°）
+  pitch_deg: 0.1688           # 俯仰（°）
+  yaw_deg:   0.0           # 偏航（°）
+  z_offset:  0.37          # 后轴中心到地面高度（m），z + z_offset = 激光雷达到地面
+
+# --- 标定输出文件路径 ---
+calibration_output_file: /tmp/lidar_calibration.yaml
+
+# --- 地面检测 ---
+ground:
+  # Z 轴高度范围（驱动转换后的 VCS 坐标系）
+  # 地面预期出现在 z ≈ -z_offset 附近，下方参数留空则自动由 z_offset 计算
+  # min_z = -(z_offset + 0.5)，max_z = -(z_offset - 0.3)
+  # 如需手动覆盖，取消注释并填写实际值：
+  # min_z: -0.9        # m
+  # max_z: -0.1        # m
+
+  # 水平距离范围（排除车身、超远处噪声）
+  min_distance: 2.0  # m
+  max_distance: 30.0 # m
+
+  # 体素网格降采样分辨率
+  voxel_size: 0.2    # m
+
+  # 统计离群点去除
+  sor_mean_k:     20
+  sor_std_thresh: 1.5
+
+  # 欧几里得聚类
+  cluster_tolerance:   0.5   # m
+  min_cluster_points:  200
+
+# --- 平面拟合 ---
+plane:
+  # 可选：RANSAC / LEAST_SQUARES / PCA
+  method: RANSAC
+  ransac_distance_threshold: 0.05  # m
+  ransac_max_iterations:     200
+  min_inlier_ratio:          0.5
+
+# --- 标定计算 ---
+cali:
+  max_roll_deg:   15.0  # 超出认为异常
+  max_pitch_deg:  15.0
+  window_size:    10    # 滑动窗口帧数
+  min_confidence: 0.3   # 低于此置信度不入窗口
+  rms_weight:     0.5   # RMS 与曲率的权重比

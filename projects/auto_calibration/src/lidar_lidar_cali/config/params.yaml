@@ -1,0 +1,69 @@
+##############################################################
+# lidar_lidar_cali 参数配置（FAST-LIVO2 标定板版本）
+#
+# 【坐标系约定】
+#   VCS（车体坐标系）：FLU（X=前, Y=左, Z=上），原点 = 后轴中心
+#
+# 【驱动约定】
+#   主激光雷达：驱动已使用完整标定参数将点云变换到 VCS，直接使用。
+#   辅激光雷达：驱动已使用当前安装参数（含 x_install/y_install/yaw_install）
+#               将点云变换到 VCS（近似值）。本节点求精确外参并输出。
+#
+# 【标定方法】
+#   双雷达同时观测 FAST-LIVO2 标定板，各检测 4 个圆孔中心（3D 坐标），
+#   时间戳对齐（容差 100ms）组成 SceneData，累积 min_scenes 场景后
+#   通过 SVD 3D-3D 配准求解 T_calib。
+##############################################################
+
+# ── 话题配置 ──────────────────────────────────────────────────
+primary_lidar:
+  topic:      /lidar_master/points   # 主雷达点云（完全标定后的 VCS 点云）
+  lidar_type: solid                  # solid（固态/无ring）或 mech（机械多线/有ring）
+  # 标定板 ROI（VCS，m）
+  roi_x_min:  1.5
+  roi_x_max:  8.0
+  roi_y_min: -2.0
+  roi_y_max:  2.0
+  roi_z_min: -0.5
+  roi_z_max:  2.5
+
+secondary_lidar:
+  topic:      /lidar_sub/points      # 辅雷达点云（驱动已用安装参数变换，近似 VCS）
+  lidar_type: solid                  # solid 或 mech
+  sensor_name: lidar_sub             # 传感器名称（标定结果文件键名）
+
+  # 辅雷达标定板 ROI（根据实际安装方向调整）
+  roi_x_min:  1.5
+  roi_x_max:  8.0
+  roi_y_min: -2.0
+  roi_y_max:  2.0
+  roi_z_min: -0.5
+  roi_z_max:  2.5
+
+  # ── 已标定参数（不可修改，仅用于记录）─────────────────────
+  roll_calib_deg:  0.0      # 横滚（°）—— 前序步骤已标定
+  pitch_calib_deg: 0.0      # 俯仰（°）—— 前序步骤已标定
+  z_calib:         1.43     # LiDAR 在 VCS z 坐标（m）= 安装高度 - z_offset
+  z_offset:        0.37     # 后轴中心到地面高度（m）
+
+  # ── 待标定参数（安装标称值）─────────────────────────────────
+  # 注意：必须与驱动当前配置一致！标定后将输出精确修正值。
+  x_install:        0.0    # LiDAR 在 VCS X 方向位置（m，正=前）
+  y_install:        0.0    # LiDAR 在 VCS Y 方向位置（m，正=左）
+  yaw_install_deg:  0.0    # LiDAR 偏航安装角（°，正=CCW）
+
+# ── 标定板参数（与 LidarProcessor 保持一致）─────────────────
+target:
+  circle_radius:         0.12   # 圆孔半径（m）
+  delta_width_circles:   0.50   # 圆孔中心横向总间距（m）
+  delta_height_circles:  0.40   # 圆孔中心纵向总间距（m）
+  ransac_threshold:      0.01   # 平面 RANSAC 距离阈值（m）
+  max_iterations:        1000   # RANSAC 最大迭代次数
+
+# ── 标定算法参数 ─────────────────────────────────────────────
+calibration:
+  min_scenes: 3    # 最少有效场景数（建议 3~5 个不同位置/角度的场景）
+
+# ── 输出 ─────────────────────────────────────────────────────
+output:
+  file: /tmp/lidar_lidar_calib_result.yaml

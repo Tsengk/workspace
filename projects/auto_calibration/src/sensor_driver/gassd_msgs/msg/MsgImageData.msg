@@ -1,0 +1,10 @@
+MsgHafTime  	    timestamp  
+string  	    frameID  
+uint32  	    width  
+uint32  	    height  
+uint32  	    dataSize  
+uint8  	    bufferType  
+uint8  	    imageType  
+uint32  	    seq  
+uint8[]  	    rawData  
+int64  	    mbufData  

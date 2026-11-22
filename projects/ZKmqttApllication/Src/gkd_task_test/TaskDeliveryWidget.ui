@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>TaskDeliveryWidget</class>
+ <widget class="QWidget" name="TaskDeliveryWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>689</width>
+    <height>384</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>任务下发</string>
+  </property>
+  <layout class="QHBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QWidget" name="leftWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="leftLayout">
+      <item>
+       <widget class="QLabel" name="taskListLabel">
+        <property name="text">
+         <string>任务模板列表</string>
+        </property>
+        <property name="styleSheet">
+         <string>QLabel { font-weight: bold; padding: 5px; }</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="taskTemplateListWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="loadTaskTemplateButton">
+        <property name="text">
+         <string>加载任务模板</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="rightWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>2</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="rightLayout">
+      <item>
+       <widget class="QLabel" name="taskConfigLabel">
+        <property name="text">
+         <string>任务配置详情</string>
+        </property>
+        <property name="styleSheet">
+         <string>QLabel { font-weight: bold; padding: 5px; }</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QScrollArea" name="scrollArea">
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>400</width>
+           <height>700</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="scrollAreaLayout">
+          <item>
+           <widget class="QGroupBox" name="taskInfoGroupBox">
+            <property name="title">
+             <string>任务基本信息</string>
+            </property>
+            <layout class="QFormLayout" name="taskInfoLayout">
+             <item row="0" column="0">
+              <widget class="QLabel" name="taskIdLabel">
+               <property name="text">
+                <string>任务ID:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="taskIdEdit">
+               <property name="placeholderText">
+                <string>请输入任务ID</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="taskNameLabel">
+               <property name="text">
+                <string>任务名称:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="taskNameEdit">
+               <property name="placeholderText">
+                <string>请输入任务名称</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="taskTypeLabel">
+               <property name="text">
+                <string>任务类型:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="taskTypeEdit">
+               <property name="placeholderText">
+                <string>请输入任务类型</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="taskPriorityLabel">
+               <property name="text">
+                <string>任务优先级:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="taskPriorityEdit">
+               <property name="placeholderText">
+                <string>请输入任务优先级</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="taskStatusLabel">
+               <property name="text">
+                <string>任务状态:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="taskStatusEdit">
+               <property name="text">
+                <string>待下发</string>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="startTimeLabel">
+               <property name="text">
+                <string>开始时间:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QDateTimeEdit" name="startTimeEdit">
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+               <property name="displayFormat">
+                <string>yyyy-MM-dd hh:mm:ss</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="endTimeLabel">
+               <property name="text">
+                <string>结束时间:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QDateTimeEdit" name="endTimeEdit">
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+               <property name="displayFormat">
+                <string>yyyy-MM-dd hh:mm:ss</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <widget class="QLabel" name="taskDescLabel">
+               <property name="text">
+                <string>任务描述:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="1">
+              <widget class="QTextEdit" name="taskDescEdit">
+               <property name="maximumHeight">
+                <number>80</number>
+               </property>
+               <property name="placeholderText">
+                <string>请输入任务描述</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="positionInfoGroupBox">
+            <property name="title">
+             <string>目标位置信息</string>
+            </property>
+            <layout class="QFormLayout" name="positionInfoLayout">
+             <item row="0" column="0">
+              <widget class="QLabel" name="longitudeLabel">
+               <property name="text">
+                <string>经度:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="longitudeEdit">
+               <property name="placeholderText">
+                <string>请输入经度</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="latitudeLabel">
+               <property name="text">
+                <string>纬度:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="latitudeEdit">
+               <property name="placeholderText">
+                <string>请输入纬度</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="altitudeLabel">
+               <property name="text">
+                <string>高度:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="altitudeEdit">
+               <property name="placeholderText">
+                <string>请输入高度</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="agentInfoGroupBox">
+            <property name="title">
+             <string>智能体配置信息</string>
+            </property>
+            <layout class="QFormLayout" name="agentInfoLayout">
+             <item row="0" column="0">
+              <widget class="QLabel" name="agentTypeLabel">
+               <property name="text">
+                <string>智能体类型:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="agentTypeCombo">
+               <item>
+                <property name="text">
+                 <string>无人机</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>无人车</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>无人船</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="agentIdLabel">
+               <property name="text">
+                <string>智能体ID:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="agentIdEdit">
+               <property name="placeholderText">
+                <string>请输入智能体ID</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="agentModeLabel">
+               <property name="text">
+                <string>控制模式:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QComboBox" name="agentModeCombo">
+               <item>
+                <property name="text">
+                 <string>自主模式</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>遥控模式</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>混合模式</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="agentSpeedLabel">
+               <property name="text">
+                <string>飞行速度:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="agentSpeedEdit">
+               <property name="placeholderText">
+                <string>请输入飞行速度</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="agentRouteLabel">
+               <property name="text">
+                <string>航线规划:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QComboBox" name="agentRouteCombo">
+               <item>
+                <property name="text">
+                 <string>直线飞行</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>绕行飞行</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>螺旋飞行</string>
+                </property>
+               </item>
+               <item>
+                <property name="text">
+                 <string>自定义航线</string>
+                </property>
+               </item>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="payloadLabel">
+               <property name="text">
+                <string>载荷配置:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLineEdit" name="payloadEdit">
+               <property name="placeholderText">
+                <string>请输入载荷配置</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="commFreqLabel">
+               <property name="text">
+                <string>通信频率:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QLineEdit" name="commFreqEdit">
+               <property name="placeholderText">
+                <string>请输入通信频率</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="waypointInfoGroupBox">
+            <property name="title">
+             <string>航点信息</string>
+            </property>
+            <layout class="QVBoxLayout" name="waypointInfoLayout">
+             <item>
+              <widget class="QScrollArea" name="waypointScrollArea">
+               <property name="widgetResizable">
+                <bool>true</bool>
+               </property>
+               <property name="maximumHeight">
+                <number>200</number>
+               </property>
+               <widget class="QWidget" name="waypointScrollAreaWidgetContents">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>380</width>
+                  <height>190</height>
+                 </rect>
+                </property>
+                <layout class="QVBoxLayout" name="waypointPointsLayout"/>
+               </widget>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="waypointButtonsLayout">
+               <item>
+                <widget class="QPushButton" name="addWaypointButton">
+                 <property name="text">
+                  <string>添加航点</string>
+                 </property>
+                 <property name="styleSheet">
+                  <string>QPushButton { 
+  background-color: #2196F3; 
+  color: white; 
+  border: none; 
+  padding: 6px 12px; 
+  border-radius: 3px; 
+}
+QPushButton:hover { 
+  background-color: #1976D2; 
+}</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="waypointButtonsSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="deliverTaskButton">
+        <property name="text">
+         <string>下发任务</string>
+        </property>
+        <property name="styleSheet">
+         <string>QPushButton { 
+  background-color: #4CAF50; 
+  color: white; 
+  border: none; 
+  padding: 8px 16px; 
+  border-radius: 4px; 
+  font-weight: bold; 
+}
+QPushButton:hover { 
+  background-color: #45a049; 
+}
+QPushButton:pressed { 
+  background-color: #3d8b40; 
+}</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

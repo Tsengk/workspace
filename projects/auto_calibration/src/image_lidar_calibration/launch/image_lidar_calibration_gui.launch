@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- ===== Configuration files ===== -->
+  <arg name="algorithm_params_file" default="$(find image_lidar_calibration)/config/default_params.yaml"/>
+  <arg name="calibration_board_file" default="$(find image_lidar_calibration)/config/calibration_board.yaml"/>
+  <arg name="camera_file" default="$(find image_lidar_calibration)/config/front_h30.yaml"/>
+
+  <!-- ===== Subscribe topics ===== -->
+  <arg name="lidar_topic" default="/driver/rotate_lidar/cloud/right/offline"/>
+  <arg name="image_topic" default="/driver/gmsl_camera/front_h30"/>
+  <arg name="image_transport" default="compressed"/>
+
+  <!-- ===== Publish topics ===== -->
+  <arg name="status_topic" default="/status"/>
+  <arg name="colored_cloud_topic" default="/colored_cloud"/>
+  <arg name="board_plane_cloud_topic" default="/board_plane_cloud"/>
+  <arg name="board_edge_cloud_topic" default="/board_edge_cloud"/>
+  <arg name="board_circle_centers_topic" default="/board_circle_centers"/>
+  <arg name="debug_image_topic" default="/debug_image"/>
+  <arg name="lidar_projection_image_topic" default="/lidar_projection_image"/>
+
+  <!-- ===== LiDAR ROI parameters ===== -->
+  <arg name="lidar_roi_x_min" default="0.0"/>
+  <arg name="lidar_roi_x_max" default="20.0"/>
+  <arg name="lidar_roi_y_min" default="-7.0"/>
+  <arg name="lidar_roi_y_max" default="7.0"/>
+  <arg name="lidar_roi_z_min" default="0.0"/>
+  <arg name="lidar_roi_z_max" default="4.0"/>
+
+  <!-- ===== Installation parameters ===== -->
+  <arg name="camera_name" default="front_camera"/>
+  <arg name="install_x" default="2.24"/>
+  <arg name="install_y" default="-0.029"/>
+  <arg name="install_z" default="1.032"/>
+  <arg name="install_roll_deg" default="0.0"/>
+  <arg name="install_pitch_deg" default="0.0"/>
+  <arg name="install_yaw_deg" default="0.0"/>
+  <arg name="output_dir" default="/tmp/image_lidar_calibration"/>
+  <arg name="output_yaml_path" default="/tmp/image_lidar_calibration/camera.yaml"/>
+
+  <!-- ===== Launch node ===== -->
+  <node name="image_lidar_calib_node"
+        pkg="image_lidar_calibration"
+        type="image_lidar_calib_node"
+        output="screen">
+    <!-- Algorithm parameters -->
+    <rosparam file="$(arg algorithm_params_file)" command="load"/>
+
+    <!-- Calibration board parameters -->
+    <rosparam file="$(arg calibration_board_file)" command="load"/>
+
+    <!-- Runtime transport -->
+    <param name="image_transport" value="$(arg image_transport)"/>
+
+    <!-- Intrinsics file -->
+    <param name="camera_file" value="$(arg camera_file)"/>
+
+    <!-- Subscribe topics -->
+    <param name="lidar_topic" value="$(arg lidar_topic)"/>
+    <param name="image_topic" value="$(arg image_topic)"/>
+
+    <!-- Publish topics -->
+    <param name="status_topic" value="$(arg status_topic)"/>
+    <param name="colored_cloud_topic" value="$(arg colored_cloud_topic)"/>
+    <param name="board_plane_cloud_topic" value="$(arg board_plane_cloud_topic)"/>
+    <param name="board_edge_cloud_topic" value="$(arg board_edge_cloud_topic)"/>
+    <param name="board_circle_centers_topic" value="$(arg board_circle_centers_topic)"/>
+    <param name="debug_image_topic" value="$(arg debug_image_topic)"/>
+    <param name="lidar_projection_image_topic" value="$(arg lidar_projection_image_topic)"/>
+
+    <!-- LiDAR ROI parameters -->
+    <param name="lidar/roi_x_min" value="$(arg lidar_roi_x_min)" type="double"/>
+    <param name="lidar/roi_x_max" value="$(arg lidar_roi_x_max)" type="double"/>
+    <param name="lidar/roi_y_min" value="$(arg lidar_roi_y_min)" type="double"/>
+    <param name="lidar/roi_y_max" value="$(arg lidar_roi_y_max)" type="double"/>
+    <param name="lidar/roi_z_min" value="$(arg lidar_roi_z_min)" type="double"/>
+    <param name="lidar/roi_z_max" value="$(arg lidar_roi_z_max)" type="double"/>
+
+    <!-- Installation parameters -->
+    <param name="installation/camera_name" value="$(arg camera_name)"/>
+    <param name="installation/x" value="$(arg install_x)" type="double"/>
+    <param name="installation/y" value="$(arg install_y)" type="double"/>
+    <param name="installation/z" value="$(arg install_z)" type="double"/>
+    <param name="installation/roll_deg" value="$(arg install_roll_deg)" type="double"/>
+    <param name="installation/pitch_deg" value="$(arg install_pitch_deg)" type="double"/>
+    <param name="installation/yaw_deg" value="$(arg install_yaw_deg)" type="double"/>
+
+    <!-- Output directory -->
+    <param name="output_dir" value="$(arg output_dir)"/>
+    <param name="output/yaml_path" value="$(arg output_yaml_path)"/>
+  </node>
+</launch>

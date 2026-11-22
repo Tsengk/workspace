@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>动态iframe加载演示</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .control-panel {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        input {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #frame-container {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255,255,255,0.8);
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>动态iframe加载器</h1>
+        
+        <div class="control-panel">
+            <input type="url" id="url-input" placeholder="输入要加载的网页URL (例如: https://example.com)">
+            <button id="load-btn">加载网页</button>
+            <button id="clear-btn">清空iframe</button>
+        </div>
+        
+        <div id="frame-container">
+            <div class="loading" id="loading-indicator" style="display: none;">
+                <div class="spinner"></div>
+            </div>
+            <iframe id="content-frame" title="嵌套网页内容"></iframe>
+        </div>
+    </div>
+
+    <script>
+          function onPageLoadPost() {
+            const statusElement = document.getElementById('status');
+            
+            // 要发送的数据
+            const postData = {
+                timestamp: new Date().toISOString(),
+                userAgent: navigator.userAgent,
+                pageTitle: document.title
+            };
+
+            // 目标API端点（使用JSONPlaceholder测试API）
+            const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+            alert("ssss");
+            // 发送POST请求
+            fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('网络响应不正常');
+                }
+                return response.json();
+            })
+            .then(data => {
+                statusElement.textContent = '请求成功! 响应ID: ' + data.id;
+                statusElement.className = 'success';
+                console.log('成功:', data);
+            })
+            .catch(error => {
+                statusElement.textContent = '请求失败: ' + error.message;
+                statusElement.className = 'error';
+                console.error('错误:', error);
+            });
+        }
+        // 监听DOMContentLoaded事件
+        document.addEventListener('DOMContentLoaded', onPageLoadPost);
+        document.addEventListener('DOMContentLoaded', function() {
+            const frame = document.getElementById('content-frame');
+            const urlInput = document.getElementById('url-input');
+            const loadBtn = document.getElementById('load-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            
+            // 加载URL到iframe
+            loadBtn.addEventListener('click', function() {
+                const url = urlInput.value.trim();
+                
+                if (!url) {
+                    alert('请输入有效的URL');
+                    return;
+                }
+                
+                // 显示加载指示器
+                loadingIndicator.style.display = 'flex';
+                
+                // 设置iframe的src属性
+                frame.src = url;
+                
+                // 当iframe加载完成时隐藏指示器
+                frame.onload = function() {
+                    loadingIndicator.style.display = 'none';
+                };
+                
+                // 处理加载错误
+                frame.onerror = function() {
+                    loadingIndicator.style.display = 'none';
+                    alert('加载网页失败，请检查URL是否正确');
+                };
+            });
+            
+            // 清空iframe
+            clearBtn.addEventListener('click', function() {
+                frame.src = 'about:blank';
+                urlInput.value = '';
+            });
+            
+            // 支持按Enter键加载
+            urlInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loadBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

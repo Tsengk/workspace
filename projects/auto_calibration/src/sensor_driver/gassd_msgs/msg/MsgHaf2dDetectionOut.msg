@@ -1,0 +1,12 @@
+int32  	    objectId  
+uint8  	    cls  
+float32  	    confidence  
+float32  	    existenceProbability  
+string  	    coordinate  
+MsgHafRect2D  	    rect  
+MsgPoint2D  	    velocity  
+MsgHafTime  	    timeCreation  
+MsgPoint3D  	    acceleration  
+uint8  	    blinkerStatus  
+uint8  	    cipvFlag  
+uint8  	    cameraStatus  

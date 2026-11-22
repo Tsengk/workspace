@@ -1,0 +1,72 @@
+##############################################################
+# LiDAR-GNSS 联合 Yaw 角标定参数配置
+#
+# 【重要】输入点云坐标系：
+#   驱动已使用安装参数（含 yaw_install）将原始 LiDAR 点云变换到 VCS
+#   （车体坐标系，FLU，原点=后轴中心）。本模块直接处理 VCS 点云。
+#   地面在 VCS 中位于 z ≈ -axis_offset（后轴中心高度取负）。
+#
+# 坐标系：
+#   车体（VCS）：FLU（X=前, Y=左, Z=上），原点 = 后轴中心
+#   全局（UTM）：xg = 北（Northing），yg = 东（Easting）
+#
+# 标定原理（残差修正）：
+#   设驱动安装 yaw_install 已使点云在 VCS 中，但实际 yaw 有误差 ε，
+#   标定优化 ε 使不同位姿下锥桶全局投影一致（直线拟合残差最小）：
+#     p_vcs_true = R(ε) · (q_vcs - t_lb) + t_lb
+#     p_global   = R_bg(ψ) · p_vcs_true + [xg, yg]
+#
+# 精度要求：< 0.2°
+#
+# 外部环境要求：
+#   1. 平地（坡度 < 1°）
+#   2. 摆放 4~8 个锥桶，间距 1~2m，成一条直线，长度 6~15m
+#   3. 驾车缓慢经过锥桶（速度 < 10 km/h）
+#   4. 建议从 2~3 个不同角度经过（航向角跨度 ≥ 5°，越大越好）
+#   5. 采集期间无遮挡，锥桶周围 3m 内无其他物体
+##############################################################
+
+# --- 话题配置 ---
+lidar_topic: /rslidar_points         # LiDAR 原始点云话题（sensor_msgs/PointCloud2）
+gnss_topic:  /sensorgps              # GNSS 话题（nav_msgs/Odometry，UTM 坐标系）
+                                     # 要求：position.x = xg（北向 Northing，m）
+                                     #       position.y = yg（东向 Easting，m）
+                                     #       orientation = 四元数（NE 坐标系，yaw=0 朝北，CW+）
+                                     # 航向提取：heading = atan2(2(wz+xy), 1-2(y²+z²)) （直接，无需偏置）
+save_path: /tmp/lidar_gnss_yaw_result.yaml  # 标定结果保存路径
+
+# --- LiDAR 安装参数（VCS，后轴中心原点，FLU）---
+# 注意：yaw_install 必须与驱动当前使用的安装 yaw 保持一致！
+#       驱动以此值将点云变换到 VCS，本模块在此基础上求修正量 ε。
+installation:
+  x_offset:    0.0    # LiDAR 纵向偏移（m，正=前），即旋转中心 x
+  y_offset:    0.0    # LiDAR 横向偏移（m，正=左），即旋转中心 y
+  z_offset:    1.8    # LiDAR 垂直高度（m，相对后轴中心，仅记录用）
+  axis_offset: 0.37   # 后轴中心到地面高度（m），VCS 地面 z ≈ -axis_offset
+  yaw_install: 0.0    # 驱动安装 yaw（°，CCW+）—— 必须与驱动配置一致！
+
+# --- 锥桶检测参数 ---
+cone:
+  height_min:         0.15   # 锥桶最小高度（m），过滤矮障碍物
+  height_max:         0.90   # 锥桶最大高度（m），过滤高障碍物
+  radius_max:         0.35   # XY 最大半径（m），过滤宽目标
+  max_range:         25.0    # 最大检测距离（m）
+  min_range:          1.0    # 最小检测距离（m，过滤车体反射）
+  voxel_size:         0.05   # 体素降采样尺寸（m）
+  cluster_tolerance:  0.25   # 欧氏聚类距离阈值（m）
+  min_cluster_points: 5      # 聚类最小点数
+  max_cluster_points: 500    # 聚类最大点数（防止大障碍物误检）
+
+# --- 数据采集控制 ---
+collection:
+  min_snapshots:          6    # 最少有效快照帧数（不足则拒绝标定）
+  max_snapshots:         60    # 最多快照帧数（达到后自动触发标定）
+  min_cones_per_snapshot: 3    # 每帧至少检测到的锥桶数
+  min_heading_spread:    3.0   # 最小航向角跨度（°），不足则告警
+  snapshot_interval:     0.5   # 采样间隔（s），控制快照频率
+
+# --- 标定优化参数 ---
+calibration:
+  search_range: 12.0   # 搜索范围 ± (°)，应大于实际安装误差
+  coarse_step:   0.05  # 粗搜步长（°）
+  fine_tol:      0.001 # 精搜收敛精度（°），决定最终精度上限

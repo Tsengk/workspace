@@ -1,0 +1,13 @@
+uint8  	    id  
+uint8  	    idPair  
+uint8  	    coordinate  
+MsgHafRadarModeDatainfo  	    position  
+MsgHafRadarModeDatainfo  	    velocity  
+MsgHafRadarModeDatainfo  	    acceleration  
+float64  	    rcs  
+float64  	    snr  
+uint8  	    existProbability  
+uint8  	    falseProbability  
+uint8  	    movProperty  
+uint8  	    invalidState  
+uint8  	    ambiguity  

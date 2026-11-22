@@ -1,0 +1,12 @@
+uint8  	    color  
+string  	    id  
+uint8  	    flicker  
+bool  	    occlude  
+uint8  	    number  
+float64  	    confidence  
+float64  	    tracking_time  
+uint8  	    sublight_type  
+svchar[]  	    light_cycle  
+bool  	    using_obu  
+PerceptionSingleTLBboxDebug  	    detect_roi  
+PerceptionSingleTLBboxDebug  	    roi_area  

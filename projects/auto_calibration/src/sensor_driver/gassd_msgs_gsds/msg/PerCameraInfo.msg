@@ -1,0 +1,11 @@
+string  	    cam_name  
+SizeWH  	    size  
+SizeWH  	    input_size  
+SizeWH  	    scaled_size  
+float64[]  	    intriK  
+float64[]  	    intriD  
+float64  	    epsilon  
+LocThreeDimPose  	    extriT  
+LocThreeDimRotation  	    extriR_euler  
+float64[]  	    newK  
+float64  	    base_euler  

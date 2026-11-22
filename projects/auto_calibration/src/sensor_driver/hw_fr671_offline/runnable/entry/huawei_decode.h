@@ -1,0 +1,102 @@
+#ifndef __AVOS_DRIVER_HUAWEI_RADAR_DECODER_H__
+#define __AVOS_DRIVER_HUAWEI_RADAR_DECODER_H__
+
+#include <iostream>
+#include <string>
+#include <vector>
+#include <math.h>
+#include <string.h>
+#include <atomic>
+
+#include "huawei_4d_radar.h"
+#include "../global/data_pool.h"
+#include "gassd_msgs/SensorRadarPoint4D.h"
+#include "gassd_msgs/SensorRadarPacket.h"
+
+#define DEG2ARC 3.14159265 / 180.0
+
+namespace avos {
+namespace driver {
+
+class HWDecoder
+{
+public:
+	HWDecoder();
+	~HWDecoder();
+
+public:
+	int Init(const DecoderConfig &config) ;
+	void ConvertPacktsToPoint(const gassd_msgs::CommonUdpPacket &msop_packet, PacketPointData &point_cloud, uint64_t &first_pkg_ts, int &pub_logic);
+
+	double GetActCosValue(int act_angle) {
+		while (act_angle < 0) {
+			act_angle += CULCULATE_TABLE_SIZE;
+		}
+		while (act_angle > CULCULATE_TABLE_SIZE) {
+			act_angle -= CULCULATE_TABLE_SIZE;
+		}
+		if (act_angle >= CULCULATE_TABLE_SIZE || act_angle < 0) {
+			return 0;
+		}
+		return cos_table[act_angle];
+	}
+
+	double GetActSinValue(int act_angle) {
+		while (act_angle < 0) {
+			act_angle += CULCULATE_TABLE_SIZE;
+		}
+		while (act_angle > CULCULATE_TABLE_SIZE) {
+			act_angle -= CULCULATE_TABLE_SIZE;
+		}
+		if (act_angle >= CULCULATE_TABLE_SIZE || act_angle < 0) {
+			return 0;
+		}
+		return sin_table[act_angle];
+	}
+
+	void ConvertPoint(/*gassd_msgs::SensorRadarPoint4D*/ VPoint &point, const DecoderConfig &config) {
+
+		float x_coord = point.x;
+		float y_coord = point.y;
+		float z_coord = point.z;
+		point.x = config.transform[0] * x_coord + config.transform[1] * y_coord + config.transform[2] * z_coord + config.transform[3];
+		point.y = config.transform[4] * x_coord + config.transform[5] * y_coord + config.transform[6] * z_coord + config.transform[7];
+		point.z = config.transform[8] * x_coord + config.transform[9] * y_coord + config.transform[10] * z_coord + config.transform[11];
+		// float vx=point.vx,vy=point.vy;
+		// point.vx = config.transform[0] * vx + config.transform[1] * vy;
+		// point.vy = config.transform[4] * vx + config.transform[5] * vy;
+		// point.angle = point.angle + config.tf_yaw;
+		// point.angle = point.angle >= 0.0 ? point.angle : point.angle + 360.0;
+		// point.angle = point.angle <= 360.0 ? point.angle : point.angle - 360.0;
+	}
+
+private:
+	int32_t frame_id_ = -1;
+	int32_t udp_pkg_id_ = -1;
+	int32_t udp_pkg_num_ = -1;
+	int32_t udp_pkg_count_ = 0;
+	int32_t obj_num_ = -1;
+	int32_t obj_recv_sum_ = 0;
+	int32_t obj_num_in_pkg_ = 0;
+	bool	is_new = false;
+	int32_t interval_ms_ = 50;
+	long long frame_ts_ = 0;
+	std::atomic<bool> one_frame_;
+
+	// gassd_msgs::SensorRadarPoint4D           point;
+	VPoint point;
+	gassd_msgs::CommonUdpPacket            msop_buf;
+
+	double sin_table[CULCULATE_TABLE_SIZE];
+	double cos_table[CULCULATE_TABLE_SIZE];
+public:
+	DecoderConfig decoder_config;
+
+};
+
+
+}
+}
+
+#endif  // __AVOS_DRIVER_RS_BP_DECODER_H__
+

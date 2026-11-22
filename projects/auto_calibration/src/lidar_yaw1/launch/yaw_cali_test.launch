@@ -1,0 +1,39 @@
+<launch>
+  <!--
+    lidar_yaw1 Yaw 标定算法测试（合成数据 + RViz 可视化）
+
+    话题：
+      /lidar_yaw1_test/cone_cloud    — 合成锥桶点云
+      /lidar_yaw1_test/cone_markers  — 锥桶圆柱体 Marker（橙色）
+      /lidar_yaw1_test/fit_markers   — 拟合直线 + 结果文字
+
+    参数：
+      n_frames    每场景帧数（越多均值越稳定）
+      frame_delay 帧间延迟（秒）
+      scene_delay 场景间停顿（秒）
+      viz         是否发布可视化（true/false）
+  -->
+
+  <!-- 静态 TF：world → lidar，供 RViz Fixed Frame 使用 -->
+  <node pkg="tf2_ros" type="static_transform_publisher"
+        name="lidar_tf_pub"
+        args="0 0 0 0 0 0 world lidar"/>
+
+  <!-- 测试节点 -->
+  <node name="yaw_cali_test"
+        pkg="lidar_yaw1"
+        type="yaw_cali_test_node"
+        output="screen">
+    <param name="n_frames"    value="10"/>
+    <param name="viz"         value="true"/>
+    <param name="frame_delay" value="0.12"/>
+    <param name="scene_delay" value="3.0"/>
+  </node>
+
+  <!-- RViz -->
+  <node name="rviz"
+        pkg="rviz"
+        type="rviz"
+        args="-d $(find lidar_yaw1)/config/yaw_cali_test.rviz"
+        required="false"/>
+</launch>

@@ -1,0 +1,10 @@
+float64  	    x  
+float64  	    y  
+float64  	    length  
+float64  	    width  
+float64  	    heading  
+float64  	    x_dr  
+float64  	    y_dr  
+float64  	    heading_dr  
+PerceptionGarageWallLine[]  	    vcs_line  
+PerceptionGarageWallLine[]  	    dr_line  

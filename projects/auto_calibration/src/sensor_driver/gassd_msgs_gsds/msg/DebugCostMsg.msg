@@ -1,0 +1,13 @@
+float64  	    parent_x  
+float64  	    parent_y  
+float64  	    current_x  
+float64  	    current_y  
+float64  	    cost_sum  
+float64  	    length_cost  
+float64  	    balance_cost  
+float64  	    last_cost  
+float64  	    center_cost  
+float64  	    no_circular_penalty  
+float64  	    curvature_cost  
+float64  	    middle_cost  
+float64  	    approximate_cost  

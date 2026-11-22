@@ -1,0 +1,53 @@
+<launch>
+  <!-- LiDAR Roll/Pitch/Z 手动标定节点（基于 RViz clicked_point） -->
+  <!--
+    使用方法：
+      1. roslaunch lidar_rp_cali lidar_rp_cali_clicked.launch
+      2. 在 RViz 中：
+         - 将 Fixed Frame 设为点云所在帧（通常为 base_link）
+         - 添加 PointCloud2 显示，话题设为 lidar 点云话题，确认能看到地面点云
+         - 工具栏选择 "Publish Point"（或按 P 键）
+         - 依次点击地面上的不同位置（建议 6~10 个点，分散在前方、左右）
+      3. 实时观察 ~status 话题获取标定进度
+      4. 点数足够后调用服务保存结果：
+         rosservice call /lidar_rp_cali_clicked/save_calibration
+      5. 如需重新采集：
+         rosservice call /lidar_rp_cali_clicked/reset_calibration
+  -->
+
+  <!-- GUI 传入参数（有默认值，单独 roslaunch 时也可用） -->
+  <arg name="input_topic"           default="/driver/lidar/cloud/front_main/offline"/>
+  <arg name="lidar_frame"           default="lidar"/>
+  <arg name="inst_x"                default="0.0"/>
+  <arg name="inst_y"                default="0.0"/>
+  <arg name="inst_z"                default="0.0"/>
+  <arg name="inst_roll_deg"         default="0.0"/>
+  <arg name="inst_pitch_deg"        default="0.0"/>
+  <arg name="inst_yaw_deg"          default="0.0"/>
+  <arg name="inst_z_offset"         default="0.37"/>
+  <arg name="sensor_name"           default="front_main_lidar"/>
+  <arg name="calibration_output_file" default="/tmp/lidar_calibration_clicked.yaml"/>
+
+  <node name="lidar_rp_cali_clicked"
+        pkg="lidar_rp_cali"
+        type="lidar_rp_cali_clicked_node"
+        output="screen">
+
+    <rosparam file="$(find lidar_rp_cali)/config/params.yaml" command="load"/>
+
+    <param name="input_topic"   value="$(arg input_topic)"/>
+    <param name="lidar_frame"   value="$(arg lidar_frame)"/>
+    <param name="installation/x"         value="$(arg inst_x)"/>
+    <param name="installation/y"         value="$(arg inst_y)"/>
+    <param name="installation/z"         value="$(arg inst_z)"/>
+    <param name="installation/roll_deg"  value="$(arg inst_roll_deg)"/>
+    <param name="installation/pitch_deg" value="$(arg inst_pitch_deg)"/>
+    <param name="installation/yaw_deg"   value="$(arg inst_yaw_deg)"/>
+    <param name="installation/z_offset"  value="$(arg inst_z_offset)"/>
+    <param name="installation/sensor_name"  value="$(arg sensor_name)"/>
+
+    <param name="min_clicked_points" value="4"/>
+    <param name="calibration_output_file" value="$(arg calibration_output_file)"/>
+    <param name="plane/method" value="LEAST_SQUARES"/>
+  </node>
+</launch>

@@ -1,0 +1,53 @@
+<launch>
+  <arg name="align_depth_z" default="30.0" />
+  <arg name="publish_max_hz" default="10.0" />
+  <arg name="sync_tolerance_sec" default="0.10" />
+  <arg name="log_debug" default="true" />
+  <arg name="crop_side_width" default="true" />
+  <arg name="crop_main_width" default="false" />
+  <arg name="anchor_left_x" default="0" />
+  <arg name="anchor_right_x" default="0" />
+  <arg name="anchor_left_y" default="-1" />
+  <arg name="anchor_right_y" default="-1" />
+  <arg name="top_alignment_boundary_y" default="0" />
+  <arg name="bottom_alignment_boundary_y" default="0" />
+  <arg name="stitched_topic" default="/multi_view_stitch/stitched_image" />
+  <arg name="status_topic" default="/multi_view_stitch/status" />
+  <arg name="save_params_yaml_path" default="$(find multi_view_stitch)/config/stitch_params.yaml" />
+  <arg name="main_camera_yaml_path" default="$(find multi_view_stitch)/config/front_fish_eye.yaml" />
+  <arg name="left_camera_yaml_path" default="$(find multi_view_stitch)/config/left_fish_eye.yaml" />
+  <arg name="right_camera_yaml_path" default="$(find multi_view_stitch)/config/right_fish_eye.yaml" />
+  <arg name="main_image_topic" default="/driver/gmsl_camera/front_h100/compressed" />
+  <arg name="left_image_topic" default="/driver/gmsl_camera/left_front/compressed" />
+  <arg name="right_image_topic" default="/driver/gmsl_camera/right_front/compressed" />
+  <arg name="rotation_order_0" default="2" />
+  <arg name="rotation_order_1" default="1" />
+  <arg name="rotation_order_2" default="0" />
+
+  <node pkg="multi_view_stitch" type="multi_view_stitch_node" name="multi_view_stitch_node" output="screen">
+    <param name="align_depth_z" value="$(arg align_depth_z)" />
+    <param name="publish_max_hz" value="$(arg publish_max_hz)" />
+    <param name="sync_tolerance_sec" value="$(arg sync_tolerance_sec)" />
+    <param name="log_debug" value="$(arg log_debug)" />
+    <param name="crop_side_width" value="$(arg crop_side_width)" />
+    <param name="crop_main_width" value="$(arg crop_main_width)" />
+    <param name="anchor/left/x" value="$(arg anchor_left_x)" />
+    <param name="anchor/right/x" value="$(arg anchor_right_x)" />
+    <param name="anchor/left/y" value="$(arg anchor_left_y)" />
+    <param name="anchor/right/y" value="$(arg anchor_right_y)" />
+    <param name="top_alignment_boundary_y" value="$(arg top_alignment_boundary_y)" />
+    <param name="bottom_alignment_boundary_y" value="$(arg bottom_alignment_boundary_y)" />
+    <param name="stitched_topic" value="$(arg stitched_topic)" />
+    <param name="status_topic" value="$(arg status_topic)" />
+    <param name="save_params_yaml_path" value="$(arg save_params_yaml_path)" />
+    <param name="main_camera_yaml_path" value="$(arg main_camera_yaml_path)" />
+    <param name="left_camera_yaml_path" value="$(arg left_camera_yaml_path)" />
+    <param name="right_camera_yaml_path" value="$(arg right_camera_yaml_path)" />
+    <param name="main_image_topic" value="$(arg main_image_topic)" />
+    <param name="left_image_topic" value="$(arg left_image_topic)" />
+    <param name="right_image_topic" value="$(arg right_image_topic)" />
+    <param name="rotation_order_0" value="$(arg rotation_order_0)" />
+    <param name="rotation_order_1" value="$(arg rotation_order_1)" />
+    <param name="rotation_order_2" value="$(arg rotation_order_2)" />
+  </node>
+</launch>

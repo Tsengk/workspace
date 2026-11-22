@@ -1,0 +1,29 @@
+schema_version: 1
+calib_type: lidar_lidar
+sensor_name: front_lidar
+generated_at: 2026-05-12 18:37:53
+method: rviz_clicked_cones_2d_procrustes
+coordinate_system: FLU
+installation:
+  x: 8.870000
+  y: 0.000000
+  z: 1.076660
+  roll_deg: 0.000000
+  pitch_deg: 0.000000
+  yaw_deg: 0.000000
+  z_offset: 0.660000
+calibrated:
+  x: 8.807777
+  y: 0.008796
+  z: 1.076660
+  roll_deg: 0.000000
+  pitch_deg: 0.000000
+  yaw_deg: -0.924074
+delta:
+  delta_x_m: -0.062223
+  delta_y_m: 0.008796
+  delta_yaw_deg: -0.924074
+quality:
+  quality_grade: POOR
+  rmse_m: 0.133841
+  n_cones: 5

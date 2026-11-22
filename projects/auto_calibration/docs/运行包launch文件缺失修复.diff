@@ -1,0 +1,172 @@
+diff --git a/src/calibration_gui/src/config_manager.cpp b/src/calibration_gui/src/config_manager.cpp
+index 2f52913..0e4e651 100644
+--- a/src/calibration_gui/src/config_manager.cpp
++++ b/src/calibration_gui/src/config_manager.cpp
+@@ -5,6 +5,35 @@
+ #include <yaml-cpp/yaml.h>
+ 
+ namespace calibration_gui {
++namespace {
++
++bool fileExists(const std::string& path)
++{
++    std::ifstream f(path);
++    return f.good();
++}
++
++std::string resolveLaunchPath(const std::string& config_dir,
++                              const std::string& launch_file)
++{
++    if (launch_file.empty()) return "";
++    if (launch_file[0] == '/') return launch_file;
++
++    const std::string base = config_dir + "/../../";
++    const std::string direct = base + launch_file;
++    if (fileExists(direct)) return direct;
++
++    // 兼容安装空间中 share/<pkg>/launch 的标准布局。
++    static const std::string kSensorDriverPrefix = "sensor_driver/";
++    if (launch_file.compare(0, kSensorDriverPrefix.size(), kSensorDriverPrefix) == 0) {
++        const std::string fallback = base + launch_file.substr(kSensorDriverPrefix.size());
++        if (fileExists(fallback)) return fallback;
++    }
++
++    return direct;
++}
++
++} // namespace
+ 
+ ConfigManager::ConfigManager() {}
+ 
+@@ -406,7 +435,7 @@ std::string ConfigManager::getLidarLaunchFilePath(const std::string& lidar_name)
+     if (!loaded_) return "";
+     for (const auto& l : config_.lidars) {
+         if (l.name == lidar_name && !l.launch_file.empty()) {
+-            return configDir() + "/../../" + l.launch_file;
++            return resolveLaunchPath(configDir(), l.launch_file);
+         }
+     }
+     return "";
+@@ -417,7 +446,7 @@ std::string ConfigManager::getRadarLaunchFilePath(const std::string& radar_name)
+     if (!loaded_) return "";
+     for (const auto& r : config_.radars) {
+         if (r.name == radar_name && !r.launch_file.empty()) {
+-            return configDir() + "/../../" + r.launch_file;
++            return resolveLaunchPath(configDir(), r.launch_file);
+         }
+     }
+     return "";
+diff --git a/src/sensor_driver/chengtech_radar2cloud/CMakeLists.txt b/src/sensor_driver/chengtech_radar2cloud/CMakeLists.txt
+index efe33ec..3e22d65 100755
+--- a/src/sensor_driver/chengtech_radar2cloud/CMakeLists.txt
++++ b/src/sensor_driver/chengtech_radar2cloud/CMakeLists.txt
+@@ -69,6 +69,14 @@ target_link_libraries(chengtech_radar2cloud
+   ${catkin_LIBRARIES}
+ )
+ 
++install(TARGETS chengtech_radar2cloud
++  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
++)
++
++install(DIRECTORY launch/
++  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
++)
++
+ 
+ # add_executable(test_shm_cloud
+ #   test/test_shm_cloud.cpp
+diff --git a/src/sensor_driver/hw_fr671_offline/CMakeLists.txt b/src/sensor_driver/hw_fr671_offline/CMakeLists.txt
+index fdba68e..fea7910 100755
+--- a/src/sensor_driver/hw_fr671_offline/CMakeLists.txt
++++ b/src/sensor_driver/hw_fr671_offline/CMakeLists.txt
+@@ -68,6 +68,14 @@ target_link_libraries(hw_fr671_offline
+   ${catkin_LIBRARIES}
+ )
+ 
++install(TARGETS hw_fr671_offline
++  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
++)
++
++install(DIRECTORY launch/
++  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
++)
++
+ 
+ # add_executable(test_shm_cloud
+ #   test/test_shm_cloud.cpp
+diff --git a/src/sensor_driver/hw_l106_offline/CMakeLists.txt b/src/sensor_driver/hw_l106_offline/CMakeLists.txt
+index ee41bb7..be2fe04 100755
+--- a/src/sensor_driver/hw_l106_offline/CMakeLists.txt
++++ b/src/sensor_driver/hw_l106_offline/CMakeLists.txt
+@@ -68,6 +68,14 @@ target_link_libraries(hw_l106_offline
+   ${catkin_LIBRARIES}
+ )
+ 
++install(TARGETS hw_l106_offline
++  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
++)
++
++install(DIRECTORY launch/
++  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
++)
++
+ 
+ # add_executable(test_shm_cloud
+ #   test/test_shm_cloud.cpp
+diff --git a/src/sensor_driver/hw_l306_offline/CMakeLists.txt b/src/sensor_driver/hw_l306_offline/CMakeLists.txt
+index e8c531d..ba913c0 100755
+--- a/src/sensor_driver/hw_l306_offline/CMakeLists.txt
++++ b/src/sensor_driver/hw_l306_offline/CMakeLists.txt
+@@ -68,6 +68,14 @@ target_link_libraries(hw_l306_offline
+   ${catkin_LIBRARIES}
+ )
+ 
++install(TARGETS hw_l306_offline
++  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
++)
++
++install(DIRECTORY launch/
++  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
++)
++
+ 
+ # add_executable(test_shm_cloud
+ #   test/test_shm_cloud.cpp
+diff --git a/src/sensor_driver/tanway_focus_t_offline/CMakeLists.txt b/src/sensor_driver/tanway_focus_t_offline/CMakeLists.txt
+index 2b62e01..6910a94 100755
+--- a/src/sensor_driver/tanway_focus_t_offline/CMakeLists.txt
++++ b/src/sensor_driver/tanway_focus_t_offline/CMakeLists.txt
+@@ -68,6 +68,14 @@ target_link_libraries(tanway_focus_t_offline
+   ${catkin_LIBRARIES}
+ )
+ 
++install(TARGETS tanway_focus_t_offline
++  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
++)
++
++install(DIRECTORY launch/
++  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
++)
++
+ 
+ # add_executable(test_shm_cloud
+ #   test/test_shm_cloud.cpp
+diff --git a/src/sensor_driver/tanway_scope128_offline/CMakeLists.txt b/src/sensor_driver/tanway_scope128_offline/CMakeLists.txt
+index bbc67f1..e5d400a 100755
+--- a/src/sensor_driver/tanway_scope128_offline/CMakeLists.txt
++++ b/src/sensor_driver/tanway_scope128_offline/CMakeLists.txt
+@@ -68,6 +68,14 @@ target_link_libraries(tanway_scope128_offline
+   ${catkin_LIBRARIES}
+ )
+ 
++install(TARGETS tanway_scope128_offline
++  RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
++)
++
++install(DIRECTORY launch/
++  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
++)
++
+ 
+ # add_executable(test_shm_cloud
+ #   test/test_shm_cloud.cpp

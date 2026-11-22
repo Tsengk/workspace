@@ -1,0 +1,12 @@
+float64  	    x  
+float64  	    y  
+float64  	    z  
+float64  	    h  
+float64  	    he  
+float64  	    r  
+float64  	    v  
+float64  	    acc  
+int32  	    road_id  
+int32  	    lane_id  
+float64  	    s  
+float64  	    heading_rate  

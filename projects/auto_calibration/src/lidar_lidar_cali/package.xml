@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lidar_lidar_cali</name>
+  <version>1.0.0</version>
+  <description>
+    辅激光雷达 x/y/yaw 外参标定包（FAST-LIVO2 标定板版本）。
+    前提：主激光雷达已完全标定，辅激光雷达 roll/pitch/z 已标定。
+    本包通过双雷达同时观测 FAST-LIVO2 标定板的 4 个圆孔中心，
+    利用 SVD 3D-3D 配准标定辅雷达的 x_install、y_install、yaw_install。
+  </description>
+
+  <maintainer email="todo@example.com">todo</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>visualization_msgs</depend>
+  <depend>pcl_ros</depend>
+  <depend>pcl_conversions</depend>
+  <depend>image_lidar_calibration</depend>
+  <depend>devkit_shm_param</depend>
+</package>

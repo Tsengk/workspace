@@ -1,0 +1,94 @@
+vehicle:
+  id: vehical #车辆编号
+  car_length: 2.15 #车辆总长(m)
+  car_width: 1.1 #车辆总宽(m)
+  car_height: 0.85 #车辆总高(m)
+  front_overhang: 0.38 #前悬长度（前轴中心到车头距离m）
+  wheelbase: 1.47 #轴距(m)
+  rear_overhang: 0.30 #后悬长度（后轴中心到车尾距离m）
+  z_offset: 0.30 #后轴中心到地面的高度(m)
+#每个 `lidars` / `cameras` / `radars` 条目的t = [x, y, z],R = [roll, pitch, yaw],即为该传感器在车辆坐标系中的初始安装参数
+
+cameras:
+  - name: front_120 #相机的名称标识
+    topic: /compressed_image_list/3/compressed #ROS数据流主题订阅
+    intrinsics_file: intrinsics/front_120.yaml #相机内参文件路径
+    extrinsics:
+      t:
+        - 2.43
+        - -0.05
+        - 0.7
+      R_euler:
+        - -5.49
+        - -1.37
+        - -1.71
+      vcs_to_ground_height: 0.0 #相机距离地面的实际物理高度（m，遗留参数不需要）
+      base_euler: 0.0 #基层欧拉角偏移量（遗留参数不需要）
+  - name: left_front_100
+    topic: /compressed_image_list/1/compressed
+    intrinsics_file: intrinsics/left_front_100.yaml
+    extrinsics:
+      t:
+        - 0
+        - 0.765
+        - 0.82
+      R_euler:
+        - -9.42
+        - 60.49
+        - -10.33
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: right_front_100
+    topic: /compressed_image_list/2/compressed
+    intrinsics_file: intrinsics/right_front_100.yaml
+    extrinsics:
+      t:
+        - 0
+        - -0.765
+        - 0.82
+      R_euler:
+        - 4.49
+        - -60.54
+        - -3.47
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: back_100
+    topic: /compressed_image_list/0/compressed
+    intrinsics_file: intrinsics/back_100.yaml
+    extrinsics:
+      t:
+        - -0.47
+        - 0
+        - 0.515
+      R_euler:
+        - 0
+        - 180
+        - 0
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+lidars:
+  - name: front_middle_lidar
+    packets_topic: /lidarpackets_front
+    topic: /driver/lidar/cloud/front/offline
+    launch_file: sensor_driver/hw_l306_offline/launch/offline_front.launch
+    t:
+      - 2.46
+      - 0
+      - 0.59
+    R:
+      - 0
+      - 0
+      - 0
+radars:
+  - name: front_middle_radar
+    packets_topic: /radarpackets_front
+    topic: /driver/radar/cloud/front/offline
+    launch_file: sensor_driver/hw_fr671_offline/launch/offline_front.launch
+    t:
+      - 2.445
+      - 0
+      - 0.5
+    R:
+      - -20
+      - 0
+      - 0

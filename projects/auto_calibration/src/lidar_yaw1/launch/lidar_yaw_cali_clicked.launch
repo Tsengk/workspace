@@ -1,0 +1,53 @@
+<launch>
+  <!-- LiDAR Yaw 手动标定节点（基于 RViz clicked_point + 锥形桶最高点） -->
+  <!--
+    使用方法：
+      1. roslaunch lidar_yaw1 lidar_yaw_cali_clicked.launch
+      2. 在 RViz 中：
+         - Fixed Frame 设为点云所在帧（通常 base_link）
+         - 显示 LiDAR 点云
+         - 工具栏选 "Publish Point"（G 键）
+         - 依次点击各锥形桶附近（建议 3~5 个，沿 X 轴排列）
+      3. 调用服务保存结果：
+         rosservice call /lidar_yaw_cali_clicked/save_calibration
+      4. 如需重新采集：
+         rosservice call /lidar_yaw_cali_clicked/reset_calibration
+  -->
+
+  <!-- GUI 传入参数（有默认值，单独 roslaunch 时也可用） -->
+  <arg name="input_topic"             default="/driver/lidar/cloud//front_main/offline"/>
+  <arg name="lidar_frame"             default="lidar"/>
+  <arg name="inst_x"                  default="0.0"/>
+  <arg name="inst_y"                  default="0.0"/>
+  <arg name="inst_z"                  default="1.8"/>
+  <arg name="inst_roll_deg"           default="0.0"/>
+  <arg name="inst_pitch_deg"          default="0.0"/>
+  <arg name="inst_yaw_deg"            default="0.0"/>
+  <arg name="inst_z_offset"           default="0.37"/>
+  <arg name="sensor_name"             default="front_main_lidar"/>
+  <arg name="calibration_output_file" default="/tmp/lidar_yaw_front_main_lidar.yaml"/>
+
+  <node name="lidar_yaw_cali_clicked"
+        pkg="lidar_yaw1"
+        type="lidar_yaw_cali_clicked_node"
+        output="screen">
+
+    <rosparam file="$(find lidar_yaw1)/config/params.yaml" command="load"/>
+
+    <param name="input_topic"  value="$(arg input_topic)"/>
+    <param name="lidar_frame"  value="$(arg lidar_frame)"/>
+    <param name="installation/x"         value="$(arg inst_x)"/>
+    <param name="installation/y"         value="$(arg inst_y)"/>
+    <param name="installation/z"         value="$(arg inst_z)"/>
+    <param name="installation/roll_deg"  value="$(arg inst_roll_deg)"/>
+    <param name="installation/pitch_deg" value="$(arg inst_pitch_deg)"/>
+    <param name="installation/yaw_deg"   value="$(arg inst_yaw_deg)"/>
+    <param name="installation/z_offset"  value="$(arg inst_z_offset)"/>
+    <param name="installation/sensor_name"  value="$(arg sensor_name)"/>
+
+    <param name="search_radius"   value="0.5"/>
+    <param name="min_cluster_pts" value="3"/>
+    <param name="min_cones"       value="2"/>
+    <param name="calibration_output_file" value="$(arg calibration_output_file)"/>
+  </node>
+</launch>

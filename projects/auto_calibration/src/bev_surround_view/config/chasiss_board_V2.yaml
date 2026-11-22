@@ -1,0 +1,46 @@
+# 相机标定布棋盘格配置文件（V2）
+# 当前项目实际规格：unit_size=0.4m
+# 仅保留当前链路会用到的字段
+
+unit_size: 0.2
+board_thickness: 0.005
+
+top_bottom_board:
+  chessboard_groups:
+    - group_id: 1
+      type: "4x4"
+      rows: 5
+      cols: 5
+      corner_count: [4, 4]
+
+    - group_id: 2
+      type: "4x6"
+      rows: 5
+      cols: 7
+      corner_count: [4, 6]
+
+    - group_id: 3
+      type: "4x4"
+      rows: 5
+      cols: 5
+      corner_count: [4, 4]
+
+left_right_board:
+  chessboard_groups:
+    - group_id: 1
+      type: "4x4"
+      rows: 5
+      cols: 5
+      corner_count: [4, 4]
+
+    - group_id: 2
+      type: "4x6"
+      rows: 5
+      cols: 7
+      corner_count: [4, 6]
+
+    - group_id: 3
+      type: "4x4"
+      rows: 5
+      cols: 5
+      corner_count: [4, 4]

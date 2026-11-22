@@ -1,0 +1,38 @@
+# radar_cali 参数配置
+# 毫米波雷达外参标定
+
+# 话题配置
+radar_topic: "/radar_points"   # 雷达点云输入话题（sensor_msgs/PointCloud2）
+
+# 结果保存路径
+save_path: "/tmp/radar_cali_result.yaml"
+
+# 数据累积参数
+accumulate_frames:  30   # 自动标定所需帧数（触发条件）
+min_frames_to_cali: 10   # 最少帧数
+
+# 安装参数（雷达在 VCS 中的初始安装值）
+installation:
+  radar_name:  "radar_front"
+  x:           4.0     # 前向 (m)
+  y:           0.0     # 横向 (m)
+  z:           0.5     # 高度 (m)
+  roll_deg:    0.0
+  pitch_deg:   0.0
+  yaw_deg:     0.0
+
+# 标定算法参数
+calibrator:
+  max_range:          100.0    # 最大有效探测距离 (m)
+  min_range:          1.0      # 最小有效探测距离 (m)
+  roi_x_min:          -20.0   # ROI X 最小值 (m)
+  roi_x_max:           20.0   # ROI X 最大值 (m)
+  roi_y_min:          -10.0   # ROI Y 最小值 (m)
+  roi_y_max:           10.0   # ROI Y 最大值 (m)
+  roi_z_min:           -3.0   # ROI Z 最小值 (m)
+  roi_z_max:            5.0   # ROI Z 最大值 (m)
+  ground_height:       -0.37  # VCS 地面高度 (m)
+  ground_tolerance:     0.1   # 地面检测容差 (m)
+  min_points:            50   # 最少有效点数
+  max_iterations:       1000  # RANSAC 最大迭代次数
+  distance_threshold:    0.1  # RANSAC 内点距离阈值 (m)

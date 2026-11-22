@@ -1,0 +1,14 @@
+string  	    name  
+int32  	    prerotaxis_0  
+int32  	    prerotaxis_1  
+int32  	    prerotaxis_2  
+float32  	    prerotdegree_0  
+float32  	    prerotdegree_1  
+float32  	    prerotdegree_2  
+float32  	    xoffset  
+float32  	    yoffset  
+float32  	    zoffset  
+float32  	    roll  
+float32  	    pitch  
+float32  	    yaw  
+float32  	    z_ground_offset  

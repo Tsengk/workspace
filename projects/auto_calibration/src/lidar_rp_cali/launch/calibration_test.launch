@@ -1,0 +1,17 @@
+<launch>
+  <!-- LiDAR Roll/Pitch 标定仿真测试 -->
+  <!--
+    使用速腾 RS-Ruby 80 线仿真器生成点云，对 8 种场景依次执行标定，
+    最终在控制台打印测试报告（PASS/FAIL）。
+  -->
+
+  <node name="calibration_test"
+        pkg="lidar_rp_cali"
+        type="calibration_test_node"
+        output="screen"
+        required="true">
+
+    <!-- 每个场景生成的帧数（越多结果越稳定，但运行越慢） -->
+    <param name="n_frames" value="10"/>
+  </node>
+</launch>

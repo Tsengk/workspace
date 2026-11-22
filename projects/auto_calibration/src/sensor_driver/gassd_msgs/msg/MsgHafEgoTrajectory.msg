@@ -1,0 +1,14 @@
+MsgHafHeader  	    egoTrajectoryHeader  
+float64  	    trajectoryLength  
+float64  	    trajectoryPeriod  
+MsgHafTrajectoryPoint[]  	    trajectoryPoints  
+MsgHafWayPoint[]  	    wayPoints  
+uint8  	    isReplanning  
+uint8  	    gear  
+MsgHafEstop  	    estop  
+MsgHafHeader  	    routingHeader  
+string  	    selfLaneid  
+int32  	    trajectoryType  
+string  	    targetLaneId  
+uint8  	    turnLight  
+uint8  	    isHeld  

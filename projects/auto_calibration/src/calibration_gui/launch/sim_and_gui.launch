@@ -1,0 +1,39 @@
+<launch>
+  <!-- sim_and_gui.launch
+       一键启动：合成传感器数据发布 + 标定 GUI
+
+       用法：
+         cd /path/to/test_lidar_rp_cali
+         source devel/setup.bash
+         roslaunch calibration_gui sim_and_gui.launch \
+           vehicle_config:=$(pwd)/src/calibration_gui/config/vehicle_sample.yaml
+
+       可选参数：
+         rate_hz      合成数据发布频率 (Hz)，默认 10
+         cone_rows    前方锥桶数，默认 5
+         lidar_noise  LiDAR 测距噪声 σ (m)，默认 0.02
+  -->
+
+  <arg name="vehicle_config" default=""/>
+  <arg name="rate_hz"        default="10.0"/>
+  <arg name="cone_rows"      default="5"/>
+  <arg name="lidar_noise"    default="0.02"/>
+
+  <!-- 全局参数，GUI 和 sim 节点都能读到 -->
+  <param name="vehicle_config" value="$(arg vehicle_config)"/>
+
+  <!-- 合成传感器数据发布 -->
+  <include file="$(find sensor_sim_pub)/launch/sensor_sim_pub.launch">
+    <arg name="vehicle_config" value="$(arg vehicle_config)"/>
+    <arg name="rate_hz"        value="$(arg rate_hz)"/>
+    <arg name="cone_rows"      value="$(arg cone_rows)"/>
+    <arg name="lidar_noise"    value="$(arg lidar_noise)"/>
+  </include>
+
+  <!-- 标定 GUI -->
+  <node name="calibration_gui" pkg="calibration_gui" type="calibration_gui"
+        output="screen" required="true">
+    <param name="vehicle_config" value="$(arg vehicle_config)"/>
+  </node>
+
+</launch>

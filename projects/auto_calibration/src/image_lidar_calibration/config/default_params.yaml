@@ -1,0 +1,53 @@
+realtime_calibration: true
+auto_save_realtime_result: false
+
+projection:
+  min_depth_m: 0.3
+  max_depth_m: 30.0
+  rate_hz: 10.0
+
+calibration:
+  rate_hz: 10.0
+  max_scene_pairs: 100
+
+lidar:
+  ransac_threshold: 0.1
+  max_iterations: 1000
+  board_filter_margin_x: 0.14
+  board_filter_margin_y: 0.14
+  edge_filter_margin_x: 0.16
+  edge_filter_margin_y: 0.16
+  contamination_min_score: 0.58
+  contamination_min_plane_keep_ratio: 0.28
+  contamination_min_tight_inside_ratio: 0.55
+  hole_search_radius_margin: 0.12
+  hole_max_center_shift: 0.12
+  hole_min_annulus_points: 4
+  hole_max_inner_points: 16
+  hole_min_local_score: 1.5
+
+solver:
+  min_scenes: 1
+  use_prior_pairing: true
+  max_pairing_rmse_m: 1.0
+  max_translation_delta_from_prior_m: 5
+  max_rotation_delta_from_prior_deg: 0.0
+  use_ceres_optimization: true
+  optimization_max_iterations: 200
+  xyz_delta_limit_m: 0.03
+  separate_axis_constraint: false
+  lidar_point_prior_weight: 1.0
+  lidar_geometry_weight: 10.0
+  pose_rotation_prior_weight: 0.0
+  use_ransac_rejection: true
+  ransac_reproj_threshold_px: 5.0
+  ransac_min_inliers: 4
+  ransac_min_scene_inliers: 3
+
+pose_filter:
+  min_rotation_deg: 5.0
+  min_position_m: 0.1
+
+sync:
+  image_buffer_size: 20
+  max_time_diff_sec: 0.06

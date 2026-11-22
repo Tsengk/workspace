@@ -1,0 +1,15 @@
+int32  	    output_mode  
+int32  	    remote_control_alarm  
+int32  	    remote_control_assist  
+int32  	    front_source  
+int32  	    split_adaptive  
+int32  	    video_left_  
+int32  	    video_main_  
+int32  	    video_right_  
+MsgHafFusionOutArray  	    objects  
+MsgHafEgoTrajectory  	    remote_control  
+MsgHafEgoTrajectory  	    path  
+MsgPoint3D[]  	    target_points  
+int32  	    video_third_person  
+MsgPoint3D  	    target_point  
+AppVideoSplitParam[]  	    split_parames_  

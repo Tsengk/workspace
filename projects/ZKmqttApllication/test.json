@@ -1,0 +1,41 @@
+{
+	"task_name": "SJ_Sar任务（聚束模式）",
+	"uuid": "as76reh1b78s9sf3by59iya9vb9er0120250905",
+	"description": "Sar任务（聚束模式）",
+	"entities": [{
+		"name": "Sar任务（聚束模式）",
+		"id": "dy01",
+		"type": 1006,
+		"position": [112.89395213, 28.20923746]
+	}],
+	"graphics": [{
+		"types": "区域"
+	}],
+
+	"mission": {
+		"task_id": "Sar任务（聚束模式)",
+		"task_name": "Sar任务（聚束模式）",
+		"task_type": 221,
+		"task_start_time": "2025-07-15T14:35:00Z",
+		"task_end_time": "2025-07-15T15:00:00Z",
+		"init_position": [106.51786382923247, 29.730108927851774, 300],
+		"task_data": {
+			"data": "test",
+			"graphics": [{
+				"name": "Sar任务定位点",
+				"point": {
+					"longitude": 118.10056,
+					"latitude": 32.51139,
+					"altitude": 0
+
+				}
+			}],
+			"sar_info": {
+				"sar_height": 300.0,
+				"sar_angle": 35.0,
+				"sar_heading": 25
+			}
+
+		}
+	}
+}

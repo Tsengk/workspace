@@ -1,0 +1,18 @@
+%YAML:1.0
+---
+model_type: MEI
+camera_name: back_fish_eye
+image_width: 1920
+image_height: 1080
+mirror_parameters:
+   xi: 1.9059048532806610e+00
+distortion_parameters:
+   k1: 7.7245733346011850e-01
+   k2: -9.3787550026010780e-01
+   p1: 4.1369180682973760e-03
+   p2: -5.9057774181140640e-04
+projection_parameters:
+   gamma1: 1.4979167258804550e+03
+   gamma2: 1.4992551156404820e+03
+   u0: 9.6103711136393130e+02
+   v0: 5.3661311196888100e+02

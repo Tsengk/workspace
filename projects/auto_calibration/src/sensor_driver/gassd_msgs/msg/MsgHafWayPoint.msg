@@ -1,0 +1,14 @@
+MsgHafHeader  	    header  
+float64  	    xg  
+float64  	    yg  
+float64  	    zg  
+float64  	    x  
+float64  	    y  
+float64  	    angle  
+float64  	    theta  
+float64  	    curvature  
+float64  	    s  
+float64  	    deltaCurvature  
+string  	    laneId  
+float64  	    deltaX  
+float64  	    deltaY  

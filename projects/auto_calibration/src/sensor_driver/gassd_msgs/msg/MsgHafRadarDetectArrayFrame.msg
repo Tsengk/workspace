@@ -1,0 +1,11 @@
+MsgHafTime  	    timestamp  
+string  	    frameID  
+uint8  	    sensorID  
+uint32  	    seq  
+MsgHafRadarDetectData[]  	    detectList  
+float64  	    maxDistanceOverAzimuthList  
+float64  	    azimuthForMaxDistanceList  
+float64  	    factorDistanceOverElevationList  
+float64  	    elevationForFactorMaxDistanceList  
+float64  	    maxDistanceDueToProgram  
+float64  	    minDistanceDueToProgram  

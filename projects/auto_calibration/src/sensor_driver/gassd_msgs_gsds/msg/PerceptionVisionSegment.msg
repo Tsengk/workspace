@@ -1,0 +1,10 @@
+int32  	    camera_width  
+int32  	    camera_height  
+bool  	    resa_valid  
+uint32[]  	    resa_roi  
+SensorImage  	    resa  
+bool  	    seg_valid  
+uint32[]  	    seg_roi  
+SensorImage  	    seg  
+SensorImage  	    resacrop  
+SensorImage  	    segcrop  

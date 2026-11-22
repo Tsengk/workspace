@@ -1,0 +1,10 @@
+HwCameraList_compressed_image_list,g2r,./libmsgpack2rosimageplugin.so
+/tpcompressed_image_list,g2r,./libmsgpack2rosimageplugin.so
+compressed_image_list,g2r,./libmsgpack2rosimageplugin.so
+tpimu,g2r
+lidarpackets_front,g2r,./libmsgpack2rosplugin.so
+lidarpackets_left,g2r,./libmsgpack2rosplugin.so
+lidarpackets_right,g2r,./libmsgpack2rosplugin.so
+radarpackets_front,g2r,./libmsgpack2rosplugin.so
+radarpackets_left,g2r,./libmsgpack2rosplugin.so
+radarpackets_right,g2r,./libmsgpack2rosplugin.so

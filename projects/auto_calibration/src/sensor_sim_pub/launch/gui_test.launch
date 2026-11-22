@@ -1,0 +1,52 @@
+<launch>
+  <!--
+    gui_test.launch — 一键启动完整可视化验证环境
+
+    启动三个节点：
+      1. sensor_sim_pub_node   — 发布原始传感器数据（LiDAR/Camera/GNSS）
+      2. mock_cali_nodes       — 模拟 8 个标定后端节点（点云+图像+服务）
+      3. calibration_gui       — 标定 GUI（可选，也可手动启动）
+
+    用法：
+      # 方式1：只启动数据发布 + mock 节点，GUI 单独启动
+      roslaunch sensor_sim_pub gui_test.launch \
+        vehicle_config:=$(rospack find calibration_gui)/config/vehicle_sample.yaml \
+        start_gui:=false
+
+      # 方式2：一键全启动
+      roslaunch sensor_sim_pub gui_test.launch \
+        vehicle_config:=$(rospack find calibration_gui)/config/vehicle_sample.yaml
+  -->
+
+  <arg name="vehicle_config" default=""/>
+  <arg name="rate_hz"        default="10.0"/>
+  <arg name="start_gui"      default="true"/>
+
+  <!-- 全局共享配置路径 -->
+  <param name="vehicle_config" value="$(arg vehicle_config)"/>
+
+  <!-- ① 合成传感器数据发布（LiDAR 点云、相机图像、GNSS Odometry） -->
+  <node name="sensor_sim_pub" pkg="sensor_sim_pub"
+        type="sensor_sim_pub_node" output="screen">
+    <param name="vehicle_config" value="$(arg vehicle_config)"/>
+    <param name="rate_hz"        value="$(arg rate_hz)"/>
+    <param name="lidar_noise"    value="0.02"/>
+    <param name="cone_rows"      value="5"/>
+    <param name="cone_spacing"   value="1.5"/>
+  </node>
+
+  <!-- ② Mock 标定后端节点（模拟所有 8 个 GUI Tab 对应的标定节点） -->
+  <node name="mock_cali_nodes" pkg="sensor_sim_pub"
+        type="mock_cali_nodes" output="screen">
+    <param name="mock_rate_hz" value="$(arg rate_hz)"/>
+  </node>
+
+  <!-- ③ 标定 GUI（可选） -->
+  <group if="$(arg start_gui)">
+    <node name="calibration_gui" pkg="calibration_gui"
+          type="calibration_gui" output="screen" required="true">
+      <param name="vehicle_config" value="$(arg vehicle_config)"/>
+    </node>
+  </group>
+
+</launch>

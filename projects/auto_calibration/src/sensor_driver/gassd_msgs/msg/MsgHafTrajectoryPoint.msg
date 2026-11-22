@@ -1,0 +1,9 @@
+MsgHafHeader  	    header  
+MsgHafWayPoint  	    wayPoint  
+float64  	    speed  
+float64  	    acc  
+float64  	    timeRelative  
+float64  	    deltaAcc  
+float64  	    steerAngle  
+float32  	    length  
+int32  	    risk_level  

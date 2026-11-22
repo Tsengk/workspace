@@ -1,0 +1,16 @@
+uint8  	    color  
+string  	    id  
+uint8  	    flicker  
+bool  	    occlude  
+uint8  	    number  
+float64  	    confidence  
+float64  	    tracking_time  
+PerceptionSingleTLBboxDebug[]  	    light_detection  
+PerceptionSingleTLBboxDebug[]  	    light_track  
+PerceptionSingleTLBboxDebug[]  	    light_hdmap  
+PerceptionSingleTLBboxDebug[]  	    number_detection  
+uint8  	    sub_light_type  
+float64  	    distance_car2light  
+CommonPoint3d[]  	    light_position  
+uint8  	    height  
+uint8  	    sub_light_type_by_hdmap  

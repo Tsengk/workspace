@@ -1,0 +1,71 @@
+##############################################################
+# LiDAR Yaw 角标定参数配置
+# 坐标系：FLU（前左上），X=前，Y=左，Z=上
+#
+# 说明：驱动已将点云从 LiDAR 帧变换到 VCS（车辆坐标系），
+#       变换使用下方 installation 安装参数。
+#       Roll/Pitch 标定已完成，本模块仅标定 Yaw 角。
+#
+# 场景要求：
+#   在车辆正前方沿 X 轴方向依次摆放 4~5 个锥形桶，
+#   锥形桶周围不能有其他障碍物。
+#
+# 标定原理：
+#   若激光雷达 Yaw 有误差 δ，则锥桶中心点在 VCS 中的连线
+#   相对 X 轴偏转角 θ = δ。
+#   修正：yaw_calib = yaw_install - θ（四元数合成保证精度）
+##############################################################
+
+# --- 输入输出 ---
+input_topic: /driver/rotate_lidar/cloud/top
+lidar_frame: lidar
+base_frame:  base_link
+
+# --- 安装参数（驱动使用的标称值，需与驱动配置保持一致）---
+# 注意：roll_deg / pitch_deg 应填写已完成 Roll/Pitch 标定后的值
+installation:
+  sensor_name: rs_lidar_top   # 传感器名称（写入标定文件的键名）
+  x:         0.0           # 纵向（m）
+  y:         0.0           # 横向（m）
+  z:         1.7           # 垂直（m），相对后轴中心
+  roll_deg:  -1.454           # 横滚（°）—— 已标定值
+  pitch_deg: 0.273           # 俯仰（°）—— 已标定值
+  yaw_deg:   0.0           # 偏航（°）—— 待标定（当前估计值）
+  z_offset:  0.37          # 后轴中心到地面高度（m），z + z_offset = 激光雷达到地面
+
+# --- 标定输出文件路径 ---
+calibration_output_file: /tmp/lidar_yaw_calibration.yaml
+
+# --- 锥形桶检测参数 ---
+cone:
+  # 感兴趣区域（VCS 坐标系，单位 m）
+  x_min:   2.0    # 最近检测距离（排除车身遮挡区域）
+  x_max:  40.0    # 最远检测距离
+  y_min: -3.0    # 横向左侧边界
+  y_max:  3.0    # 横向右侧边界
+
+  # 锥桶高度范围（相对地面高度，地面 VCS_z ≈ -z_offset）
+  # 典型交通锥：底部直径 ~0.35m，高度 ~0.5~0.7m
+  height_above_ground_min: 0.08   # m，高于地面的起始高度（过滤地面残差）
+  height_above_ground_max: 0.80   # m，高于地面的最大高度
+
+  # 体素网格降采样（加速聚类）
+  voxel_size: 0.05   # m
+
+  # 欧几里得聚类
+  cluster_tolerance:   0.30   # m，同一锥桶内相邻点距离阈值
+  min_cluster_points:  5      # 最少点数（远处锥桶点少）
+  max_cluster_points:  500    # 最多点数（过大则非锥桶）
+
+  # 锥形桶 XY 轮廓过滤（圆柱形）
+  # 锥桶底部直径约 0.35m，最大半径留 0.5m 余量
+  max_cluster_radius_xy: 0.50  # m，锥桶中心到最远点的 XY 距离
+
+  # 最少有效锥桶数（少于此数量则本帧不参与标定）
+  min_cones: 2
+
+# --- Yaw 标定计算 ---
+yaw_cali:
+  max_yaw_deg:    30.0   # 超出此范围认为异常，不入窗口
+  window_size:    10     # 滑动窗口帧数（多帧平均提高稳定性）
+  min_confidence: 0.30   # 低于此置信度不入滑动窗口

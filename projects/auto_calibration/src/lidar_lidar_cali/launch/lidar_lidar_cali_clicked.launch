@@ -1,0 +1,62 @@
+<launch>
+  <!-- 双激光雷达 x/y/yaw 手动标定节点（基于 RViz clicked_point + 锥形桶） -->
+  <!--
+    使用方法：
+      1. roslaunch lidar_lidar_cali lidar_lidar_cali_clicked.launch
+      2. 在 RViz 中显示两路 LiDAR 点云（Fixed Frame = base_link）
+      3. 工具栏选 "Publish Point"（G 键）
+      4. 选择主雷达视角，点击各锥桶：
+           （默认启动后即为主雷达模式）
+           点击锥桶 1 → 锥桶 2 → 锥桶 3...
+      5. 切换到辅雷达模式：
+           rosservice call /lidar_lidar_cali_clicked/select_secondary
+      6. 在辅雷达点云中，按相同顺序点击相同锥桶
+      7. 自动触发标定（主/辅数量相等且 >= min_cones 时）
+      8. 保存结果：
+           rosservice call /lidar_lidar_cali_clicked/save_calibration
+      9. 重置：
+           rosservice call /lidar_lidar_cali_clicked/reset_calibration
+  -->
+
+  <!-- GUI 传参覆盖 -->
+  <arg name="primary_lidar_frame"   default="/driver/lidar/cloud//front_main/offline"/>
+  <arg name="secondary_lidar_frame" default="/driver/lidar/cloud/front/offline"/>
+  <arg name="primary_lidar_topic"   default="$(arg primary_lidar_frame)"/>
+  <arg name="secondary_lidar_topic" default="$(arg secondary_lidar_frame)"/>
+  <arg name="inst_x"                default="0.0"/>
+  <arg name="inst_y"                default="0.0"/>
+  <arg name="inst_z"                default="1.63"/>
+  <arg name="inst_roll_deg"         default="0.0"/>
+  <arg name="inst_pitch_deg"        default="0.0"/>
+  <arg name="inst_yaw_deg"          default="0.0"/>
+  <arg name="inst_z_offset"         default="0.37"/>
+  <arg name="sensor_name"         default="front_lidar"/>
+  <arg name="calibration_output_file" default="/tmp/lidar_lidar_calib_result.yaml"/> 
+
+  <node name="lidar_lidar_cali_clicked"
+        pkg="lidar_lidar_cali"
+        type="lidar_lidar_cali_clicked_node"
+        output="screen">
+
+    <rosparam file="$(find lidar_lidar_cali)/config/params.yaml" command="load"/>
+
+    <!-- 手动模式专有参数 -->
+    <param name="search_radius"   value="0.5"/>
+    <param name="min_cluster_pts" value="3"/>
+    <!-- 最少锥桶对数量才自动触发标定（建议 3，非共线时 yaw 更准） -->
+    <param name="min_cones"       value="3"/>
+
+    <param name="primary_lidar/topic"     value="$(arg primary_lidar_topic)"/>
+    <param name="secondary_lidar/topic"   value="$(arg secondary_lidar_topic)"/>
+    <param name="secondary_lidar/x_install"         value="$(arg inst_x)"/>  
+    <param name="secondary_lidar/y_install"         value="$(arg inst_y)"/>  
+    <param name="secondary_lidar/z_calib"         value="$(arg inst_z)"/>  
+    <param name="secondary_lidar/roll_calib_deg"  value="$(arg inst_roll_deg)"/>  
+    <param name="secondary_lidar/pitch_calib_deg" value="$(arg inst_pitch_deg)"/>  
+    <param name="secondary_lidar/yaw_install_deg"   value="$(arg inst_yaw_deg)"/>  
+    <param name="secondary_lidar/z_offset"  value="$(arg inst_z_offset)"/>  
+    <param name="secondary_lidar/sensor_name"  value="$(arg sensor_name)"/>  
+    <param name="output/file" value="$(arg calibration_output_file)"/>
+
+  </node>
+</launch>

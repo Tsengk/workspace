@@ -1,0 +1,9 @@
+CommonHeader  	    header  
+uint8  	    action_id  
+uint8  	    task_status  
+uint8  	    task_type  
+uint8  	    task_progress  
+float64  	    distance_to_nearest  
+float64  	    total_mileage  
+float64  	    current_mileage  
+uint8  	    progress  

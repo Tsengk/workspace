@@ -1,0 +1,10 @@
+bool  	    valid  
+uint32  	    camera_num  
+string[]  	    camera_names  
+uint32[]  	    camera_heights  
+uint32[]  	    camera_widths  
+bool[]  	    valids  
+PerceptionSegmentMaskSplitInfo[]  	    mask_split_infos  
+bool  	    mask_compressed  
+uint8[]  	    mask_data  
+uint32  	    data_size  

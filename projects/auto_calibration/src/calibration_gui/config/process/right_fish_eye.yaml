@@ -1,0 +1,39 @@
+right_fish_eye:
+  role: right
+  Size:
+    - 1920
+    - 1280
+  K:
+    - 995.1192857988477
+    - 0
+    - 961.0966022832409
+    - 0
+    - 995.471989935207
+    - 638.5239151158727
+    - 0
+    - 0
+    - 1
+  D:
+    - 0.2902109363893506
+    - -0.2684569788489657
+    - 0.0006718194969963926
+    - 0.0005365540339455756
+  Epsilon: 1.295026407732248
+  t:
+    - -0.99
+    - 0.64
+    - 0.4
+  R_euler:
+    - -82.41
+    - -84.2
+    - 82.09999999999999
+  vcs_z_offset: 0.34
+  bev_width: 1280
+  bev_height: 1280
+  bev_resolution: 0.01
+  bev_range_front: 410
+  bev_range_rear: 920
+  bev_range_left: 495
+  bev_range_right: 780
+  bev_origin_offset_x: 0
+  bev_origin_offset_y: 0

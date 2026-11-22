@@ -1,0 +1,38 @@
+<launch>
+  <!--
+    多激光雷达外参标定（lidar_lidar_cali）测试（合成数据 + RViz 可视化）
+
+    话题：
+      /lidar_lidar_test/primary_markers    — 主雷达锥桶（绿色）
+      /lidar_lidar_test/secondary_markers  — 辅雷达锥桶（蓝色，未对齐）
+      /lidar_lidar_test/aligned_markers    — 校正后辅雷达锥桶（品红）
+      /lidar_lidar_test/result_markers     — 标定结果文字
+
+    参数：
+      n_frames    每场景累积帧数（需 ≥ min_obs_per_cone=2）
+      scene_delay 场景间停顿（秒）
+      viz         是否发布可视化
+  -->
+
+  <!-- 静态 TF：base_link 帧 -->
+  <node pkg="tf2_ros" type="static_transform_publisher"
+        name="base_tf_pub"
+        args="0 0 0 0 0 0 world base_link"/>
+
+  <!-- 测试节点 -->
+  <node name="lidar_lidar_test"
+        pkg="lidar_lidar_cali"
+        type="lidar_lidar_test_node"
+        output="screen">
+    <param name="n_frames"    value="8"/>
+    <param name="viz"         value="true"/>
+    <param name="scene_delay" value="3.5"/>
+  </node>
+
+  <!-- RViz -->
+  <node name="rviz"
+        pkg="rviz"
+        type="rviz"
+        args="-d $(find lidar_lidar_cali)/config/lidar_lidar_test.rviz"
+        required="false"/>
+</launch>

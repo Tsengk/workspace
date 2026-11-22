@@ -1,0 +1,36 @@
+schema_version: 1
+calib_type: lidar_secondary_rp
+sensor_name: front_right_lidar
+generated_at: 2026-05-19 15:40:13
+method: dual_lidar_clicked_ground_plane
+coordinate_system: FLU
+installation:
+  x: 2.940000
+  y: -1.020000
+  z: 0.786700
+  roll_deg: -2.373720
+  pitch_deg: -3.650240
+  yaw_deg: -60.000000
+  z_offset: 0.340000
+  lidar_to_ground_height: 1.126700
+calibrated:
+  x: 2.940000
+  y: -1.020000
+  z: 0.888970
+  roll_deg: -1.707036
+  pitch_deg: -2.523407
+  yaw_deg: -60.035748
+delta:
+  delta_roll_deg: 1.308715
+  delta_pitch_deg: -0.013535
+  delta_z: 0.093849
+ground_measurement:
+  z_ground_primary: -0.348421
+  z_ground_secondary: -0.442270
+  z_ground_expected: -0.340000
+quality:
+  confidence: 0.982565
+  primary_plane_rms_m: 0.002492
+  secondary_plane_rms_m: 0.003467
+  n_primary_points: 6
+  n_secondary_points: 6

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>calibration_gui</name>
+  <version>0.0.1</version>
+  <description>Qt5 GUI for autonomous driving calibration workflow</description>
+  <maintainer email="idriver@example.com">idriver</maintainer>
+  <license>BSD</license>
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>pcl_ros</depend>
+  <depend>pcl_conversions</depend>
+  <depend>vehicle_config</depend>
+  <depend>devkit_shm_param</depend>
+  <exec_depend>lidar_camera_projection</exec_depend>
+  <build_depend>qt_build</build_depend>
+</package>

@@ -1,0 +1,17 @@
+<launch>
+  <!-- LiDAR-GNSS 联合 Yaw 标定节点 -->
+  <node name="lidar_gnss_yaw"
+        pkg="lidar_gnss_yaw"
+        type="lidar_gnss_yaw_node"
+        output="screen"
+        respawn="false">
+
+    <!-- 加载参数文件 -->
+    <rosparam file="$(find lidar_gnss_yaw)/config/params.yaml" command="load"/>
+
+    <!-- 话题重映射（按实际话题名修改） -->
+    <remap from="/rslidar_points" to="/rslidar_points"/>
+    <remap from="/sensorgps"      to="/sensorgps"/>
+
+  </node>
+</launch>

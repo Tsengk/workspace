@@ -1,0 +1,284 @@
+vehicle:
+  id: ZD7 #车辆编号
+  car_length: 5.0 #车辆总长(m)
+  car_width: 2.68 #车辆总宽(m)
+  car_height: 2.15 #车辆总高(m)
+  front_overhang: 0.42 #前悬长度（前轴中心到车头距离m）
+  wheelbase: 4.25 #轴距(m)
+  rear_overhang: 0.33 #后悬长度（后轴中心到车尾距离m）
+  z_offset: 0 #后轴中心到地面的高度(m)
+#每个 `lidars` / `cameras` / `radars` 条目的t = [x, y, z],R = [roll, pitch, yaw],即为该传感器在车辆坐标系中的初始安装参数
+
+cameras:
+  - name: front_60 #相机的名称标识
+    topic: /compressed_image_list/0/compressed #ROS数据流主题订阅
+    intrinsics_file: intrinsics/front_60.yaml #相机内参文件路径
+    extrinsics:
+      t:
+        - 2.5
+        - -0.13
+        - 1.26
+      R_euler:
+        - -5.49
+        - -1.37
+        - -1.71
+      vcs_to_ground_height: 0.0 #相机距离地面的实际物理高度（m，遗留参数不需要）
+      base_euler: 0.0 #基层欧拉角偏移量（遗留参数不需要）
+  - name: front_120
+    topic: /compressed_image_list/13/compressed
+    intrinsics_file: intrinsics/front_120.yaml
+    extrinsics:
+      t:
+        - 2.5
+        - 0.14
+        - 1.21
+      R_euler:
+        - -1.83
+        - 2.12
+        - 0.61
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: left_front_100
+    topic: /compressed_image_list/10/compressed
+    intrinsics_file: intrinsics/left_front_100.yaml
+    extrinsics:
+      t:
+        - 1.8
+        - 1.32
+        - 1.15
+      R_euler:
+        - -9.42
+        - 60.49
+        - -10.33
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: left_back_60
+    topic: /compressed_image_list/2/compressed
+    intrinsics_file: intrinsics/left_back_60.yaml
+    extrinsics:
+      t:
+        - -1.8
+        - 1.26
+        - 1.3
+      R_euler:
+        - 0
+        - 0
+        - 0
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: left_back_100
+    topic: /compressed_image_list/11/compressed
+    intrinsics_file: intrinsics/left_back_100.yaml
+    extrinsics:
+      t:
+        - 1.6
+        - 1.26
+        - 1.24
+      R_euler:
+        - 0
+        - 0
+        - 0
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: right_front_100
+    topic: /compressed_image_list/9/compressed
+    intrinsics_file: intrinsics/right_front_100.yaml
+    extrinsics:
+      t:
+        - 1.8
+        - -1.32
+        - 1.15
+      R_euler:
+        - 4.49
+        - -60.54
+        - -3.47
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: right_back_60
+    topic: /compressed_image_list/1/compressed
+    intrinsics_file: intrinsics/right_back_60.yaml
+    extrinsics:
+      t:
+        - -1.8
+        - -1.26
+        - 1.3
+      R_euler:
+        - 0
+        - 0
+        - 0
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: right_back_100
+    topic: /compressed_image_list/8/compressed
+    intrinsics_file: intrinsics/right_back_100.yaml
+    extrinsics:
+      t:
+        - 1.6
+        - -1.26
+        - 1.24
+      R_euler:
+        - 0
+        - 0
+        - 0
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: back_120
+    topic: /compressed_image_list/12/compressed
+    intrinsics_file: intrinsics/back_120.yaml
+    extrinsics:
+      t:
+        - -2.5
+        - 0.05
+        - 1.42
+      R_euler:
+        - 0
+        - 180
+        - 0
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: front_fish_eye
+    topic: /compressed_image_list/4/compressed
+    intrinsics_file: intrinsics/front_fish_eye.yaml
+    extrinsics:
+      t:
+        - 2.5
+        - 0.11
+        - 1.28
+      R_euler:
+        - -3.3
+        - -2.72
+        - -1.43
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: right_fish_eye
+    topic: /compressed_image_list/5/compressed
+    intrinsics_file: intrinsics/right_fish_eye.yaml
+    extrinsics:
+      t:
+        - -0.5
+        - -1.25
+        - 1.25
+      R_euler:
+        - -3.91
+        - -92.83
+        - -0.25
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: left_fish_eye
+    topic: /compressed_image_list/7/compressed
+    intrinsics_file: intrinsics/left_fish_eye.yaml
+    extrinsics:
+      t:
+        - -0.5
+        - 1.25
+        - 1.25
+      R_euler:
+        - -2.98
+        - 93.48
+        - -1.89
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+  - name: back_fish_eye
+    topic: /compressed_image_list/6/compressed
+    intrinsics_file: intrinsics/back_fish_eye.yaml
+    extrinsics:
+      t:
+        - -2.5
+        - -0.05
+        - 1.42
+      R_euler:
+        - 1.43
+        - 178.91
+        - 1.63
+      vcs_to_ground_height: 0.0
+      base_euler: 0.0
+lidars:
+  - name: front_middle_lidar
+    packets_topic: /lidarpackets_front
+    topic: /driver/lidar/cloud//front_middle/offline
+    launch_file: sensor_driver/hw_l106_offline/launch/offline_front.launch
+    t:
+      - 2.5
+      - 0
+      - 1.25
+    R:
+      - 0
+      - 0
+      - 0
+  - name: front_left_lidar
+    packets_topic: /lidarpackets_left
+    topic: /driver/lidar/cloud//front_left/offline
+    launch_file: sensor_driver/hw_l106_offline/launch/offline_left.launch
+    t:
+      - 1.69
+      - 1.26
+      - 1.26
+    R:
+      - 0
+      - 0
+      - 60
+  - name: front_right_lidar
+    packets_topic: /lidarpackets_right
+    topic: /driver/lidar/cloud/front_right/offline
+    launch_file: sensor_driver/hw_l106_offline/launch/offline_right.launch
+    t:
+      - 1.69
+      - -1.26
+      - 1.26
+    R:
+      - 0
+      - 0
+      - -60
+radars:
+  - name: front_middle_radar
+    packets_topic: /radarpackets_front
+    topic: /driver/radar/cloud/front_middle/offline
+    launch_file: sensor_driver/hw_fr671_offline/launch/offline_front.launch
+    t:
+      - 2.5
+      - 0
+      - 1.03
+    R:
+      - -20
+      - 0
+      - 0
+  - name: front_left_radar
+    packets_topic: /radarpackets_left
+    topic: /driver/radar/cloud/front_left/offline
+    launch_file: sensor_driver/hw_fr671_offline/launch/offline_left.launch
+    t:
+      - 1.69
+      - 1.26
+      - 1.17
+    R:
+      - -20
+      - 6
+      - 50
+  - name: front_right_radar
+    packets_topic: /radarpackets_right
+    topic: /driver/radar/cloud/front_right/offline
+    launch_file: sensor_driver/hw_fr671_offline/launch/offline_right.launch
+    t:
+      - 1.69
+      - -1.26
+      - 1.17
+    R:
+      - 0
+      - 0
+      - -60
+bev_surround_view:
+  node_ns: /bev_surround_view_node #环视算法的ROS节点命名空间
+  bev_image_topic: /bev_surround_view_node/bev_image #最终拼接好的360度俯视图像会发布到这个话题
+  detection_vis_front_topic: /bev_surround_view_node/detection_vis_front #前方向的目标检测可视化图像的发布主题
+  detection_vis_rear_topic: /bev_surround_view_node/detection_vis_rear #后方向的目标检测可视化图像的发布主题
+  detection_vis_left_topic: /bev_surround_view_node/detection_vis_left #左方向的目标检测可视化图像的发布主题
+  detection_vis_right_topic: /bev_surround_view_node/detection_vis_right #右方向的目标检测可视化图像的发布主题
+  output_width: 1280 #鸟瞰图的像素尺寸，宽度为1280像素
+  output_height: 1920 #鸟瞰图的像素尺寸，宽度为1280像素
+  resolution: 0.01 #图像的物理分辨率0.01，代表图像中一个像素等于实际的0.01米（即1厘米）
+  range_front: 420 #前向范围：420像素（约合4.2米）
+  range_rear: 860 #后向范围：860像素（约合8.6米）
+  range_left: 525 #左向范围：525像素（约合5.25米）
+  range_right: 760 #右向范围：760像素（约合7.6米）
+  origin_offset_x: 0
+  origin_offset_y: 0 #车辆坐标系原点在BEV图像中的中心偏移量。此处为0.0意味着车辆图像会严格按照上述range设定的比例放置在画布中，没有额外平移

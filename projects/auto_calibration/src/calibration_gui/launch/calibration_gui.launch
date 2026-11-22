@@ -1,0 +1,20 @@
+<launch>
+  <!-- ============================================================
+       calibration_gui — 自动驾驶传感器标定 GUI 工具
+       启动方式：roslaunch calibration_gui calibration_gui.launch
+       ============================================================ -->
+
+  <!-- 车辆配置文件（可命令行覆盖） -->
+  <arg name="vehicle_config" default=""/>
+
+  <!-- GUI 主节点 -->
+  <node name="calibration_gui"
+        pkg="calibration_gui"
+        type="calibration_gui"
+        output="screen"
+        required="true">
+    <!-- 若指定了车辆配置，可通过 rosparam 传入（GUI 也支持运行时导入） -->
+    <param name="vehicle_config" value="$(arg vehicle_config)"/>
+  </node>
+
+</launch>

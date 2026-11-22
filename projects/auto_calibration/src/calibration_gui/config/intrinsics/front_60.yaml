@@ -1,0 +1,18 @@
+%YAML:1.0
+---
+model_type: MEI
+camera_name: front_60_camera
+image_width: 1920
+image_height: 1080
+mirror_parameters:
+   xi: 0.8824994351158807
+distortion_parameters:
+   k1: -0.8805037591797888
+   k2: 0.005750689647733717
+   p1: -0.0012491251180487938
+   p2: 0.00044684563874129143
+projection_parameters:
+   gamma1: 3647.000397738791
+   gamma2: 3650.406042452956
+   u0: 964.3288403351714
+   v0: 537.9180824325097

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- ===== Configuration files ===== -->
+  <arg name="camera_file" default="$(find lidar_camera_projection)/config/front_camera_calib.yaml"/>
+
+  <!-- ===== Topics ===== -->
+  <arg name="image_topic" default="/driver/gmsl_camera/front_h100/compressed"/>
+  <arg name="lidar_topic" default="/driver/rotate_lidar/cloud/right/offline"/>
+  <arg name="output_topic" default="/lidar_camera_projection/image"/>
+
+  <!-- ===== Save params ===== -->
+  <arg name="output_dir" default="/tmp/lidar_camera_projection"/>
+  <arg name="output_yaml_path" default="/tmp/lidar_camera_projection/camera_params.yaml"/>
+
+  <!-- ===== Processing ===== -->
+  <arg name="publish_rate_hz" default="10.0"/>
+  <arg name="sync_tolerance_sec" default="0.2"/>
+  <arg name="min_depth_m" default="0.3"/>
+  <arg name="max_depth_m" default="30.0"/>
+  <arg name="display_width" default="960"/>
+
+  <!-- ===== Rotation order for Euler angles (yaw-pitch-roll = 2,1,0) ===== -->
+  <arg name="rotation_order_0" default="2"/>
+  <arg name="rotation_order_1" default="1"/>
+  <arg name="rotation_order_2" default="0"/>
+
+  <!-- ===== Extrinsic: LiDAR to Camera ===== -->
+  <arg name="x" default="0.0"/>
+  <arg name="y" default="0.0"/>
+  <arg name="z" default="0.0"/>
+  <arg name="roll" default="0.0"/>
+  <arg name="pitch" default="0.0"/>
+  <arg name="yaw" default="0.0"/>
+
+  <!-- ===== Launch node ===== -->
+  <node name="lidar_camera_projection_node"
+        pkg="lidar_camera_projection"
+        type="lidar_camera_projection_node"
+        output="screen">
+
+      <param name="current_camera" value="$(arg current_camera)"/>
+      <param name="calib_file" value="$(arg camera_file)"/>
+      <param name="cameras_dist_file" value="$(arg cameras_dist_file)"/>
+
+    <param name="output_dir" value="$(arg output_dir)"/>
+    <param name="output/yaml_path" value="$(arg output_yaml_path)"/>
+
+    <param name="image_topic" value="$(arg image_topic)"/>
+    <param name="lidar_topic" value="$(arg lidar_topic)"/>
+    <param name="output_topic" value="$(arg output_topic)"/>
+
+    <param name="publish_rate_hz" value="$(arg publish_rate_hz)" type="double"/>
+    <param name="sync_tolerance_sec" value="$(arg sync_tolerance_sec)" type="double"/>
+    <param name="min_depth_m" value="$(arg min_depth_m)" type="double"/>
+    <param name="max_depth_m" value="$(arg max_depth_m)" type="double"/>
+    <param name="display_width" value="$(arg display_width)" type="int"/>
+
+    <param name="rotation_order_0" value="$(arg rotation_order_0)" type="int"/>
+    <param name="rotation_order_1" value="$(arg rotation_order_1)" type="int"/>
+    <param name="rotation_order_2" value="$(arg rotation_order_2)" type="int"/>
+
+    <param name="x" value="$(arg x)" type="double"/>
+    <param name="y" value="$(arg y)" type="double"/>
+    <param name="z" value="$(arg z)" type="double"/>
+    <param name="roll" value="$(arg roll)" type="double"/>
+    <param name="pitch" value="$(arg pitch)" type="double"/>
+    <param name="yaw" value="$(arg yaw)" type="double"/>
+  </node>
+</launch>

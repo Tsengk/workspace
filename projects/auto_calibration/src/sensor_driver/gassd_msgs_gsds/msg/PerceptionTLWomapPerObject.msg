@@ -1,0 +1,15 @@
+string  	    id  
+bool  	    valid  
+PerceptionTLWomapBbox  	    detObject  
+bool  	    occlude  
+uint16  	    color  
+float32  	    color_score  
+PerceptionTLWomapBbox  	    numberObject  
+bool  	    hasNumber  
+uint32  	    number  
+float32  	    number_score  
+uint16  	    lightType  
+uint16  	    arrow  
+float32  	    arrow_score  
+float32  	    distance_car2light  
+uint16  	    numberType  

@@ -1,0 +1,554 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PlanRequestWidget</class>
+ <widget class="QWidget" name="PlanRequestWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>689</width>
+    <height>384</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>规划请求</string>
+  </property>
+  <layout class="QHBoxLayout" name="mainLayout">
+   <item>
+    <widget class="QWidget" name="leftWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="leftLayout">
+      <item>
+       <widget class="QLabel" name="fileListLabel">
+        <property name="text">
+         <string>筹划文件列表</string>
+        </property>
+        <property name="styleSheet">
+         <string>QLabel { font-weight: bold; padding: 5px; }</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QListWidget" name="planFileListWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="loadPlanFileButton">
+        <property name="text">
+         <string>加载筹划文件</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QWidget" name="rightWidget">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>2</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QVBoxLayout" name="rightLayout">
+      <item>
+       <widget class="QLabel" name="infoDisplayLabel">
+        <property name="text">
+         <string>筹划文件详情</string>
+        </property>
+        <property name="styleSheet">
+         <string>QLabel { font-weight: bold; padding: 5px; }</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QScrollArea" name="scrollArea">
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="scrollAreaWidgetContents">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>400</width>
+           <height>700</height>
+          </rect>
+         </property>
+         <layout class="QVBoxLayout" name="scrollAreaLayout">
+          <item>
+           <widget class="QGroupBox" name="taskInfoGroupBox">
+            <property name="title">
+             <string>任务基本信息</string>
+            </property>
+            <layout class="QFormLayout" name="taskInfoLayout">
+             <item row="0" column="0">
+              <widget class="QLabel" name="taskIdLabel">
+               <property name="text">
+                <string>任务ID:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLabel" name="taskIdValue">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="taskNameLabel">
+               <property name="text">
+                <string>任务名称:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLabel" name="taskNameValue">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="taskTypeLabel">
+               <property name="text">
+                <string>任务类型:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="taskTypeEdit">
+               <property name="text">
+                <string>-</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="taskPriorityLabel">
+               <property name="text">
+                <string>任务优先级:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLabel" name="taskPriorityValue">
+               <property name="text">
+                <string>-</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="taskStatusLabel">
+               <property name="text">
+                <string>任务状态:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLabel" name="taskStatusValue">
+               <property name="text">
+                <string>-</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="startTimeLabel">
+               <property name="text">
+                <string>开始时间:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLabel" name="startTimeValue">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="endTimeLabel">
+               <property name="text">
+                <string>结束时间:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QLabel" name="endTimeValue">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <widget class="QLabel" name="taskDescLabel">
+               <property name="text">
+                <string>任务描述:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="1">
+              <widget class="QLabel" name="taskDescValue">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="wordWrap">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="positionInfoGroupBox">
+            <property name="title">
+             <string>位置信息</string>
+            </property>
+            <layout class="QFormLayout" name="positionInfoLayout">
+             <item row="0" column="0">
+              <widget class="QLabel" name="longitudeLabel">
+               <property name="text">
+                <string>经度:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="longitudeEdit">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入经度</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="latitudeLabel">
+               <property name="text">
+                <string>纬度:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="latitudeEdit">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入纬度</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="altitudeLabel">
+               <property name="text">
+                <string>高度:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="altitudeEdit">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入高度</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="sarInfoGroupBox">
+            <property name="title">
+             <string>SAR参数信息</string>
+            </property>
+            <layout class="QFormLayout" name="sarInfoLayout">
+             <item row="0" column="0">
+              <widget class="QLabel" name="sarHeightLabel">
+               <property name="text">
+                <string>SAR高度:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="sarHeightEdit">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入SAR高度</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0">
+              <widget class="QLabel" name="sarAngleLabel">
+               <property name="text">
+                <string>SAR角度:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="1">
+              <widget class="QLineEdit" name="sarAngleEdit">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入SAR角度</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="sarHeadingLabel">
+               <property name="text">
+                <string>SAR航向:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="sarHeadingEdit">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入SAR航向</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="sarRangeLabel">
+               <property name="text">
+                <string>SAR距离:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="sarRangeEdit">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入SAR距离</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="0">
+              <widget class="QLabel" name="sarResolutionLabel">
+               <property name="text">
+                <string>SAR分辨率:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="sarResolutionEdit">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入SAR分辨率</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="0">
+              <widget class="QLabel" name="sarBandwidthLabel">
+               <property name="text">
+                <string>SAR带宽:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="5" column="1">
+              <widget class="QLineEdit" name="sarBandwidthEdit">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入SAR带宽</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="sarModeLabel">
+               <property name="text">
+                <string>SAR模式:</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="1">
+              <widget class="QLineEdit" name="sarModeEdit">
+               <property name="text">
+                <string>-</string>
+               </property>
+               <property name="placeholderText">
+                <string>请输入SAR模式</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <widget class="QGroupBox" name="regionInfoGroupBox">
+            <property name="title">
+             <string>区域信息</string>
+            </property>
+            <layout class="QVBoxLayout" name="regionInfoLayout">
+             <item>
+              <widget class="QScrollArea" name="regionScrollArea">
+               <property name="widgetResizable">
+                <bool>true</bool>
+               </property>
+               <property name="maximumHeight">
+                <number>200</number>
+               </property>
+               <widget class="QWidget" name="regionScrollAreaWidgetContents">
+                <property name="geometry">
+                 <rect>
+                  <x>0</x>
+                  <y>0</y>
+                  <width>380</width>
+                  <height>190</height>
+                 </rect>
+                </property>
+                <layout class="QVBoxLayout" name="regionPointsLayout"/>
+               </widget>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="regionButtonsLayout">
+               <item>
+                <widget class="QPushButton" name="addRegionPointButton">
+                 <property name="text">
+                  <string>添加坐标点</string>
+                 </property>
+                 <property name="styleSheet">
+                  <string>QPushButton { 
+  background-color: #2196F3; 
+  color: white; 
+  border: none; 
+  padding: 6px 12px; 
+  border-radius: 3px; 
+}
+QPushButton:hover { 
+  background-color: #1976D2; 
+}</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="regionButtonsSpacer">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item>
+           <spacer name="verticalSpacer">
+            <property name="orientation">
+             <enum>Qt::Vertical</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>20</width>
+              <height>40</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="buttonLayout">
+        <item>
+         <widget class="QPushButton" name="saveChangesButton">
+          <property name="text">
+           <string>保存修改</string>
+          </property>
+          <property name="styleSheet">
+           <string>QPushButton { 
+    background-color: #4CAF50; 
+    color: white; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 4px; 
+    font-weight: bold; 
+  }
+  QPushButton:hover { 
+    background-color: #45a049; 
+  }
+  QPushButton:pressed { 
+    background-color: #3d8b40; 
+  }</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="planRequestButton">
+          <property name="text">
+           <string>规划请求</string>
+          </property>
+          <property name="styleSheet">
+           <string>QPushButton { 
+    background-color: #FF5722; 
+    color: white; 
+    border: none; 
+    padding: 8px 16px; 
+    border-radius: 4px; 
+    font-weight: bold; 
+  }
+  QPushButton:hover { 
+    background-color: #E64A19; 
+  }
+  QPushButton:pressed { 
+    background-color: #D84315; 
+  }</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

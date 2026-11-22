@@ -1,0 +1,38 @@
+<launch>
+  <!--
+    LiDAR-GNSS 联合 Yaw 标定算法测试（合成快照 + RViz 可视化）
+
+    话题：
+      /gnss_yaw_test/global_cones    — 全局 UTM 锥桶位置（蓝色圆柱）
+      /gnss_yaw_test/vehicle_poses   — 车辆观测位姿箭头（黄色）
+      /gnss_yaw_test/result_text     — 标定结果文字
+
+    RViz Fixed Frame: map
+    坐标约定（RViz 显示）：x = East（yg），y = North（xg）
+
+    参数：
+      scene_delay  场景间停顿（秒）
+      viz          是否发布可视化
+  -->
+
+  <!-- 静态 TF：提供 map 帧，供 RViz Fixed Frame 使用 -->
+  <node pkg="tf2_ros" type="static_transform_publisher"
+        name="map_tf_pub"
+        args="0 0 0 0 0 0 world map"/>
+
+  <!-- 测试节点 -->
+  <node name="gnss_yaw_test"
+        pkg="lidar_gnss_yaw"
+        type="gnss_yaw_test_node"
+        output="screen">
+    <param name="viz"         value="true"/>
+    <param name="scene_delay" value="4.0"/>
+  </node>
+
+  <!-- RViz -->
+  <node name="rviz"
+        pkg="rviz"
+        type="rviz"
+        args="-d $(find lidar_gnss_yaw)/config/gnss_yaw_test.rviz"
+        required="false"/>
+</launch>

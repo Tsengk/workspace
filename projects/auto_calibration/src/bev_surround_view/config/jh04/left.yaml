@@ -1,0 +1,19 @@
+%YAML:1.0
+---
+model_type: MEI
+camera_name: H190XA-H11060780
+image_width: 1920
+image_height: 1080
+mirror_parameters:
+   xi: 1.9000867575459424e+00
+distortion_parameters:
+   k1: 8.2093431876959633e-01
+   k2: -1.0151044956942774e+00
+   p1: -1.1765542800741735e-04
+   p2: 1.0671715600823056e-03
+projection_parameters:
+   gamma1: 1.4957474486705903e+03
+   gamma2: 1.4983059154511245e+03
+   u0: 9.5913898943322738e+02
+   v0: 5.4309367984531013e+02
+calibrate_time : "2025年 12月 02日 星期二 12:10:41 CST"

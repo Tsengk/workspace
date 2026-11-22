@@ -1,0 +1,17 @@
+int32  	    id  
+int32  	    motionStatus  
+float32  	    rangeStdDev  
+float32  	    rangeRateStdDev  
+float32  	    azimuthStdDev  
+float32  	    elevationStdDev  
+int32  	    existStatus  
+int32  	    falseAlarmProb  
+int32  	    heightConfidence  
+int32  	    attribState  
+int32  	    modeFlag  
+float32  	    x  
+float32  	    y  
+float32  	    z  
+float32  	    vx  
+float32  	    vy  
+float32  	    vz  

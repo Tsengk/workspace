@@ -1,0 +1,51 @@
+##############################################################
+# 辅激光雷达 Roll/Pitch/Z 手动标定参数配置
+#
+# 前提：主雷达的 roll/pitch/z 已完成标定，
+#       驱动已将两个雷达的点云均变换到 VCS（车辆坐标系，FLU）。
+#
+# 标定原理：
+#   1. 用户在 RViz 中用 Publish Point 点击主雷达地面点
+#      → 拟合主雷达地面平面（法线 n_prim, z_ground_prim）
+#   2. 调用 confirm_primary 服务，切换到辅雷达阶段
+#   3. 用户在 RViz 中切换到辅雷达点云，点击辅雷达地面点
+#      → 拟合辅雷达地面平面（法线 n_sec, z_ground_sec）
+#   4. 调用 save_calibration 服务输出结果
+#      delta_roll/pitch = 从辅雷达法线提取的角度 - 从主雷达法线提取的角度
+#      z_calib = z_install + (z_ground_prim - z_ground_sec)
+##############################################################
+
+# --- 坐标帧名（仅用于 TF 和状态提示）---
+primary_lidar_frame:   primary_lidar
+secondary_lidar_frame: secondary_lidar
+base_frame:            base_link
+
+# --- 辅雷达安装参数（驱动使用的标称值，需与驱动配置保持一致）---
+installation:
+  sensor_name: secondary_lidar  # 传感器名称（写入标定文件的键名）
+  x:           0.0              # 纵向（m）
+  y:           0.0              # 横向（m）
+  z:           1.8              # 垂直（m），相对后轴中心
+  roll_deg:    0.0              # 横滚（°）
+  pitch_deg:   0.0              # 俯仰（°）
+  yaw_deg:     0.0              # 偏航（°）
+  z_offset:    0.37             # 后轴中心到地面高度（m）
+
+# --- 标定输出文件路径 ---
+calibration_output_file: /tmp/secondary_lidar_rp_calibration.yaml
+
+# --- 每个阶段最少需要多少点击点才允许下一步 ---
+min_clicked_points: 4
+
+# --- 平面拟合 ---
+plane:
+  # 手动点击点少时推荐 LEAST_SQUARES，点多时也可用 RANSAC
+  method: LEAST_SQUARES
+  ransac_distance_threshold: 0.05  # m
+  ransac_max_iterations: 200
+
+# --- 标定计算 ---
+cali:
+  max_roll_deg:   15.0
+  max_pitch_deg:  15.0
+  rms_weight:     0.5

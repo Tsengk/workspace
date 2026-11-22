@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="input_topic" default="/driver/gmsl_camera/front_fish_eye/compressed"/>
+  <arg name="output_topic" default="/camera_model_test/undistorted"/>
+  <arg name="calib_file" default="$(find camera_model_test)/config/front_camera_calib.yaml"/>
+  <arg name="undistort_fx" default="200.0"/>
+  <arg name="undistort_fy" default="200.0"/>
+  <arg name="undistort_cx" default="960.0"/>
+  <arg name="undistort_cy" default="540.0"/>
+  <arg name="undistort_width" default="1920"/>
+  <arg name="undistort_height" default="1080"/>
+  <arg name="rotation_order_0" default="2"/>
+  <arg name="rotation_order_1" default="1"/>
+  <arg name="rotation_order_2" default="0"/>
+
+  <node name="camera_model_test_node" pkg="camera_model_test" type="camera_model_test_node" output="screen">
+    <param name="calib_file" value="$(arg calib_file)"/>
+    <param name="input_topic" value="$(arg input_topic)"/>
+    <param name="output_topic" value="$(arg output_topic)"/>
+    <param name="undistort_fx" value="$(arg undistort_fx)"/>
+    <param name="undistort_fy" value="$(arg undistort_fy)"/>
+    <param name="undistort_cx" value="$(arg undistort_cx)"/>
+    <param name="undistort_cy" value="$(arg undistort_cy)"/>
+    <param name="undistort_width" value="$(arg undistort_width)"/>
+    <param name="undistort_height" value="$(arg undistort_height)"/>
+    <rosparam param="rotation_order">[$(arg rotation_order_0), $(arg rotation_order_1), $(arg rotation_order_2)]</rosparam>
+  </node>
+</launch>

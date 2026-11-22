@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<launch>
+    <arg name="packets_topic" default="/tpfront_right_radar_packets"/>
+    <arg name="point_cloud_topic" default="/driver/radar/cloud/right/offline"/>
+    <arg name="xoffset" default="0.0"/>
+    <arg name="yoffset" default="0.0"/>
+    <arg name="zoffset" default="0.0"/>
+    <arg name="roll" default="0.0"/>
+    <arg name="pitch" default="0.0"/>
+    <arg name="yaw" default="0.0"/>
+    <arg name="top_z_ground_offset" default="0.37"/>
+    <!-- robosense driver -->
+    <node pkg="hw_fr671_offline" type="hw_fr671_offline" name="right_fr671_offline" output="screen">
+        <param type="int" value="0" name="debug"/>
+        <param type="int" value="0" name="filter_obj"/>
+        <!--  shm read/write key for calibration -->
+        <param type="string" value="front_right_radar" name="calibration_key"/>
+        <!-- topic of packets for pub & sub -->
+        <param type="string" value="$(arg packets_topic)" name="packets_topic"/>
+        <!-- for ros pointcloud -->
+        <param type="string" value="base_link" name="frame_id"/>
+        <param type="string" value="$(arg point_cloud_topic)" name="ros_send_topic"/>
+
+        <param type="bool" value="false" name="set_shm_cfg"/>
+        <param type="bool" value="true" name="get_shm_cfg"/>
+        <param type="double" value="$(arg xoffset)" name="xoffset"/>
+        <param type="double" value="$(arg yoffset)" name="yoffset"/>
+        <param type="double" value="$(arg zoffset)" name="zoffset"/>
+        <param type="double" value="$(arg roll)" name="roll"/>
+        <param type="double" value="$(arg pitch)" name="pitch"/>
+        <param type="double" value="$(arg yaw)" name="yaw"/>
+        <param type="double" value="$(arg top_z_ground_offset)" name="top_z_ground_offset"/>
+    </node>
+
+</launch>

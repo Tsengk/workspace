@@ -1,0 +1,9 @@
+string  	    model_version  
+PerceptionDetectionResult  	    detectstrut  
+PerceptionSegmentResult  	    segmentstrut  
+PerceptionSegmentResult  	    lanesegstrut  
+PerceptionLaneInstResult  	    laneInst  
+PerceptionInstSegmentResult  	    instSegStrut  
+PerceptionWheelResult  	    wheelsStrut  
+PerceptionWheelPointsResult  	    wheelPointStrut  
+PerceptionVehicleHTResult  	    vehicleHeadTailsStrut  

@@ -1,0 +1,10 @@
+CommonHeader  	    header  
+uint8  	    command_status  
+float64  	    current_limit_speed  
+float64  	    current_set_speed  
+float64  	    current_set_angle  
+int32  	    decision_info  
+MsgHafEgoTrajectory  	    driving_center_trajectory  
+MsgHafEgoTrajectory  	    driving_left_boundary  
+MsgHafEgoTrajectory  	    driving_right_boundary  
+int32  	    risk_level  

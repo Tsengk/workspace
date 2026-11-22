@@ -1,0 +1,135 @@
+Panels:
+  - Class: rviz/Displays
+    Help Height: 0
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /Primary Cones1
+        - /Secondary Cones1
+        - /Aligned Cones1
+        - /Result Markers1
+      Splitter Ratio: 0.600000023841858
+    Tree Height: 680
+  - Class: rviz/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.4
+      Cell Size: 1
+      Class: rviz/Grid
+      Color: 120; 120; 120
+      Enabled: true
+      Line Style:
+        Line Width: 0.029999999329447746
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: -0.07
+      Plane: XY
+      Plane Cell Count: 30
+      Reference Frame: <Fixed Frame>
+      Value: true
+
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /lidar_lidar_test/primary_markers
+      Name: Primary Cones
+      Namespaces:
+        primary_cones: true
+        primary_cones_labels: true
+      Queue Size: 100
+      Value: true
+
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /lidar_lidar_test/secondary_markers
+      Name: Secondary Cones
+      Namespaces:
+        secondary_cones: true
+        secondary_cones_labels: true
+      Queue Size: 100
+      Value: true
+
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /lidar_lidar_test/aligned_markers
+      Name: Aligned Cones
+      Namespaces:
+        aligned_cones: true
+        aligned_cones_labels: true
+      Queue Size: 100
+      Value: true
+
+    - Class: rviz/MarkerArray
+      Enabled: true
+      Marker Topic: /lidar_lidar_test/result_markers
+      Name: Result Markers
+      Namespaces:
+        cali_result: true
+        legend_aligned: true
+        legend_primary: true
+        legend_secondary: true
+        pass_fail: true
+        scene_title: true
+      Queue Size: 100
+      Value: true
+
+  Enabled: true
+  Fixed Frame: base_link
+  Global Options:
+    Background Color: 22; 22; 28
+    Default Light: true
+    Fixed Frame: base_link
+    Frame Rate: 30
+
+  Name: root
+  Tools:
+    - Class: rviz/Interact
+      Hide Inactive Objects: true
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+
+  Value: true
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 22
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.05999999865889549
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Field of View: 0.7853981852531433
+      Focal Point:
+        X: 7
+        Y: 0
+        Z: 0
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05000000074505806
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.009999999776482582
+      Pitch: 0.6203981995582581
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Yaw: 3.1053981494903564
+    Saved: ~
+
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 900
+  Hide Left Dock: false
+  Hide Right Dock: true
+  Width: 1400
+  X: 50
+  Y: 50

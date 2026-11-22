@@ -1,0 +1,9 @@
+int32  	    id  
+float64  	    xg  
+float64  	    yg  
+float64  	    global_angle  
+float64  	    length  
+float64  	    width  
+bool  	    is_colliding_obstacle  
+float64  	    time_to_collision  
+float64  	    collision_s  

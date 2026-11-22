@@ -1,0 +1,28 @@
+schema_version: 1
+calib_type: image_lidar
+sensor_name: front_120
+reference_lidar: front_middle_lidar
+generated_at: 2026-05-19 17:25:37
+method: manual_projection_alignment
+coordinate_system: FLU
+installation:
+  x: 0.000000
+  y: 1.260000
+  z: -3.990000
+  roll_deg: -1.830000
+  pitch_deg: 2.120000
+  yaw_deg: 0.610000
+calibrated:
+  x: 0.000000
+  y: 1.260000
+  z: -3.990000
+  roll_deg: -2.580000
+  pitch_deg: 2.120000
+  yaw_deg: 0.610000
+delta:
+  delta_x_m: 0.000000
+  delta_y_m: 0.000000
+  delta_z_m: 0.000000
+  delta_roll_deg: -0.750000
+  delta_pitch_deg: 0.000000
+  delta_yaw_deg: 0.000000

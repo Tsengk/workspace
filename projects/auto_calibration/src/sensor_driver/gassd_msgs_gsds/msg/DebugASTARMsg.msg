@@ -1,0 +1,12 @@
+string  	    goalinfo  
+string  	    startinfo  
+string  	    type  
+string  	    MTR_info  
+string  	    allowance_info  
+string  	    stayinfo  
+bool  	    goalvalid  
+bool  	    startvalid  
+int32[]  	    loop  
+int32  	    RS_size  
+int32  	    SEHS_size  
+int32  	    allpath_size  

@@ -1,0 +1,17 @@
+float32  	    first_point_v  
+float32  	    ego_speed  
+float32  	    cruise_speed_max  
+float32  	    first_point_kappa  
+float32  	    first_point_a  
+int32  	    following_object_id  
+float32  	    following_object_v  
+float32  	    following_object_dis  
+bool  	    is_new_path  
+bool  	    is_fallback_trajectory  
+bool  	    is_replan  
+int32  	    replan_reason  
+int32  	    yield_object_id  
+float32  	    yield_object_v  
+float32  	    yield_object_current_s  
+float32  	    yield_object_collision_min_s  
+float32  	    yield_object_collision_min_t  

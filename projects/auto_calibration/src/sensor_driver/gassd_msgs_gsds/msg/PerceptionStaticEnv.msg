@@ -1,0 +1,11 @@
+CommonHeader  	    header  
+float64  	    send_stamp  
+float64  	    start_stamp  
+float32  	    cell_size  
+PerceptionUtraData[]  	    ultra_results  
+PerceptionSemanticObj[]  	    semantic_objs  
+float32  	    terrain_patch_size  
+PerceptionTerrainPatch[]  	    terrain_patches  
+PerceptionTrafficLight[]  	    traffic_lights  
+PerceptionLaneline[]  	    lane_lines  
+uint8[]  	    reserved  

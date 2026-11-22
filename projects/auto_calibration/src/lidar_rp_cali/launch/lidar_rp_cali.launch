@@ -1,0 +1,34 @@
+<launch>
+  <!-- LiDAR Roll/Pitch 标定主节点 -->
+  <!-- 订阅真实/录制的 LiDAR 点云话题，实时计算标定参数并广播 TF -->
+
+  <!-- GUI 传参覆盖（留空则使用 params.yaml 默认值）-->
+  <arg name="input_topic" default=""/>
+  <arg name="lidar_frame" default=""/>
+  <arg name="inst_x"         default=""/>
+  <arg name="inst_y"         default=""/>
+  <arg name="inst_z"         default=""/>
+  <arg name="inst_roll_deg"  default=""/>
+  <arg name="inst_pitch_deg" default=""/>
+  <arg name="inst_yaw_deg"   default=""/>
+  <arg name="inst_z_offset"  default=""/>
+
+  <node name="lidar_rp_cali"
+        pkg="lidar_rp_cali"
+        type="lidar_rp_cali_node"
+        output="screen">
+
+    <rosparam file="$(find lidar_rp_cali)/config/params.yaml" command="load"/>
+
+    <!-- 仅当 GUI 传入非空值时覆盖 -->
+    <param name="input_topic"              value="$(arg input_topic)"    if="$(eval arg('input_topic') != '')"/>
+    <param name="lidar_frame"              value="$(arg lidar_frame)"    if="$(eval arg('lidar_frame') != '')"/>
+    <param name="installation/x"          value="$(arg inst_x)"         if="$(eval arg('inst_x') != '')"/>
+    <param name="installation/y"          value="$(arg inst_y)"         if="$(eval arg('inst_y') != '')"/>
+    <param name="installation/z"          value="$(arg inst_z)"         if="$(eval arg('inst_z') != '')"/>
+    <param name="installation/roll_deg"   value="$(arg inst_roll_deg)"  if="$(eval arg('inst_roll_deg') != '')"/>
+    <param name="installation/pitch_deg"  value="$(arg inst_pitch_deg)" if="$(eval arg('inst_pitch_deg') != '')"/>
+    <param name="installation/yaw_deg"    value="$(arg inst_yaw_deg)"   if="$(eval arg('inst_yaw_deg') != '')"/>
+    <param name="installation/z_offset"   value="$(arg inst_z_offset)"  if="$(eval arg('inst_z_offset') != '')"/>
+  </node>
+</launch>

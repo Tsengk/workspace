@@ -1,0 +1,47 @@
+<launch>
+  <!-- LiDAR Yaw 角标定节点
+       前置条件：roll 和 pitch 已完成标定。
+       场景要求：车辆正前方沿 X 轴摆放 4~5 个锥形桶，桶周围无其他障碍物。
+
+       操作流程：
+         1. roslaunch lidar_yaw1 lidar_yaw_cali.launch
+         2. 静止等待 10~20 秒，观察 /lidar_yaw_cali/status 中帧数累积
+         3. rosservice call /lidar_yaw_cali/trigger_calibration  # 查看当前结果
+         4. rosservice call /lidar_yaw_cali/save_calibration      # 保存到 YAML 文件
+  -->
+
+  <arg name="params_file"    default="$(find lidar_yaw1)/config/params.yaml"/>
+  <arg name="rviz"           default="false"/>
+
+  <!-- GUI 传参覆盖（留空则使用 params.yaml 默认值）-->
+  <arg name="input_topic"    default=""/>
+  <arg name="lidar_frame"    default=""/>
+  <arg name="inst_x"         default=""/>
+  <arg name="inst_y"         default=""/>
+  <arg name="inst_z"         default=""/>
+  <arg name="inst_roll_deg"  default=""/>
+  <arg name="inst_pitch_deg" default=""/>
+  <arg name="inst_yaw_deg"   default=""/>
+  <arg name="inst_z_offset"  default=""/>
+
+  <node pkg="lidar_yaw1" type="lidar_yaw_cali_node" name="lidar_yaw_cali"
+        output="screen" respawn="false">
+    <rosparam file="$(arg params_file)" command="load"/>
+
+    <param name="input_topic"             value="$(arg input_topic)"    if="$(eval arg('input_topic') != '')"/>
+    <param name="lidar_frame"             value="$(arg lidar_frame)"    if="$(eval arg('lidar_frame') != '')"/>
+    <param name="installation/x"         value="$(arg inst_x)"         if="$(eval arg('inst_x') != '')"/>
+    <param name="installation/y"         value="$(arg inst_y)"         if="$(eval arg('inst_y') != '')"/>
+    <param name="installation/z"         value="$(arg inst_z)"         if="$(eval arg('inst_z') != '')"/>
+    <param name="installation/roll_deg"  value="$(arg inst_roll_deg)"  if="$(eval arg('inst_roll_deg') != '')"/>
+    <param name="installation/pitch_deg" value="$(arg inst_pitch_deg)" if="$(eval arg('inst_pitch_deg') != '')"/>
+    <param name="installation/yaw_deg"   value="$(arg inst_yaw_deg)"   if="$(eval arg('inst_yaw_deg') != '')"/>
+    <param name="installation/z_offset"  value="$(arg inst_z_offset)"  if="$(eval arg('inst_z_offset') != '')"/>
+  </node>
+
+  <!-- 可选：rviz 可视化 -->
+  <group if="$(arg rviz)">
+    <node pkg="rviz" type="rviz" name="rviz"
+          args="-d $(find lidar_yaw1)/config/lidar_yaw_cali.rviz"/>
+  </group>
+</launch>

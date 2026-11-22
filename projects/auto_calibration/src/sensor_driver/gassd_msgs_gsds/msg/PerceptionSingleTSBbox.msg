@@ -1,0 +1,11 @@
+string  	    id  
+uint16  	    xmin  
+uint16  	    ymin  
+uint16  	    xmax  
+uint16  	    ymax  
+float32  	    det_score  
+float32  	    cls_score  
+bool  	    is_valid  
+bool  	    occlude  
+uint8  	    signType  
+uint8  	    attribute  

@@ -1,0 +1,7 @@
+build
+devel
+.claude
+.codex
+.cache
+test/
+dist

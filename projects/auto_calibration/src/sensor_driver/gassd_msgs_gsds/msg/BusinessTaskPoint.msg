@@ -1,0 +1,12 @@
+CommonHeader  	    header  
+string  	    name  
+float64  	    high  
+float64  	    pitch  
+float64  	    yaw  
+int32  	    zoom  
+float64  	    lat  
+float64  	    lon  
+float64  	    dir  
+int32  	    task_time  
+int32  	    type  
+bool  	    valid  

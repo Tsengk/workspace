@@ -1,0 +1,11 @@
+left_front:
+  projection_x: 943.8137463116362
+  projection_y: 451.8806039407783
+right_front:
+  projection_x: 980.5479972005244
+  projection_y: 430.8257765915054
+front_h100:
+  left_edge_x: 0
+  left_edge_y: 540
+  right_edge_x: 1919
+  right_edge_y: 540

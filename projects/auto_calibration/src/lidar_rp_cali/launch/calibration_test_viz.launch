@@ -1,0 +1,46 @@
+<launch>
+  <!-- LiDAR Roll/Pitch 标定仿真可视化测试 -->
+  <!--
+    启动 calibration_test_node（自动发布点云和 Marker）+ RViz
+
+    话题：
+      /lidar_rp_cali/raw_cloud    — 仿真原始点云（Z 轴着色）
+      /lidar_rp_cali/ground_cloud — 地面检测结果（绿色）
+      /lidar_rp_cali/markers      — 平面/法向量/文字标注
+  -->
+
+  <!-- 静态 TF：world → lidar（恒等变换，供 RViz 固定帧使用）-->
+  <node pkg="tf2_ros" type="static_transform_publisher"
+        name="lidar_tf_pub"
+        args="0 0 0 0 0 0 world lidar"/>
+
+  <!-- 标定测试节点 -->
+  <node name="calibration_test"
+        pkg="lidar_rp_cali"
+        type="calibration_test_node"
+        output="screen">
+
+    <!-- 每场景帧数（帧数越多均值越准，时间也越长）-->
+    <param name="n_frames"     value="15"/>
+
+    <!-- 可视化开关 -->
+    <param name="viz"          value="true"/>
+
+    <!-- 帧间延迟（秒）：控制 RViz 刷新速率 -->
+    <param name="frame_delay"  value="0.08"/>
+
+    <!-- 场景间停顿（秒）：留时间观察 PASS/FAIL 标签 -->
+    <param name="scene_delay"  value="3.0"/>
+
+    <!-- 重复轮数：设为 0 持续循环（需要手动 Ctrl+C 停止）-->
+    <param name="repeat_count" value="1"/>
+  </node>
+
+  <!-- RViz -->
+  <node name="rviz"
+        pkg="rviz"
+        type="rviz"
+        args="-d $(find lidar_rp_cali)/config/lidar_rp_cali.rviz"
+        required="false"/>
+
+</launch>

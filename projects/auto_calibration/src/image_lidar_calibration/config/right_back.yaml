@@ -1,0 +1,18 @@
+%YAML:1.0
+---
+model_type: MEI
+camera_name: right_back_camera
+image_width: 1920
+image_height: 1080
+mirror_parameters:
+   xi: 1.1870430538730997e+01
+distortion_parameters:
+   k1: 5.0531867659858030e+00
+   k2: 4.8261179155190553e+02
+   p1: 8.9146712554502832e-03
+   p2: 3.7582567957155304e-02
+projection_parameters:
+   gamma1: 1.5436425265969319e+04
+   gamma2: 1.5402671359268405e+04
+   u0: 9.4279138187403873e+02
+   v0: 5.3809594439821058e+02

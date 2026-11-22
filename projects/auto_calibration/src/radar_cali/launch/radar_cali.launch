@@ -1,0 +1,12 @@
+<!-- radar_cali.launch：毫米波雷达外参标定主节点 -->
+<launch>
+  <arg name="radar_topic" default="/radar_points"/>
+  <arg name="save_path"   default="/tmp/radar_cali_result.yaml"/>
+
+  <node name="radar_cali_node" pkg="radar_cali" type="radar_cali_node"
+        output="screen" respawn="false">
+    <rosparam file="$(find radar_cali)/config/params.yaml" command="load"/>
+    <param name="radar_topic" value="$(arg radar_topic)"/>
+    <param name="save_path"   value="$(arg save_path)"/>
+  </node>
+</launch>

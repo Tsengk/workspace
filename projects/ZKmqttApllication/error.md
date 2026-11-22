@@ -1,0 +1,2 @@
+Zg列表为空时调用removeIsmiAllZGInfo,会导致超时
+使用add接口添加一个数据，调用removeall可以删除，第二次添加，再调用removeall删除不了。

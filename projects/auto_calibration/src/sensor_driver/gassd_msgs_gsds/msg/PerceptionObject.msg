@@ -1,0 +1,14 @@
+int32  	    id  
+int32  	    type  
+int32  	    age  
+uint8  	    fusion_source  
+uint8  	    motion_state  
+PerceptionObjImgInfo  	    img_info  
+PerceptionRelInfo  	    vcs_info  
+PerceptionLWH  	    obj_size  
+PerceptionAbsInfo  	    dr_info  
+PerceptionAbsInfo  	    utm_info  
+PerceptionSLInfo[]  	    sl_infos  
+uint8  	    carlight  
+uint8[]  	    reserved  
+int32  	    plan_risk_level  

@@ -1,0 +1,78 @@
+# BEV 环视标定节点配置
+
+# 棋盘格规格 - 三组棋盘格
+# 每组：black_squares x black_squares -> inner corners = (n-1) x (n-1)
+# 左组: 5x5 黑格 -> 4x4 内角点
+# 中组: 7x5 黑格 -> 6x4 内角点
+# 右组: 5x5 黑格 -> 4x4 内角点
+chessboard:
+  square_size: 0.2     # 格子尺寸（m）
+  boards:
+    - rows: 4
+      cols: 4
+      label: "left"
+    - rows: 4
+      cols: 6
+      label: "middle"
+    - rows: 4
+      cols: 4
+      label: "right"
+
+# VCS 地面高度（后轴到地面，m）
+vcs:
+  z_offset: 0.37
+
+# 输出目录
+output_dir: "/tmp/bev_calibration"
+
+# 相机内参文件路径（MEI 格式，与 bev_surround_view 相同）
+front_intrinsics_file: ""
+rear_intrinsics_file:  ""
+left_intrinsics_file:  ""
+right_intrinsics_file: ""
+
+# 相机话题
+cameras:
+  front:
+    name:  "front_fish_eye"
+    topic: "/compressed_image_list/4/compressed"
+  back:
+    name:  "back_fish_eye"
+    topic: "/compressed_image_list/6/compressed"
+  left:
+    name:  "left_fish_eye"
+    topic: "/compressed_image_list/7/compressed"
+  right:
+    name:  "right_fish_eye"
+    topic: "/compressed_image_list/5/compressed"
+
+# 初始安装外参（VCS 坐标系，x 前 y 左 z 上，角度单位 deg）
+installation:
+  front:
+    x: 3.60
+    y: 0.0
+    z: 1.2
+    roll:  0.0
+    pitch: -15
+    yaw:   0.0
+  back:
+    x: -0.50
+    y:  0.0
+    z:  1.2
+    roll:  0.0
+    pitch: -15.0
+    yaw:   180.0
+  left:
+    x:  1.35
+    y:  0.9
+    z:  1.2
+    roll:  0.0
+    pitch: -15
+    yaw:   90.0
+  right:
+    x:  1.35
+    y: -0.9
+    z:  1.2
+    roll:  0.0
+    pitch: -15.0
+    yaw:   -90.0

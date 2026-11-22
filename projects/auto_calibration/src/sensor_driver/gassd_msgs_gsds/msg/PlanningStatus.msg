@@ -1,0 +1,11 @@
+CommonHeader  	    header  
+int32  	    command_status  
+float64  	    current_limit_speed  
+float64  	    current_set_speed  
+float64  	    current_set_angle  
+int32  	    decision_info  
+PlanningTrajectory  	    driving_center_trajectory  
+PlanningTrajectory  	    driving_left_boundary  
+PlanningTrajectory  	    driving_right_boundary  
+int32  	    risk_level  
+DebugPlanningMsg  	    debug_message  

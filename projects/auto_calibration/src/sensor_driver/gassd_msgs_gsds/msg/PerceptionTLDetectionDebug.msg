@@ -1,0 +1,10 @@
+CommonHeader  	    header  
+float64  	    receive_stamp  
+float64  	    send_stamp  
+float64  	    trigger_stamp  
+string  	    camera_name  
+PerceptionSingleTLDetectionDebug[]  	    traffic_light  
+float64  	    distance_car2stopline  
+float64  	    distance_stopline2lights  
+PerceptionSingleTLBboxDebug[]  	    detect_objs  
+string  	    car_in_road_id  

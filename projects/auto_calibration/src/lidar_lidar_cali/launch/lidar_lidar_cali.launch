@@ -1,0 +1,35 @@
+<launch>
+  <!-- ================================================================
+       lidar_lidar_cali — 辅激光雷达 x/y/yaw 标定节点（FAST-LIVO2 标定板）
+       前提：主激光雷达已完全标定，辅激光雷达 roll/pitch/z 已标定
+       ================================================================ -->
+
+  <arg name="params_file"
+       default="$(find lidar_lidar_cali)/config/params.yaml"/>
+  <arg name="output_file"
+       default="/tmp/lidar_lidar_calib_result.yaml"/>
+
+  <!-- 主/辅雷达话题（可命令行覆盖） -->
+  <arg name="primary_topic"   default="/lidar_master/points"/>
+  <arg name="secondary_topic" default="/lidar_sub/points"/>
+
+  <!-- 雷达类型：solid（固态/无ring）或 mech（机械多线/有ring） -->
+  <arg name="primary_lidar_type"   default="solid"/>
+  <arg name="secondary_lidar_type" default="solid"/>
+
+  <node pkg="lidar_lidar_cali"
+        type="lidar_lidar_cali_node"
+        name="lidar_lidar_cali"
+        output="screen">
+
+    <!-- 加载参数文件 -->
+    <rosparam file="$(arg params_file)" command="load"/>
+
+    <!-- 覆盖话题、雷达类型、输出路径 -->
+    <param name="primary_lidar/topic"        value="$(arg primary_topic)"/>
+    <param name="primary_lidar/lidar_type"   value="$(arg primary_lidar_type)"/>
+    <param name="secondary_lidar/topic"      value="$(arg secondary_topic)"/>
+    <param name="secondary_lidar/lidar_type" value="$(arg secondary_lidar_type)"/>
+    <param name="output/file"                value="$(arg output_file)"/>
+  </node>
+</launch>

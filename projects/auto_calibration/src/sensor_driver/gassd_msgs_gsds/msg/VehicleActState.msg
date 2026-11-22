@@ -1,0 +1,13 @@
+float32  	    steer_angle  
+float32  	    steer_curvature  
+float32  	    speed  
+float32  	    acceleration  
+float32  	    accpedal_position  
+float32  	    brkpedal_position  
+uint8  	    shift_position  
+uint8  	    epb_status  
+uint8  	    accpedal_state  
+uint8  	    brkpedal_state  
+uint8  	    drive_override  
+uint8  	    drive_mode  
+int32  	    fault_code  

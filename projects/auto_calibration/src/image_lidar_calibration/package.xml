@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>image_lidar_calibration</name>
+  <version>2.0.0</version>
+  <description>Camera-LiDAR extrinsic calibration using ArUco markers + circular holes (FAST-Calib approach)</description>
+  <maintainer email="user@example.com">Maintainer</maintainer>
+  <license>Apache-2.0</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>visualization_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>pcl_ros</depend>
+  <depend>pcl_conversions</depend>
+  <depend>camera_model</depend>
+  <build_depend>libceres-dev</build_depend>
+  <exec_depend>libceres-dev</exec_depend>
+</package>

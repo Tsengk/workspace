@@ -1,0 +1,10 @@
+CommonHeader  	    header  
+int32  	    business_mode  
+BusinessPath  	    business_path  
+MsgHafEgoTrajectory  	    last_path  
+BusniessRemoteControl  	    remote_ctl  
+BusinessCommandParameter  	    param  
+int32  	    estop_flag  
+int32  	    record_trigger_flag  
+int32  	    loc_strategy  
+int32  	    loc_control_mode  

@@ -1,0 +1,11 @@
+float32  	    throttle_info  
+float32  	    steer_angle  
+float32  	    steer_curvature  
+float32  	    speed  
+float32  	    acceleration  
+uint8  	    shift_position  
+uint8  	    aeb_active  
+uint8  	    parking_mode_status  
+uint8  	    epb_status  
+uint8  	    drive_mode  
+uint8  	    steering_mode_status  

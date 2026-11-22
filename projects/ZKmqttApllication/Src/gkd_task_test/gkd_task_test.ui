@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>gkd_task_test</class>
+ <widget class="QWidget" name="gkd_task_test">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>689</width>
+    <height>424</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="tab">
+      <attribute name="title">
+       <string>规划请求</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="tabLayout">
+       <item>
+        <widget class="PlanRequestWidget" name="planRequestWidget" native="true"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_2">
+      <attribute name="title">
+       <string>任务下发</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="tabLayout_2">
+       <item>
+        <widget class="TaskDeliveryWidget" name="taskDeliveryWidget" native="true"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_4">
+      <attribute name="title">
+       <string>电磁侦干测试界面</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="tabLayout_4">
+       <item>
+        <widget class="ElectromagneticTestWidget" name="electromagneticTestWidget" native="true"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_5">
+      <attribute name="title">
+       <string>速度配置修改</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="tabLayout_5">
+       <item>
+        <widget class="VelocityConfigWidget" name="velocityConfigWidget" native="true"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PlanRequestWidget</class>
+   <extends>QWidget</extends>
+   <header>PlanRequestWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TaskDeliveryWidget</class>
+   <extends>QWidget</extends>
+   <header>TaskDeliveryWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ElectromagneticTestWidget</class>
+   <extends>QWidget</extends>
+   <header>ElectromagneticTestWidget.h</header>
+  </customwidget>
+  <customwidget>
+   <class>VelocityConfigWidget</class>
+   <extends>QWidget</extends>
+   <header>VelocityConfigWidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

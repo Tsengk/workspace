@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lidar_camera_projection_bev</name>
+  <version>0.1.0</version>
+  <description>LiDAR to camera projection visualization node for BEV</description>
+  <maintainer email="dev@example.com">dev</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>message_filters</depend>
+  <depend>pcl_ros</depend>
+  <depend>pcl_conversions</depend>
+  <depend>opencv2</depend>
+  <depend>libeigen3-dev</depend>
+
+  <export>
+  </export>
+</package>

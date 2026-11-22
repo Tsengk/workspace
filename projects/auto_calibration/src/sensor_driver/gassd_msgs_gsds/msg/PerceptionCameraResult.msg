@@ -1,0 +1,9 @@
+string  	    camera_name  
+bool  	    valid  
+PerceptionVisionObject[]  	    vision_objects  
+PerceptionVisionSegment  	    vision_segment  
+PerceptionSingleLaneInst[]  	    lane_inst  
+PerceptionCameraInstSegResult  	    camera_instseg_result  
+PerceptionPairObject2D[]  	    wheels  
+PerceptionWheelPoints[]  	    wheel_points  
+PerceptionPairObject2D[]  	    vehicle_hts  

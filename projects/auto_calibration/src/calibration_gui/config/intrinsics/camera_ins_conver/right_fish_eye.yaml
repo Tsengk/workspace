@@ -1,0 +1,18 @@
+%YAML:1.0
+---
+model_type: MEI
+camera_name: right_fish_eye
+image_width: 1920
+image_height: 1280
+mirror_parameters:
+   xi: 1.295026407732248
+distortion_parameters:
+   k1: 0.2902109363893506
+   k2: -0.2684569788489657
+   p1: 0.0006718194969963926
+   p2: 0.0005365540339455756
+projection_parameters:
+   gamma1: 995.1192857988477
+   gamma2: 995.471989935207
+   u0: 961.0966022832409
+   v0: 638.5239151158727

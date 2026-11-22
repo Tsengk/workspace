@@ -1,0 +1,10 @@
+MsgHafHeader  	    header  
+MsgPoint3D  	    llh  
+MsgHafPoseWithCovariance  	    pose  
+MsgHafPoseWithCovariance  	    dr_pose  
+MsgHafTwistWithCovariance  	    velocity  
+MsgHafAccelWithCovariance  	    acceleration  
+float64  	    v  
+uint16  	    locationState  
+uint16  	    gnssState  
+uint8  	    odomType  

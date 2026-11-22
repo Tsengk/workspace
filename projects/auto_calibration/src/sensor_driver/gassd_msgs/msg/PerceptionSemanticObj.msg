@@ -1,0 +1,12 @@
+float32  	    x  
+float32  	    y  
+float64  	    xg  
+float64  	    yg  
+float32  	    z  
+uint8  	    type  
+PerceptionLWH  	    obj_size  
+float32  	    heading  
+float32  	    speed  
+PerceptionSemanticCell[]  	    cells  
+int32  	    plan_risk_level  
+MsgHafRect2D  	    rect_2d  

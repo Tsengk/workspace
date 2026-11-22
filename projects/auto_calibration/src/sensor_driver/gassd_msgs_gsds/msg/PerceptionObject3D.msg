@@ -1,0 +1,15 @@
+bool  	    enable  
+float32  	    x  
+float32  	    y  
+float32  	    z  
+float32  	    width  
+float32  	    height  
+float32  	    length  
+float32  	    protate  
+float32  	    cx_score  
+float32  	    cy_score  
+float32  	    cz_score  
+float32  	    width_score  
+float32  	    height_score  
+float32  	    length_score  
+float32  	    protate_score  

@@ -1,0 +1,64 @@
+<launch>
+  <!--
+    辅激光雷达 Roll/Pitch/Z 手动标定节点
+
+    使用方法：
+      1. roslaunch lidar_secondary_rp_cali lidar_secondary_rp_cali.launch
+      2. 在 RViz 中：
+         - 将 Fixed Frame 设为 base_link（VCS 坐标系）
+         - 加载并显示【主雷达】点云话题，确认能看到地面点云
+         - 工具栏选择 "Publish Point"（或按 P 键）
+         - 依次点击主雷达地面上的不同位置（建议 ≥6 个点，分散在前方、左右）
+      3. 点数足够后调用确认服务，切换到辅雷达阶段：
+           rosservice call /lidar_secondary_rp_cali/confirm_primary
+      4. 在 RViz 中切换显示【辅雷达】点云话题
+         - 同样用 "Publish Point" 点击辅雷达地面点（建议 ≥6 个）
+      5. 点数足够后保存结果：
+           rosservice call /lidar_secondary_rp_cali/save_calibration
+      6. 如需重新采集：
+           rosservice call /lidar_secondary_rp_cali/reset_calibration
+
+    发布话题：
+      /lidar_secondary_rp_cali/primary_cloud    — 主雷达已点击点云（绿色）
+      /lidar_secondary_rp_cali/secondary_cloud  — 辅雷达已点击点云（蓝色）
+      /lidar_secondary_rp_cali/status           — 文字状态（std_msgs/String）
+      /lidar_secondary_rp_cali/result           — 辅雷达 roll/pitch/conf
+  -->
+
+  <!-- GUI 传参覆盖 -->
+  <arg name="primary_lidar_frame"   default="/driver/lidar/cloud//front_main/offline"/>
+  <arg name="secondary_lidar_frame" default="/driver/lidar/cloud/front/offline"/>
+  <arg name="inst_x"                default="0.0"/>
+  <arg name="inst_y"                default="0.0"/>
+  <arg name="inst_z"                default="1.63"/>
+  <arg name="inst_roll_deg"         default="0.0"/>
+  <arg name="inst_pitch_deg"        default="0.0"/>
+  <arg name="inst_yaw_deg"          default="0.0"/>
+  <arg name="inst_z_offset"         default="0.37"/>
+  <arg name="sensor_name"         default="front_lidar"/>
+  <arg name="calibration_output_file" default="/tmp/secondary_lidar_rp_calibration.yaml"/>
+
+  <node name="lidar_secondary_rp_cali"
+        pkg="lidar_secondary_rp_cali"
+        type="lidar_secondary_rp_cali_node"
+        output="screen">
+
+    <rosparam file="$(find lidar_secondary_rp_cali)/config/params.yaml" command="load"/>
+
+    <param name="primary_lidar_frame"     value="$(arg primary_lidar_frame)"  />
+    <param name="secondary_lidar_frame"   value="$(arg secondary_lidar_frame)"/>
+    <param name="installation/x"         value="$(arg inst_x)"                />
+    <param name="installation/y"         value="$(arg inst_y)"                />
+    <param name="installation/z"         value="$(arg inst_z)"                />
+    <param name="installation/roll_deg"  value="$(arg inst_roll_deg)"         />
+    <param name="installation/pitch_deg" value="$(arg inst_pitch_deg)"        />
+    <param name="installation/yaw_deg"   value="$(arg inst_yaw_deg)"          />
+    <param name="installation/z_offset"  value="$(arg inst_z_offset)"         />
+    <param name="installation/sensor_name"  value="$(arg sensor_name)"        />
+    <param name="calibration_output_file" value="$(arg calibration_output_file)"/>
+
+    <!-- 平面拟合方法（LEAST_SQUARES 在手动点击少量点时最稳定）-->
+    <param name="plane/method" value="LEAST_SQUARES"/>
+
+  </node>
+</launch>

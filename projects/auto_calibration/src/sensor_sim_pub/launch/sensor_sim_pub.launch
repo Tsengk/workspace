@@ -1,0 +1,34 @@
+<launch>
+  <!-- sensor_sim_pub.launch
+       发布合成传感器数据，用于标定 GUI 可视化测试。
+
+       用法：
+         roslaunch sensor_sim_pub sensor_sim_pub.launch \
+           vehicle_config:=/path/to/vehicle_sample.yaml
+
+       可选参数：
+         rate_hz      — 发布频率 (Hz)，默认 10
+         lidar_noise  — LiDAR 测距噪声 σ (m)，默认 0.02
+         cone_rows    — 前方锥桶个数，默认 5
+         cone_spacing — 锥桶间距 (m)，默认 1.5
+  -->
+
+  <arg name="vehicle_config" default=""/>
+  <arg name="rate_hz"        default="10.0"/>
+  <arg name="lidar_noise"    default="0.02"/>
+  <arg name="cone_rows"      default="5"/>
+  <arg name="cone_spacing"   default="1.5"/>
+
+  <!-- 全局共享车辆配置路径（calibration_gui 也会读取） -->
+  <param name="vehicle_config" value="$(arg vehicle_config)"/>
+
+  <node name="sensor_sim_pub" pkg="sensor_sim_pub"
+        type="sensor_sim_pub_node" output="screen">
+    <param name="vehicle_config"  value="$(arg vehicle_config)"/>
+    <param name="rate_hz"         value="$(arg rate_hz)"/>
+    <param name="lidar_noise"     value="$(arg lidar_noise)"/>
+    <param name="cone_rows"       value="$(arg cone_rows)"/>
+    <param name="cone_spacing"    value="$(arg cone_spacing)"/>
+  </node>
+
+</launch>

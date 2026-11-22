@@ -1,0 +1,15 @@
+int32  	    output_mode  
+int32  	    remote_control_alarm  
+int32  	    remote_control_assist  
+int32  	    front_source  
+int32  	    split_adaptive  
+int32  	    video_left_  
+int32  	    video_main_  
+int32  	    video_right_  
+PerceptionFinalObjects  	    objects  
+PlanningTrajectory  	    remote_control  
+PlanningTrajectory  	    path  
+CommonPoint3f[]  	    target_points  
+int32  	    video_third_person  
+CommonPoint3f  	    target_point  
+AppVideoSplitParam[]  	    split_parames_  

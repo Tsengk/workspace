@@ -1,0 +1,85 @@
+vehicle:
+  id: aian
+  car_length: 4.85
+  car_width: 2.25
+  car_height: 1.55
+  front_overhang: 0.9
+  wheelbase: 2.9
+  rear_overhang: 1.1
+  z_offset: 0.37
+cameras:
+  - name: cam_front_fish_eye
+    topic: /compressed_image_list/4/compressed
+    intrinsics_file: intrinsics/cam_front_fish_eye.yaml
+    extrinsics:
+      t:
+        - 3.99
+        - 0.04
+        - .66
+      R_euler:
+        - 0
+        - 5
+        - 0
+      vcs_to_ground_height: 1.2
+      base_euler: 0
+  - name: cam_rear_fish_eye
+    topic: /compressed_image_list/6/compressed
+    intrinsics_file: intrinsics/cam_rear_fish_eye.yaml
+    extrinsics:
+      t:
+        - 0.36
+        - 1.3
+        - 0.83
+      R_euler:
+        - 0
+        - 10
+        - 180
+      vcs_to_ground_height: 0.9
+      base_euler: 0
+  - name: cam_left_fish_eye
+    topic: /compressed_image_list/7/compressed
+    intrinsics_file: intrinsics/cam_left_fish_eye.yaml
+    extrinsics:
+      t:
+        - 0.86
+        - 1.2
+        - -0.06
+      R_euler:
+        - -5
+        - 0
+        - 90
+      vcs_to_ground_height: 0.85
+      base_euler: 0
+  - name: cam_right_fish_eye
+    topic: /compressed_image_list/5/compressed
+    intrinsics_file: intrinsics/cam_right_fish_eye.yaml
+    extrinsics:
+      t:
+        - -0.875
+        - 1.17
+        - -0.06
+      R_euler:
+        - -5
+        - 0
+        - -90
+      vcs_to_ground_height: 0.85
+      base_euler: 0
+gnss:
+  name: gnss_ins
+  topic: /gnss/odom
+bev_surround_view:
+  node_ns: /bev_surround_view_node
+  bev_image_topic: /bev_surround_view_node/bev_image
+  detection_vis_front_topic: /bev_surround_view_node/detection_vis_front
+  detection_vis_rear_topic: /bev_surround_view_node/detection_vis_rear
+  detection_vis_left_topic: /bev_surround_view_node/detection_vis_left
+  detection_vis_right_topic: /bev_surround_view_node/detection_vis_right
+  output_width: 1280
+  output_height: 1920
+  resolution: 0.01
+  range_front: 420
+  range_rear: 860
+  range_left: 525
+  range_right: 760
+  origin_offset_x: 0.0
+  origin_offset_y: 0.0

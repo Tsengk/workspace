@@ -1,0 +1,138 @@
+# Build directories
+build/
+build_*/
+build_clean/
+build_qt*/
+build_test*/
+
+# CMake files
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+cmake_install.cmake
+install_manifest.txt
+compile_commands.json
+CTestTestfile.cmake
+_deps
+CMakeLists.txt.user
+CMakeLists.txt.user.*
+
+# Qt specific
+*.pro.user
+*.pro.user.*
+qrc_*.cpp
+moc_*.cpp
+ui_*.h
+*.qm
+.qmake.stash
+*.autosave
+
+# Visual Studio Code
+.vscode/
+.vs/
+
+# Visual Studio
+.vs/
+*.vcxproj.user
+*.vcxproj.filters
+*.sln.docstates
+
+# Object files
+*.o
+*.obj
+*.lo
+*.slo
+
+# Compiled Dynamic libraries
+*.dll
+*.so
+*.dylib
+*.pdb
+
+# Compiled Static libraries
+*.a
+*.lib
+*.lai
+*.la
+
+# Executables
+*.exe
+*.out
+*.app
+*.com
+*.scr
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# Windows specific
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Temporary files
+*.tmp
+*.temp
+*~
+*.bak
+*.swp
+*.swo
+nul
+
+# Log files
+*.log
+
+# IDE specific
+.idea/
+*.user
+*.suo
+*.sdf
+*.opensdf
+*.tlog
+*.lastbuildstate
+*.idb
+*.ilk
+*.pch
+*.exp
+*.lib
+
+# Qt Creator
+*.autosave
+
+# Generated documentation
+doc/
+
+# Test output
+test/
+test_*.cpp
+test_*.txt
+test_task*.txt
+
+# Configuration files (keep template versions)
+*.ini.local
+*.ini.backup
+
+# Batch and script files for local development
+kill_port.bat
+kill_port.ps1
+
+# Markdown files generated during development
+编译过程总结.md
+*.md~
+# claude.md
+# Custom temporary files and directories
+# customtitlebar.cpp
+# customtitlebar.h
+# untitled/
+
+# Claude AI files (if not needed in repo)
+.augment/
+release/
+*.bat
+untitled*
+
+*.claude

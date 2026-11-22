@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lidar_secondary_rp_cali</name>
+  <version>1.0.0</version>
+  <description>
+    ROS1 辅激光雷达 Roll/Pitch/Z 手动标定节点。
+    前提：主雷达已完成标定（roll/pitch/z）。
+    用户在 RViz 中分别点击主雷达和辅雷达地面点，
+    通过对齐两个地面平面求辅雷达的残余 roll/pitch/z 误差。
+    坐标系：FLU（前左上），驱动已将点云变换到 VCS。
+  </description>
+  <maintainer email="user@example.com">user</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>std_srvs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+  <build_depend>tf2_ros</build_depend>
+  <build_depend>pcl_ros</build_depend>
+  <build_depend>pcl_conversions</build_depend>
+  <build_depend>visualization_msgs</build_depend>
+  <build_depend>eigen</build_depend>
+  <build_depend>lidar_rp_cali</build_depend>
+
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>pcl_ros</exec_depend>
+  <exec_depend>pcl_conversions</exec_depend>
+  <exec_depend>visualization_msgs</exec_depend>
+  <exec_depend>lidar_rp_cali</exec_depend>
+  <depend>devkit_shm_param</depend>
+</package>

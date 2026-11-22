@@ -1,0 +1,16 @@
+<launch>
+  <arg name="config_file" default="$(find bev_calibration)/config/bev_calibration.yaml"/>
+  <arg name="front_intrinsics" default="$(find bev_calibration)/config/cam_front.yaml"/>
+  <arg name="back_intrinsics"  default="$(find bev_calibration)/config/cam_rear.yaml"/>
+  <arg name="left_intrinsics"  default="$(find bev_calibration)/config/cam_left.yaml"/>
+  <arg name="right_intrinsics" default="$(find bev_calibration)/config/cam_right.yaml"/>
+
+  <node name="bev_calibration_node" pkg="bev_calibration" type="bev_calibration_node"
+        output="screen" respawn="false">
+    <rosparam file="$(arg config_file)" command="load"/>
+    <param name="front_intrinsics_file" value="$(arg front_intrinsics)"/>
+    <param name="back_intrinsics_file"  value="$(arg back_intrinsics)"/>
+    <param name="left_intrinsics_file"  value="$(arg left_intrinsics)"/>
+    <param name="right_intrinsics_file" value="$(arg right_intrinsics)"/>
+  </node>
+</launch>

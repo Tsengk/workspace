@@ -1,0 +1,43 @@
+# 标定 GUI Tab 显示控制
+# enabled: true  → 显示该 Tab
+# enabled: false → 隐藏该 Tab
+tabs:
+  - name: lidar_rp
+    label: "LiDAR RP标定"
+    enabled: true
+
+  - name: lidar_yaw
+    label: "LiDAR Yaw标定"
+    enabled: true
+
+  - name: secondary_rp
+    label: "辅雷达RP标定"
+    enabled: true
+
+  - name: lidar_gnss_yaw
+    label: "GNSS+LiDAR Yaw标定"
+    enabled: false
+
+  - name: lidar_lidar
+    label: "LiDAR-LiDAR联合标定"
+    enabled: true
+
+  - name: radar_lidar
+    label: "毫米波-LiDAR标定"
+    enabled: true
+
+  - name: image_lidar
+    label: "相机-LiDAR标定"
+    enabled: true
+
+  - name: camera_cali
+    label: "相机-相机标定"
+    enabled: false
+
+  - name: bev
+    label: "环视BEV标定"
+    enabled: true
+
+  - name: front_stitch
+    label: "前视图像拼接"
+    enabled: false

@@ -1,0 +1,5 @@
+<!-- radar_cali_test.launch：毫米波雷达标定算法自测节点 -->
+<launch>
+  <node name="radar_cali_test_node" pkg="radar_cali" type="radar_cali_test_node"
+        output="screen" respawn="false"/>
+</launch>

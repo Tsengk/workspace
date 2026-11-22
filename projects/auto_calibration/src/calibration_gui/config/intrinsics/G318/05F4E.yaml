@@ -1,0 +1,19 @@
+%YAML:1.0
+---
+model_type: MEI
+camera_name: left_front
+image_width: 1920
+image_height: 1280
+mirror_parameters:
+   xi: 1.3368927819018177e+00
+distortion_parameters:
+   k1: 3.3009921588214797e-01
+   k2: -3.0947083612410275e-01
+   p1: 9.1317226709929664e-04
+   p2: 9.1504472848584159e-04
+projection_parameters:
+   gamma1: 1.0284532635552216e+03
+   gamma2: 1.0282417448919230e+03
+   u0: 9.5661128511368656e+02
+   v0: 6.4424811729571445e+02
+calibrate_time : "2025年 07月 19日 星期六 16:00:01 CST"

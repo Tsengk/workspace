@@ -1,0 +1,13 @@
+int32  	    pursuit_index  
+int32  	    obs_id  
+int32  	    obs_type  
+float64  	    obs_x  
+float64  	    obs_y  
+float64  	    obs_z  
+float64  	    obs_height  
+float64  	    path_x  
+float64  	    path_y  
+float64  	    path_angle  
+float64  	    path_index  
+float64  	    path_length  
+string  	    collid_count  

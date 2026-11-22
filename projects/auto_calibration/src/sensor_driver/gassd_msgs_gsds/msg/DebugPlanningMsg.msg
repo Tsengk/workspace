@@ -1,0 +1,15 @@
+DebugStateMsg  	    main_stream_msg  
+DebugStateMsg  	    task_fsm_condition  
+DebugStateMsg  	    task_fsm_state  
+DebugStateMsg  	    cognition_msg  
+DebugStateMsg  	    business_msg  
+DebugStateMsg  	    pathplan_msg  
+DebugStateMsg  	    behavior_fsm_condition  
+DebugStateMsg  	    behavior_fsm_state  
+DebugStateMsg  	    thread_state  
+DebugUnsCollidMsg  	    uns_collid_msg  
+DebugRefpathMsg  	    refpath_msg  
+DebugDWAMsg  	    DWA_message  
+DebugASTARMsg  	    ASTAR_message  
+DebugDriveModeMsg  	    drive_mode_message  
+MotionPlanDebugMsg  	    motionplan_debug  

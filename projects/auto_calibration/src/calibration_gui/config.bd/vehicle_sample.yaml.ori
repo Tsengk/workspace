@@ -1,0 +1,159 @@
+vehicle:
+  id: sample_vehicle_01
+  car_length: 4.8
+  car_width: 1.9
+  car_height: 1.55
+  front_overhang: 0.9
+  wheelbase: 2.8
+  rear_overhang: 1.1
+  z_offset: 0.37
+cameras:
+  - name: cam_front
+    topic: /driver/gmsl_camera/front_h100/compressed
+    intrinsics_file: intrinsics/cam_front.yaml
+    extrinsics:
+      t:
+        - 3.55
+        - 0
+        - 1.2
+      R_euler:
+        - 0
+        - 5
+        - 0
+      vcs_to_ground_height: 1.2
+      base_euler: 0
+  - name: cam_front_left
+    topic: /driver/gmsl_camera/left_front/compressed
+    intrinsics_file: intrinsics/cam_front_left.yaml
+    extrinsics:
+      t:
+        - 3.4
+        - 0.8
+        - 1.18
+      R_euler:
+        - 0
+        - 4
+        - 30
+      vcs_to_ground_height: 1.18
+      base_euler: 0
+  - name: cam_front_right
+    topic: /driver/gmsl_camera/right_front/compressed
+    intrinsics_file: intrinsics/cam_front_right.yaml
+    extrinsics:
+      t:
+        - 3.4
+        - -0.8
+        - 1.18
+      R_euler:
+        - 0
+        - 4
+        - -30
+      vcs_to_ground_height: 1.18
+      base_euler: 0
+  - name: cam_front_fish_eye
+    topic: /driver/gmsl_camera/front_fish_eye/compressed
+    intrinsics_file: intrinsics/cam_front_fish_eye.yaml
+    extrinsics:
+      t:
+        - 3.55
+        - 0
+        - 1.2
+      R_euler:
+        - 0
+        - 5
+        - 0
+      vcs_to_ground_height: 1.2
+      base_euler: 0
+  - name: cam_left_fish_eye
+    topic: /driver/gmsl_camera/left_fish_eye/compressed
+    intrinsics_file: intrinsics/cam_left_fish_eye.yaml
+    extrinsics:
+      t:
+        - 1.2
+        - 0.95
+        - 0.85
+      R_euler:
+        - -5
+        - 0
+        - 90
+      vcs_to_ground_height: 0.85
+      base_euler: 0
+  - name: cam_right_fish_eye
+    topic: /driver/gmsl_camera/right_fish_eye/compressed
+    intrinsics_file: intrinsics/cam_right_fish_eye.yaml
+    extrinsics:
+      t:
+        - 1.2
+        - -0.95
+        - 0.85
+      R_euler:
+        - -5
+        - 0
+        - -90
+      vcs_to_ground_height: 0.85
+      base_euler: 0
+  - name: cam_rear_fish_eye
+    topic: /driver/gmsl_camera/back_fish_eye/compressed
+    intrinsics_file: intrinsics/cam_rear_fish_eye.yaml
+    extrinsics:
+      t:
+        - -1.05
+        - 0
+        - 0.9
+      R_euler:
+        - 0
+        - 10
+        - 180
+      vcs_to_ground_height: 0.9
+      base_euler: 0
+lidars:
+  - name: lidar_top
+    topic: /lidar_top/points_raw
+    t:
+      - 1.45
+      - 0
+      - 1.82
+    R:
+      - -0.2237959194859184
+      - -0.2522092503140803
+      - 0
+  - name: lidar_rear
+    topic: /lidar_rear/points_raw
+    t:
+      - -0.3
+      - 0
+      - 0.55
+    R:
+      - -0.5098832184429213
+      - 0.4765863291064553
+      - 180
+radars:
+  - name: radar_front
+    topic: /radar_front/objects
+    t:
+      - 3.6
+      - 0
+      - 0.5
+    R:
+      - 0
+      - 0
+      - 0
+gnss:
+  name: gnss_ins
+  topic: /gnss/odom
+bev_surround_view:
+  node_ns: /bev_surround_view_node
+  bev_image_topic: /bev_surround_view_node/bev_image
+  detection_vis_front_topic: /bev_surround_view_node/detection_vis_front
+  detection_vis_rear_topic: /bev_surround_view_node/detection_vis_rear
+  detection_vis_left_topic: /bev_surround_view_node/detection_vis_left
+  detection_vis_right_topic: /bev_surround_view_node/detection_vis_right
+  output_width: 1280
+  output_height: 1280
+  resolution: 0.01
+  range_front: 420
+  range_rear: 860
+  range_left: 525
+  range_right: 760
+  origin_offset_x: 0.0
+  origin_offset_y: 0.0

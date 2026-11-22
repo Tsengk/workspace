@@ -1,0 +1,9 @@
+int32  	    id  
+DebugPredictedPoint[]  	    predicted_trajectory  
+bool  	    is_colliding_obstacle  
+float64  	    time_to_collision  
+float64  	    collision_s  
+float64  	    length  
+float64  	    width  
+bool  	    is_static  
+float64  	    speed  

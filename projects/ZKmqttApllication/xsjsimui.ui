@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>XsJSimUi</class>
+ <widget class="QMainWindow" name="XsJSimUi">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1160</width>
+    <height>1207</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>仿真控制面板</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+    background-color: #f0f0f0;
+}
+QPushButton {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 14px;
+    min-width: 100px;
+}
+QPushButton:hover {
+    background-color: #1976D2;
+}
+QPushButton:pressed {
+    background-color: #0D47A1;
+}
+QPushButton:disabled {
+    background-color: #BDBDBD;
+}
+QGroupBox {
+    font-weight: bold;
+    border: 2px solid #E0E0E0;
+    border-radius: 6px;
+    margin-top: 12px;
+    padding-top: 24px;
+}
+QGroupBox::title {
+    subcontrol-origin: margin;
+    left: 8px;
+    padding: 0 5px;
+}
+</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QGroupBox" name="groupBox_status">
+      <property name="title">
+       <string>状态信息</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_self">
+         <property name="text">
+          <string>自车状态:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_self_status">
+         <property name="text">
+          <string>未初始化</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_uav">
+         <property name="text">
+          <string>无人机状态:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="label_uav_status">
+         <property name="text">
+          <string>未部署</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_control">
+      <property name="title">
+       <string>自主空中控制</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <widget class="QComboBox" name="comboBox_objects">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>选择要控制的智能体</string>
+         </property>
+         <item>
+          <property name="text">
+           <string>选择智能体</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="1">
+          <widget class="QPushButton" name="btn_top">
+           <property name="text">
+            <string>前进</string>
+           </property>
+           <property name="icon">
+            <iconset theme="go-up">
+             <normaloff>.</normaloff>.</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="0">
+          <widget class="QPushButton" name="btn_left">
+           <property name="text">
+            <string>左转</string>
+           </property>
+           <property name="icon">
+            <iconset theme="go-previous">
+             <normaloff>.</normaloff>.</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QPushButton" name="btn_right">
+           <property name="text">
+            <string>右转</string>
+           </property>
+           <property name="icon">
+            <iconset theme="go-next">
+             <normaloff>.</normaloff>.</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="1">
+          <widget class="QPushButton" name="btn_bottom">
+           <property name="text">
+            <string>后退</string>
+           </property>
+           <property name="icon">
+            <iconset theme="go-down">
+             <normaloff>.</normaloff>.</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_uav">
+      <property name="title">
+       <string>无人机控制</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QPushButton" name="btn_start_uav">
+         <property name="text">
+          <string>释放侦察无人机</string>
+         </property>
+         <property name="icon">
+          <iconset theme="media-playback-start">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_stop_uav">
+         <property name="text">
+          <string>回收侦察无人机</string>
+         </property>
+         <property name="icon">
+          <iconset theme="media-playback-stop">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_scout">
+         <property name="text">
+          <string>执行侦察</string>
+         </property>
+         <property name="icon">
+          <iconset theme="view-fullscreen">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_strike">
+         <property name="text">
+          <string>执行打击</string>
+         </property>
+         <property name="icon">
+          <iconset theme="emblem-important">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_uav_strike">
+         <property name="text">
+          <string>单独打击</string>
+         </property>
+         <property name="icon">
+          <iconset theme="emblem-important">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_uav_land">
+         <property name="text">
+          <string>降落</string>
+         </property>
+         <property name="icon">
+          <iconset theme="go-down">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_fpv">
+      <property name="title">
+       <string>穿越机控制</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QPushButton" name="btn_start_fpv">
+         <property name="text">
+          <string>释放穿越无人机</string>
+         </property>
+         <property name="icon">
+          <iconset theme="media-playback-start">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_stop_fpv">
+         <property name="text">
+          <string>回收穿越无人机</string>
+         </property>
+         <property name="icon">
+          <iconset theme="media-playback-stop">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_cabin">
+      <property name="title">
+       <string>舱体控制</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QPushButton" name="btn_open_cabin">
+         <property name="text">
+          <string>打开舱体</string>
+         </property>
+         <property name="icon">
+          <iconset theme="document-open">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_close_cabin">
+         <property name="text">
+          <string>关闭舱体</string>
+         </property>
+         <property name="icon">
+          <iconset theme="window-close">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_test">
+      <property name="title">
+       <string>测试功能</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QPushButton" name="btn_clear_targets_routes">
+         <property name="toolTip">
+          <string>清除大模型生成的规划路线</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #FF9800;</string>
+         </property>
+         <property name="text">
+          <string>清除规划路线</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_publish303">
+         <property name="toolTip">
+          <string>点击后向QB/303发布一次推送演示平台报文</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #FF9800;</string>
+         </property>
+         <property name="text">
+          <string>发送演示平台视频流</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_test_load_task">
+         <property name="toolTip">
+          <string>从本地文件加载JSON任务数据并调用loadTask接口</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #FF9800;</string>
+         </property>
+         <property name="text">
+          <string>测试加载任务</string>
+         </property>
+         <property name="icon">
+          <iconset theme="document-open">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_test_location">
+         <property name="toolTip">
+          <string>测试智能体定位功能</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #FF9800;</string>
+         </property>
+         <property name="text">
+          <string>测试定位(长沙)</string>
+         </property>
+         <property name="icon">
+          <iconset theme="find-location">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_test_location2">
+         <property name="styleSheet">
+          <string notr="true">background-color: #FF9800;</string>
+         </property>
+         <property name="text">
+          <string>定位（重庆）</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_test_location3">
+         <property name="styleSheet">
+          <string notr="true">background-color: #FF9800;</string>
+         </property>
+         <property name="text">
+          <string>定位（三界）</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_show_fire_points">
+         <property name="toolTip">
+          <string>显示/隐藏火力点标记</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #FF9800;</string>
+         </property>
+         <property name="text">
+          <string>火力点显示</string>
+         </property>
+         <property name="icon">
+          <iconset theme="emblem-important">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_show_safe_zone">
+         <property name="toolTip">
+          <string>显示/隐藏安全区域标记</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #FF9800;</string>
+         </property>
+         <property name="text">
+          <string>安全区显示</string>
+         </property>
+         <property name="icon">
+          <iconset theme="security-low">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_show_yield_points">
+         <property name="toolTip">
+          <string>显示/隐藏避让点标记</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #FF9800;</string>
+         </property>
+         <property name="text">
+          <string>避让点显示</string>
+         </property>
+         <property name="icon">
+          <iconset theme="go-jump">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btn_show_avoidance_area">
+         <property name="toolTip">
+          <string>显示/隐藏规避面区域</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-color: #FF9800;</string>
+         </property>
+         <property name="text">
+          <string>规避面显示</string>
+         </property>
+         <property name="icon">
+          <iconset theme="view-fullscreen">
+           <normaloff>.</normaloff>.</iconset>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_gante">
+      <property name="text">
+       <string>方案甘特图显示</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btn_test_location4">
+      <property name="text">
+       <string>定位（信支）</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="btn_test_ers">
+      <property name="text">
+       <string>消去作战目标</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_7" stretch="1,2,8">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>目标类型</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_target"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>经度</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTextEdit" name="textEdit_lon"/>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>维度</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTextEdit" name="textEdit_lat"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QPushButton" name="pushButton_pushtarget">
+      <property name="text">
+       <string>发送目标</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBox_vechile">
+      <property name="title">
+       <string>模拟数据加载</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QPushButton" name="btn_vechile">
+         <property name="text">
+          <string>加载态势数据</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="cmd_reset">
+      <property name="styleSheet">
+       <string notr="true">background-color: #F44336;</string>
+      </property>
+      <property name="text">
+       <string>停止</string>
+      </property>
+      <property name="icon">
+       <iconset theme="process-stop">
+        <normaloff>.</normaloff>.</iconset>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <spacer name="verticalSpacer">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>40</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1160</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_file">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="action_exit"/>
+   </widget>
+   <widget class="QMenu" name="menu_help">
+    <property name="title">
+     <string>帮助</string>
+    </property>
+    <addaction name="action_about"/>
+   </widget>
+   <addaction name="menu_file"/>
+   <addaction name="menu_help"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_exit">
+   <property name="text">
+    <string>退出</string>
+   </property>
+  </action>
+  <action name="action_about">
+   <property name="text">
+    <string>关于</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

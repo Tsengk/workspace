@@ -1,0 +1,28 @@
+schema_version: 1
+calib_type: image_lidar
+sensor_name: left_back_60
+reference_lidar: front_left_lidar
+generated_at: 2026-05-19 17:17:59
+method: manual_projection_alignment
+coordinate_system: FLU
+installation:
+  x: 0.795000
+  y: 1.235000
+  z: -0.510000
+  roll_deg: 0.000000
+  pitch_deg: 0.000000
+  yaw_deg: 0.000000
+calibrated:
+  x: 0.795000
+  y: 1.235000
+  z: -0.510000
+  roll_deg: -7.550000
+  pitch_deg: 22.250000
+  yaw_deg: -8.750000
+delta:
+  delta_x_m: 0.000000
+  delta_y_m: 0.000000
+  delta_z_m: 0.000000
+  delta_roll_deg: -7.550000
+  delta_pitch_deg: 22.250000
+  delta_yaw_deg: -8.750000

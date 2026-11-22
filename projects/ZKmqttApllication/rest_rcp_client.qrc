@@ -1,0 +1,4 @@
+<RCC>
+    <qresource prefix="rest_rcp_client">
+    </qresource>
+</RCC>

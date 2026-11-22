@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>bev_surround_view</name>
+  <version>0.0.1</version>
+  <description>BEV surround view calibration for 4 cameras</description>
+  <maintainer email="idriver@example.com">idriver</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>std_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>cv_bridge</depend>
+  <depend>image_transport</depend>
+  <depend>camera_model</depend>
+  <build_depend>libceres-dev</build_depend>
+  <build_export_depend>libceres-dev</build_export_depend>
+  <exec_depend>libceres-dev</exec_depend>
+  <build_depend>yaml-cpp</build_depend>
+  <build_export_depend>yaml-cpp</build_export_depend>
+  <exec_depend>yaml-cpp</exec_depend>
+</package>

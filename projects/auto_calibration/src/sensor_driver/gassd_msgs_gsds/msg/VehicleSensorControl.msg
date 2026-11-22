@@ -1,0 +1,15 @@
+CommonHeader  	    header  
+uint8  	    actor_control_enable  
+uint8  	    brake_light  
+uint8  	    double_flash_light  
+uint8  	    low_beam  
+uint8  	    high_beam  
+uint8  	    turn_left_light  
+uint8  	    turn_right_light  
+uint8  	    auto_horn  
+uint8  	    front_fog_light  
+uint8  	    rear_fog_light  
+uint8  	    tail_light  
+uint8  	    wiper  
+uint8  	    door_lock  
+uint8  	    emergency_stop  
