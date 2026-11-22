@@ -4,6 +4,9 @@
 新增 `ackermann_canopen_hardware/AckermannCanopenSystem` 硬件插件，通过后台 ROS
 服务/话题连接当前 `ros2_canopen` 的 `MotionControllerDriver`。
 
+关于 ros2_control 组件职责、接口暴露/借用、Controller 与硬件生命周期以及完整函数调用时序，见
+[生命周期与调用时序文档](docs/ros2_control_lifecycle_and_call_sequence.md)。
+
 ```text
 Twist → AckermannController → position/velocity interfaces
                               ↓

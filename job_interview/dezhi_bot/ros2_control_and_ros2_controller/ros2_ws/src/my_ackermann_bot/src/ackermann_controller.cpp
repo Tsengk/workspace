@@ -33,7 +33,8 @@ controller_interface::return_type AckermannController::init(const std::string & 
 
   return controller_interface::return_type::OK;
 }
-
+// 声明控制器需要的命令接口和状态接口
+// 硬件的接口提供在ros2_control.xacro中声明的四个关节的命令接口和状态接口
 controller_interface::InterfaceConfiguration
 AckermannController::command_interface_configuration() const
 {
@@ -48,6 +49,11 @@ AckermannController::command_interface_configuration() const
   };
   return conf;
 }
+// on_configure读取参数并保存到缓存command_interfaces_中
+// command_interfaces_[0]：front_left_steer_joint/position 左前转向关节
+// command_interfaces_[1]：front_right_steer_joint/position 右前转向关节
+// command_interfaces_[2]：rear_left_wheel_joint/velocity 左后驱动关节
+// command_interfaces_[3]：rear_right_wheel_joint/velocity 右后驱动关节
 
 controller_interface::InterfaceConfiguration
 AckermannController::state_interface_configuration() const
@@ -62,7 +68,7 @@ AckermannController::state_interface_configuration() const
   };
   return conf;
 }
-
+// 读取在 config/controllers.yaml 中,与控制器实例名同名的层级下（例如 ackermann_controller: → ros__parameters:）的参数，并保存到成员变量中
 CallbackReturn AckermannController::on_configure(const rclcpp_lifecycle::State &)
 {
   front_left_steer_joint_ = get_node()->get_parameter("front_left_steer_joint").as_string();
@@ -99,6 +105,9 @@ CallbackReturn AckermannController::on_configure(const rclcpp_lifecycle::State &
     "~/cmd_vel", rclcpp::SystemDefaultsQoS(),
     [this](const geometry_msgs::msg::Twist::SharedPtr msg) {
       const auto epoch = activation_epoch_.load();
+      // 使用Twist中的两个量：
+      // linear.x:车体前后方向速度，单位m/s
+      // angular.z:车体绕垂直轴旋转角速度，单位rad/s
       if (accepting_commands_.load() && std::isfinite(msg->linear.x) &&
         std::isfinite(msg->angular.z))
       {
@@ -195,7 +204,7 @@ controller_interface::return_type AckermannController::update()
     left_wheel_vel = (effective_w * (R_r - track_width_ / 2.0)) / wheel_radius_;
     right_wheel_vel = (effective_w * (R_r + track_width_ / 2.0)) / wheel_radius_;
   }
-
+// 将计算得到的前轮转向角和后轮驱动速度写入命令接口，供硬件控制器使用
   command_interfaces_[0].set_value(left_steer);
   command_interfaces_[1].set_value(right_steer);
   command_interfaces_[2].set_value(left_wheel_vel);
