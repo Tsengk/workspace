@@ -11,3 +11,4 @@ projects/lidar2camCalib_artificial/src/perception_calibration/params/camera_intr
 datasets/
 .venv/
 node_modules/
+projects/auto_calibration/tools/ap_tools_chain/runtime/*.zip
